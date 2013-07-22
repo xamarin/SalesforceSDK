@@ -1,0 +1,23 @@
+Config Key:
+3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab
+
+Callback URL:
+sfdc://success
+
+TODO:
+
+- Add multifactor authentication support.
+- Fix double callbacks. The multi-step request fires completion handler from loading and loaded delegates.
+- Move Xamarin.Auth stuff to Salesforce.Auth namespace.
+
+
+Flow:
+
+1. Applaunch.
+2. Check for accounts in the credential store.
+	a. If found, refresh token.
+	b. If not found, login to salesforce and authorize app.
+3. Display loading UI.
+4. Retrieve list of accounts.
+5. Render results.
+6. Disable loading UI.

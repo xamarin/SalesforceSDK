@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth", "Xamarin.Auth\Xamarin.Auth.csproj", "{C9FF1919-78DD-4084-976D-BDABC0A7E80B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.iOS", "Xamarin.Auth.iOS\Xamarin.Auth.iOS.csproj", "{9309BCCC-AA7B-4195-A130-D4572FA9488D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Android", "Xamarin.Auth.Android\Xamarin.Auth.Android.csproj", "{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C8D45038-9B94-4408-B4D9-3BDF2F0C0623}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		Details.md = Details.md
+		GettingStarted.md = GettingStarted.md
+		License.md = License.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.iOS.Test", "..\tests\Xamarin.Auth.iOS.Test\Xamarin.Auth.iOS.Test.csproj", "{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|iPhone = Debug|iPhone
+		Release|Any CPU = Release|Any CPU
+		Release|iPhone = Release|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9FF1919-78DD-4084-976D-BDABC0A7E80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9FF1919-78DD-4084-976D-BDABC0A7E80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9FF1919-78DD-4084-976D-BDABC0A7E80B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C9FF1919-78DD-4084-976D-BDABC0A7E80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9FF1919-78DD-4084-976D-BDABC0A7E80B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9FF1919-78DD-4084-976D-BDABC0A7E80B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9309BCCC-AA7B-4195-A130-D4572FA9488D}.Release|iPhone.Build.0 = Release|Any CPU
+		{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCF02C8C-6DD3-4C59-A8A2-58BC01A4BB21}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Debug|iPhone.Build.0 = Debug|iPhone
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Debug|iPhone.Deploy.0 = Debug|iPhone
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Release|iPhone.ActiveCfg = Release|iPhone
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Release|iPhone.Build.0 = Release|iPhone
+		{FB361F3C-66D3-4B16-9FBF-62C06F7815FD}.Release|iPhone.Deploy.0 = Release|iPhone
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = ..\tests\Xamarin.Auth.Android.Test\Xamarin.Auth.Android.Test.csproj
+	EndGlobalSection
+EndGlobal

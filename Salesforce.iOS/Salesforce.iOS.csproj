@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Salesforce</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>Salesforce.iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;PLATFORM_IOS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="System.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Auth\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\ACAccountWrapper.cs">
+      <Link>Auth\ACAccountWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\FormAuthenticatorController.cs">
+      <Link>Auth\FormAuthenticatorController.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\KeyChainAccountStore.cs">
+      <Link>Auth\KeyChainAccountStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\ProgressLabel.cs">
+      <Link>Auth\ProgressLabel.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\UIViewControllerEx.cs">
+      <Link>Auth\UIViewControllerEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\WebAuthenticatorController.cs">
+      <Link>Auth\WebAuthenticatorController.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Account.cs">
+      <Link>Auth\Account.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
+      <Link>Auth\AccountStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
+      <Link>Auth\AuthException.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
+      <Link>Auth\Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
+      <Link>Auth\ExceptionEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\FormAuthenticator.cs">
+      <Link>Auth\FormAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth1.cs">
+      <Link>Auth\OAuth1.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth1Authenticator.cs">
+      <Link>Auth\OAuth1Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth1Request.cs">
+      <Link>Auth\OAuth1Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth2Authenticator.cs">
+      <Link>Auth\OAuth2Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth2Request.cs">
+      <Link>Auth\OAuth2Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Request.cs">
+      <Link>Auth\Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
+      <Link>Auth\Response.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
+      <Link>Auth\WebAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebEx.cs">
+      <Link>Auth\WebEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebRedirectAuthenticator.cs">
+      <Link>Auth\WebRedirectAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
+      <Link>Auth\WebUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\SalesforceClient.cs">
+      <Link>SalesforceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\PlatformAdapter.cs">
+      <Link>PlatformAdapter.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>

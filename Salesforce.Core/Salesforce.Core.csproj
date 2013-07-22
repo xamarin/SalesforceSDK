@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BE81BAE8-5A4F-4D7F-AB03-C9AF5D1710FF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Salesforce</RootNamespace>
+    <AssemblyName>Salesforce.Core</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SalesforceClient.cs" />
+    <Compile Include="PlatformAdapter.cs" />
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Account.cs">
+      <Link>Auth\Account.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
+      <Link>Auth\AccountStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
+      <Link>Auth\AuthException.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
+      <Link>Auth\Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
+      <Link>Auth\ExceptionEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\FormAuthenticator.cs">
+      <Link>Auth\FormAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth1.cs">
+      <Link>Auth\OAuth1.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth1Authenticator.cs">
+      <Link>Auth\OAuth1Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth1Request.cs">
+      <Link>Auth\OAuth1Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth2Authenticator.cs">
+      <Link>Auth\OAuth2Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\OAuth2Request.cs">
+      <Link>Auth\OAuth2Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Request.cs">
+      <Link>Auth\Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
+      <Link>Auth\Response.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
+      <Link>Auth\WebAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebEx.cs">
+      <Link>Auth\WebEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebRedirectAuthenticator.cs">
+      <Link>Auth\WebRedirectAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
+      <Link>Auth\WebUtilities.cs</Link>
+    </Compile>
+    <Compile Include="System.Json\JsonArray.cs" />
+    <Compile Include="System.Json\JsonObject.cs" />
+    <Compile Include="System.Json\JsonPrimitive.cs" />
+    <Compile Include="System.Json\JsonType.cs" />
+    <Compile Include="System.Json\JsonValue.cs" />
+    <Compile Include="System.Json\JavaScriptReader.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Auth\" />
+    <Folder Include="System.Json\" />
+  </ItemGroup>
+</Project>
