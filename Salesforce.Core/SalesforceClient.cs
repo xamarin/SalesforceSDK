@@ -40,8 +40,25 @@ namespace Salesforce
 		/// <value>The current user.</value>
 		public Account CurrentUser { get; set; }
 
+		/// <summary>
+		/// Gets or sets the scheduler.
+		/// </summary>
+		/// <remarks>
+		/// Constructor should be called from the UI thread
+		/// to ensure safe dispatch to UI elements.
+		/// </remarks>
+		/// <value>The scheduler.</value>
+		protected TaskScheduler Scheduler { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
+		/// </summary>
+		/// <param name="appKey">App key.</param>
+		/// <param name="callbackUri">Callback URI.</param>
 		public SalesforceClient (String appKey, Uri callbackUri)
 		{
+			Scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
 			Authenticator = new OAuth2Authenticator (
 				clientId: appKey,
 				scope: "full", // TODO: Convert this to a static struct. Or not.
@@ -92,6 +109,21 @@ namespace Salesforce
 		public IEnumerable<IAccount> LoadAccounts()
 		{
 			return Adapter.LoadAccounts ();
+		}
+
+		/// <summary>
+		/// Process the specified request.
+		/// </summary>
+		/// <param name="request">Request.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
+		protected Task<Response> Process<T>(T request) where T: class, IRestRequest
+		{
+			var oauthRequest = new OAuth2Request (request.Method, request.AbsoluteUri, request.Options, this.CurrentUser);
+			var task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
+				// TODO: Insert some basic retry logic here.
+				return response;
+			}, Scheduler);
+			return task.Result; // TODO: Create a public invoker that returns a Salesforce domain object.
 		}
 
 		/// <summary>

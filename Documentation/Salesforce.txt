@@ -6,6 +6,7 @@ sfdc://success
 
 TODO:
 
+- Add refresh token flow.
 - Add multifactor authentication support.
 - Fix double callbacks. The multi-step request fires completion handler from loading and loaded delegates.
 - Move Xamarin.Auth stuff to Salesforce.Auth namespace.
@@ -14,10 +15,10 @@ TODO:
 Flow:
 
 1. Applaunch.
-2. Check for accounts in the credential store.
+2. Display loading UI.
+3. Check for accounts in the credential store.
 	a. If found, refresh token.
-	b. If not found, login to salesforce and authorize app.
-3. Display loading UI.
+	b. If not found, display modal login UI so user can authenticate to salesforce and authorize app.
 4. Retrieve list of accounts.
 5. Render results.
 6. Disable loading UI.

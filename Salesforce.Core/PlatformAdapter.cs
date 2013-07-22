@@ -20,7 +20,7 @@ namespace Salesforce
 	}
 
 #if PLATFORM_ANDROID
-	public class AndroidPlatformAdapter : IPlatformAdapter
+	internal class AndroidPlatformAdapter : IPlatformAdapter
 	{
 		#region IPlatformAdapter implementation
 
@@ -43,7 +43,7 @@ namespace Salesforce
 #endif
 
 #if PLATFORM_IOS
-	public class UIKitPlatformAdapter : IPlatformAdapter
+	internal class UIKitPlatformAdapter : IPlatformAdapter
 	{
 		Authenticator Authenticator { get; set;	}
 

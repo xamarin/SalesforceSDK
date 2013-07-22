@@ -118,5 +118,7 @@
     <Compile Include="..\Salesforce.Core\PlatformAdapter.cs">
       <Link>PlatformAdapter.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\IRestRequest.cs" />
+    <Compile Include="..\Salesforce.Core\HttpMethod.cs" />
   </ItemGroup>
 </Project>
