@@ -58,7 +58,7 @@ namespace Xamarin.Auth
 		/// <summary>
 		/// The account that will be used to authenticate this request.
 		/// </summary>
-		public virtual Account Account { get; set; }
+		public virtual ISalesforceUser Account { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Xamarin.Auth.Request"/> class.
@@ -75,7 +75,7 @@ namespace Xamarin.Auth
 		/// <param name='account'>
 		/// The account used to authenticate this request.
 		/// </param>
-		public Request (string method, Uri url, IDictionary<string, string> parameters = null, Account account = null)
+		public Request (string method, Uri url, IDictionary<string, string> parameters = null, ISalesforceUser account = null)
 		{
 			Method = method;
 			Url = url;

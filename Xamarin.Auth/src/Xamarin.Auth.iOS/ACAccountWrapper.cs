@@ -21,7 +21,7 @@ namespace Xamarin.Auth
 #if XAMARIN_AUTH_INTERNAL
 	internal class ACAccountWrapper : Account
 #else
-	public class ACAccountWrapper : Account
+	public class ACAccountWrapper : SalesforceUser
 #endif
 	{
 		/// <summary>

@@ -23,7 +23,7 @@ namespace Xamarin.Auth
 {
 	internal class KeyChainAccountStore : AccountStore
 	{
-		public override IEnumerable<IAccount> FindAccountsForService (string serviceId)
+		public override IEnumerable<ISalesforceUser> FindAccountsForService (string serviceId)
 		{
 			var query = new SecRecord (SecKind.GenericPassword);
 			query.Service = serviceId;
@@ -33,16 +33,16 @@ namespace Xamarin.Auth
 
 			return records != null ?
 				records.Select (GetAccountFromRecord).ToList () :
-				new List<IAccount> ();
+				new List<ISalesforceUser> ();
 		}
 
-		IAccount GetAccountFromRecord (SecRecord r)
+		ISalesforceUser GetAccountFromRecord (SecRecord r)
 		{
 			var serializedData = NSString.FromData (r.Generic, NSStringEncoding.UTF8);
-			return Account.Deserialize (serializedData);
+			return SalesforceUser.Deserialize (serializedData);
 		}
 
-		IAccount FindAccount (string username, string serviceId)
+		ISalesforceUser FindAccount (string username, string serviceId)
 		{
 			var query = new SecRecord (SecKind.GenericPassword);
 			query.Service = serviceId;
@@ -54,7 +54,7 @@ namespace Xamarin.Auth
 			return record != null ?	GetAccountFromRecord (record) : null;
 		}
 
-		public override void Save (IAccount account, string serviceId)
+		public override void Save (ISalesforceUser account, string serviceId)
 		{
 			var statusCode = SecStatusCode.Success;
 			var serializedAccount = account.Serialize ();
@@ -92,7 +92,7 @@ namespace Xamarin.Auth
 			}
 		}
 
-		public override void Delete (IAccount account, string serviceId)
+		public override void Delete (ISalesforceUser account, string serviceId)
 		{
 			var query = new SecRecord (SecKind.GenericPassword);
 			query.Service = serviceId;

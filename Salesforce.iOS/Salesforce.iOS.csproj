@@ -40,6 +40,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Auth\" />
+    <Folder Include="Request\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -60,9 +61,6 @@
     </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\WebAuthenticatorController.cs">
       <Link>Auth\WebAuthenticatorController.cs</Link>
-    </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Account.cs">
-      <Link>Auth\Account.cs</Link>
     </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
       <Link>Auth\AccountStore.cs</Link>
@@ -120,5 +118,17 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\IRestRequest.cs" />
     <Compile Include="..\Salesforce.Core\HttpMethod.cs" />
+    <Compile Include="..\Salesforce.Core\Request\ListRequest.cs">
+      <Link>Request\RestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\SObject.cs">
+      <Link>SObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\IRestResource.cs" />
+    <Compile Include="..\Salesforce.Core\IVersionableRestResource.cs" />
+    <Compile Include="..\Salesforce.Core\ISalesforceResource.cs" />
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

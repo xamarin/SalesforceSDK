@@ -92,7 +92,7 @@ namespace Xamarin.Auth
 		/// <param name='cancellationToken'>
 		/// Cancellation token used to cancel the authentication.
 		/// </param>
-		public abstract Task<Account> SignInAsync (CancellationToken cancellationToken);
+		public abstract Task<SalesforceUser> SignInAsync (CancellationToken cancellationToken);
 
 #if PLATFORM_IOS
 		/// <summary>

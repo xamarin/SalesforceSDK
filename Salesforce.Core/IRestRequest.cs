@@ -1,17 +1,12 @@
-using System;
-using Xamarin.Auth;
-using System.Net;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Json;
 
 namespace Salesforce
 {
 	public interface IRestRequest
 	{
+		ISalesforceResource Resource { get; }
 		string Method { get; }
-		Uri AbsoluteUri { get; }
-		IDictionary<string, string> Options { get; }
+		IDictionary<string,string> Headers { get; }
 	}
 }
 

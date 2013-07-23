@@ -10,8 +10,8 @@ namespace Salesforce
 	public interface IPlatformAdapter
 	{
 		object GetLoginUI();
-		void SaveAccount(IAccount account);
-		IEnumerable<IAccount> LoadAccounts();
+		void SaveAccount(ISalesforceUser account);
+		IEnumerable<ISalesforceUser> LoadAccounts();
 	}
 
 	public struct PlatformStrings
@@ -29,7 +29,7 @@ namespace Salesforce
 			throw new NotImplementedException ();
 		}
 
-		public void SaveAccount (IAccount account)
+		public void SaveAccount (ISalesforceUser account)
 		{
 			AccountStore.Create (this).Save (account, PlatformStrings.Salesforce);
 		}
@@ -59,12 +59,12 @@ namespace Salesforce
 			return Authenticator.GetUI ();
 		}
 
-		public void SaveAccount (IAccount account)
+		public void SaveAccount (ISalesforceUser account)
 		{
 			AccountStore.Create ().Save (account, PlatformStrings.Salesforce);
 		}
 
-		public IEnumerable<IAccount> LoadAccounts()
+		public IEnumerable<ISalesforceUser> LoadAccounts()
 		{
 			return AccountStore.Create ().FindAccountsForService (PlatformStrings.Salesforce);
 		}

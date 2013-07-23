@@ -37,9 +37,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesforceClient.cs" />
     <Compile Include="PlatformAdapter.cs" />
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Account.cs">
-      <Link>Auth\Account.cs</Link>
-    </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
       <Link>Auth\AccountStore.cs</Link>
     </Compile>
@@ -94,10 +91,19 @@
     <Compile Include="System.Json\JsonType.cs" />
     <Compile Include="System.Json\JsonValue.cs" />
     <Compile Include="System.Json\JavaScriptReader.cs" />
+    <Compile Include="HttpMethod.cs" />
+    <Compile Include="IRestRequest.cs" />
+    <Compile Include="Request\ListRequest.cs" />
+    <Compile Include="SObject.cs" />
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Auth\" />
     <Folder Include="System.Json\" />
+    <Folder Include="Response\" />
+    <Folder Include="Request\" />
   </ItemGroup>
 </Project>

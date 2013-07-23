@@ -38,7 +38,7 @@ namespace Salesforce
 		/// The currently authenticated Salesforce user.
 		/// </summary>
 		/// <value>The current user.</value>
-		public Account CurrentUser { get; set; }
+		public ISalesforceUser CurrentUser { get; set; }
 
 		/// <summary>
 		/// Gets or sets the scheduler.
@@ -57,7 +57,10 @@ namespace Salesforce
 		/// <param name="callbackUri">Callback URI.</param>
 		public SalesforceClient (String appKey, Uri callbackUri)
 		{
-			Scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+			Scheduler = TaskScheduler.Default; //TaskScheduler.FromCurrentSynchronizationContext();
+
+			// TODO: Need to retrieve accounts before calling the constructor.
+			// If we have the account, then we can refresh the session token.
 
 			Authenticator = new OAuth2Authenticator (
 				clientId: appKey,
@@ -70,6 +73,7 @@ namespace Salesforce
 					var results = client.DownloadString(dict["id"]);
 					var resultVals = JsonValue.Parse(results);
 					return Task.Factory.StartNew(()=> { 
+						Console.WriteLine(results);
 						return (String)resultVals["username"];
 					});
 				})
@@ -97,7 +101,7 @@ namespace Salesforce
 		/// Saves the account to the platform-specific credential store.
 		/// </summary>
 		/// <param name="account">Account.</param>
-		public void Save(IAccount account)
+		public void Save(ISalesforceUser account)
 		{
 			Adapter.SaveAccount (account);
 		}
@@ -106,9 +110,23 @@ namespace Salesforce
 		/// Loads the accounts saved in the platform-specific credential store.
 		/// </summary>
 		/// <returns>The accounts.</returns>
-		public IEnumerable<IAccount> LoadAccounts()
+		public IEnumerable<ISalesforceUser> LoadUsers()
 		{
 			return Adapter.LoadAccounts ();
+		}
+
+		/// <summary>
+		/// Initiates a request to the Salesforce API.
+		/// </summary>
+		/// <param name="request">Request.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
+		public Response Process<T>(IRestRequest request) where T: class, IRestRequest
+		{
+			var task = ProcessRequest (request);
+
+			task.Wait(TimeSpan.FromSeconds(90)); // TODO: Move this to a config setting.
+
+			return task.Result;
 		}
 
 		/// <summary>
@@ -116,14 +134,30 @@ namespace Salesforce
 		/// </summary>
 		/// <param name="request">Request.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		protected Task<Response> Process<T>(T request) where T: class, IRestRequest
+		protected Task<Response> ProcessRequest<T>(T request) where T: class, IRestRequest
 		{
-			var oauthRequest = new OAuth2Request (request.Method, request.AbsoluteUri, request.Options, this.CurrentUser);
+			var baseUri = new Uri(CurrentUser.Properties ["instance_url"] + "/services/data/");
+			var uri = new Uri (baseUri, request.Resource.AbsoluteUri);
+
+			var oauthRequest = new OAuth2Request (request.Method, uri, request.Resource.Options, this.CurrentUser);
+
+			Console.WriteLine (oauthRequest.Url);
 			var task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
-				// TODO: Insert some basic retry logic here.
+				Console.WriteLine(response);
+				if (response.IsFaulted)
+					// TODO: Insert some basic retry logic here.
+					return null;
 				return response;
 			}, Scheduler);
 			return task.Result; // TODO: Create a public invoker that returns a Salesforce domain object.
+		}
+
+		private IAccount RefreshSession()
+		{
+			// 0 - REMOTE_ACCESS_CLIENT_ID
+			// 1 REMOTE_ACCESS_CLIENT_SECRET
+			@"https://login.salesforce.com/services/oauth2/token -d 'grant_type=password&client_id={0}&client_
+   secret={1}&username=user@example.com&password=********' -H ""X-PrettyPrint: 1"""
 		}
 
 		/// <summary>

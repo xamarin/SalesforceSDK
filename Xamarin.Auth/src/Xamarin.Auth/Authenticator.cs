@@ -99,7 +99,7 @@ namespace Xamarin.Auth
 		/// <param name='account'>
 		/// The authenticated account.
 		/// </param>
-		public void OnSucceeded (Account account)
+		public void OnSucceeded (SalesforceUser account)
 		{
 			BeginInvokeOnUIThread (delegate {
 				var ev = Completed;
@@ -121,7 +121,7 @@ namespace Xamarin.Auth
 		/// </param>
 		public void OnSucceeded (string username, IDictionary<string, string> accountProperties)
 		{
-			OnSucceeded (new Account (username, accountProperties));
+			OnSucceeded (new SalesforceUser (username, accountProperties));
 		}
 
 		/// <summary>
@@ -212,7 +212,7 @@ namespace Xamarin.Auth
 		/// <value>
 		/// The account.
 		/// </value>
-		public Account Account { get; private set; }
+		public SalesforceUser Account { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Xamarin.Auth.AuthenticatorCompletedEventArgs"/> class.
@@ -220,7 +220,7 @@ namespace Xamarin.Auth
 		/// <param name='account'>
 		/// The account created or <see langword="null"/> if authentication failed or was canceled.
 		/// </param>
-		public AuthenticatorCompletedEventArgs (Account account)
+		public AuthenticatorCompletedEventArgs (SalesforceUser account)
 		{
 			Account = account;
 		}

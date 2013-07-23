@@ -6,6 +6,7 @@ using MonoTouch.Foundation;
 using Salesforce;
 using Xamarin.Auth;
 using System.Linq;
+using MonoTouch.CoreAnimation;
 
 namespace SalesforceSample.iOS
 {
@@ -13,9 +14,20 @@ namespace SalesforceSample.iOS
 	{
 		DataSource dataSource;
 
+		UIBarButtonItem ActivityItem {
+			get;
+			set;
+		}
+
 		public RootViewController () : base ("RootViewController", null)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Master", "Master");
+
+			var item = new UIActivityIndicatorView (UIActivityIndicatorViewStyle.White);
+			item.Hidden = false;
+			item.StartAnimating();
+
+			ActivityItem = new UIBarButtonItem (item);
 
 			// Custom initialization
 		}
@@ -46,22 +58,29 @@ namespace SalesforceSample.iOS
 		}
 
 		SalesforceClient Client;
-		IAccount Account { get; set; }
+		ISalesforceUser Account { get; set; }
+
+		LoadingViewController LoadingController {
+			get;
+			set;
+		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
 			// Perform any additional setup after loading the view, typically from a nib.
-			NavigationItem.LeftBarButtonItem = EditButtonItem;
+			NavigationItem.RightBarButtonItem = EditButtonItem;
 
 			var addButton = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
-			NavigationItem.RightBarButtonItem = addButton;
+			NavigationItem.LeftBarButtonItem = addButton;
 
 			TableView.Source = dataSource = new DataSource (this);
 
 			var key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-			var callback = new Uri ("https://login.salesforce.com/services/oauth2/success/");
+			var callback = new Uri ("https://login.salesforce.com/services/oauth2/success/"); // TODO: Move oauth redirect to constant or config
+
+			//LoadingController = new LoadingViewController ();
 
 			Client = new SalesforceClient (key, callback);
 
@@ -70,21 +89,57 @@ namespace SalesforceSample.iOS
 					// Invoke completion handler.
 					Console.WriteLine("Auth success: " + e.Account.Username);
 				}
-				DismissViewController(true, null);
+
+				DismissViewController(true, new NSAction(
+					()=>
+					{
+						NavigationItem.RightBarButtonItem = null;
+						//PresentViewController(LoadingController, false, null); 
+					}));
+
 				Account = e.Account;
 				Client.Save(Account);
 			};
 
-			var accounts = Client.LoadAccounts ();
+			var accounts = Client.LoadUsers ();
 			if (accounts == null || accounts.Count () == 0)
-				Client.GetLoginInterface ();
+			{
+				var loginController = Client.GetLoginInterface () as UIViewController;
+				PresentViewController (loginController, true, null);
+			}
 			else
-				ShowLoadingState ();
+			{
+				ShowLoadingState (accounts, LoadingController);
+				LoadAccounts (accounts.FirstOrDefault());
+			}
 		}
 
-		public void ShowLoadingState()
+		void LoadAccounts (ISalesforceUser account)
 		{
-			// TODO: Show our loading UI.
+			Console.WriteLine (account);
+
+			var request = new RestRequest {
+				Resource = new SObject()
+			};
+
+			var response = Client.Process<RestRequest> (request);
+			var result = response.GetResponseText ();
+
+			Console.WriteLine(result);
+
+			var versions = System.Json.JsonValue.Parse (result);
+			foreach(var v in versions)
+			{
+				Console.WriteLine (v);
+			}
+		}
+
+		public void ShowLoadingState(IEnumerable<ISalesforceUser> accounts, UIViewController controller)
+		{
+			// TODO: Show account picker, or save selected index to settings.
+			Client.CurrentUser = accounts.FirstOrDefault();
+			//this.View.InsertSubviewAbove (controller.View, View.Subviews.Last ());
+			NavigationItem.RightBarButtonItem = ActivityItem;
 		}
 
 		class DataSource : UITableViewSource

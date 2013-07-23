@@ -51,7 +51,7 @@ namespace Xamarin.Auth
 		/// <param name='includeMultipartsInSignature'>
 		/// If set to <see langword="true"/> include multiparts when calculating the OAuth 1.0 signature.
 		/// </param>
-		public OAuth1Request (string method, Uri url, IDictionary<string, string> parameters, Account account, bool includeMultipartsInSignature = false)
+		public OAuth1Request (string method, Uri url, IDictionary<string, string> parameters, SalesforceUser account, bool includeMultipartsInSignature = false)
 			: base (method, url, parameters, account)
 		{
 			this.includeMultipartsInSignature = includeMultipartsInSignature;

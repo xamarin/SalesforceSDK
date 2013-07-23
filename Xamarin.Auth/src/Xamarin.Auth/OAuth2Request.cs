@@ -43,7 +43,7 @@ namespace Xamarin.Auth
 		/// <param name='account'>
 		/// The account used to authenticate this request.
 		/// </param>
-		public OAuth2Request (string method, Uri url, IDictionary<string, string> parameters, Account account)
+		public OAuth2Request (string method, Uri url, IDictionary<string, string> parameters, ISalesforceUser account)
 			: base (method, url, parameters, account)
 		{
 		}
@@ -71,7 +71,7 @@ namespace Xamarin.Auth
 		/// <param name='unauthenticatedUrl'>
 		/// The unauthenticated URL.
 		/// </param>
-		public static Uri GetAuthenticatedUrl (Account account, Uri unauthenticatedUrl)
+		public static Uri GetAuthenticatedUrl (ISalesforceUser account, Uri unauthenticatedUrl)
 		{
 			if (account == null) {
 				throw new ArgumentNullException ("account");
@@ -103,7 +103,7 @@ namespace Xamarin.Auth
 		/// <param name='account'>
 		/// The <see cref="Account"/> that's been authenticated.
 		/// </param>
-		public static string GetAuthorizationHeader (Account account)
+		public static string GetAuthorizationHeader (SalesforceUser account)
 		{
 			if (account == null) {
 				throw new ArgumentNullException ("account");

@@ -64,7 +64,7 @@ namespace Xamarin.Auth
 		/// <param name='serviceId'>
 		/// Service identifier.
 		/// </param>
-		public abstract IEnumerable<IAccount> FindAccountsForService (string serviceId);
+		public abstract IEnumerable<ISalesforceUser> FindAccountsForService (string serviceId);
 
 		/// <summary>
 		/// Save the specified account by combining its username and the serviceId
@@ -76,7 +76,7 @@ namespace Xamarin.Auth
 		/// <param name='serviceId'>
 		/// Service identifier.
 		/// </param>
-		public abstract void Save (IAccount account, string serviceId);
+		public abstract void Save (ISalesforceUser account, string serviceId);
 
 		/// <summary>
 		/// Deletes the account for a given serviceId.
@@ -87,7 +87,7 @@ namespace Xamarin.Auth
 		/// <param name='serviceId'>
 		/// Service identifier.
 		/// </param>
-		public abstract void Delete (IAccount account, string serviceId);
+		public abstract void Delete (ISalesforceUser account, string serviceId);
 	}
 }
 
