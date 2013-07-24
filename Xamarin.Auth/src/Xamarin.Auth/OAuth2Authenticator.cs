@@ -292,6 +292,7 @@ namespace Xamarin.Auth
 				{ "redirect_uri", redirectUrl.AbsoluteUri },
 				{ "client_id", clientId },
 			};
+
 			if (!string.IsNullOrEmpty (clientSecret)) {
 				queryValues ["client_secret"] = clientSecret;
 			}
@@ -299,7 +300,7 @@ namespace Xamarin.Auth
 			return RequestAccessTokenAsync (queryValues);
 		}
 
-		protected Task<IDictionary<string,string>> RequestAccessTokenAsync (IDictionary<string, string> queryValues)
+		internal Task<IDictionary<string,string>> RequestAccessTokenAsync (IDictionary<string, string> queryValues)
 		{
 			var query = queryValues.FormEncode ();
 
@@ -313,7 +314,10 @@ namespace Xamarin.Auth
 			}
 			return req.GetResponseAsync ().ContinueWith (task => {
 				var text = task.Result.GetResponseText ();
-				var data = WebEx.FormDecode (text);
+
+		        // Parse the response
+		        var data = text.Contains ("{") ? WebEx.JsonDecode (text) : WebEx.FormDecode (text);
+
 				if (data.ContainsKey ("error")) {
 					throw new AuthException ("Error authenticating: " + data ["error"]);
 				} else if (data.ContainsKey ("access_token")) {

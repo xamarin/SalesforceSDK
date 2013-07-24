@@ -118,9 +118,6 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\IRestRequest.cs" />
     <Compile Include="..\Salesforce.Core\HttpMethod.cs" />
-    <Compile Include="..\Salesforce.Core\Request\ListRequest.cs">
-      <Link>Request\RestRequest.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\SObject.cs">
       <Link>SObject.cs</Link>
     </Compile>
@@ -129,6 +126,9 @@
     <Compile Include="..\Salesforce.Core\ISalesforceResource.cs" />
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
       <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\RestRequest.cs">
+      <Link>Request\RestRequest.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

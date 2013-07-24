@@ -212,7 +212,7 @@ namespace Xamarin.Auth
 		/// <value>
 		/// The account.
 		/// </value>
-		public SalesforceUser Account { get; private set; }
+		public ISalesforceUser Account { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Xamarin.Auth.AuthenticatorCompletedEventArgs"/> class.
@@ -220,7 +220,7 @@ namespace Xamarin.Auth
 		/// <param name='account'>
 		/// The account created or <see langword="null"/> if authentication failed or was canceled.
 		/// </param>
-		public AuthenticatorCompletedEventArgs (SalesforceUser account)
+		public AuthenticatorCompletedEventArgs (ISalesforceUser account)
 		{
 			Account = account;
 		}

@@ -78,11 +78,12 @@ namespace SalesforceSample.iOS
 			TableView.Source = dataSource = new DataSource (this);
 
 			var key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-			var callback = new Uri ("https://login.salesforce.com/services/oauth2/success/"); // TODO: Move oauth redirect to constant or config
+
+			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
 			//LoadingController = new LoadingViewController ();
 
-			Client = new SalesforceClient (key, callback);
+			Client = new SalesforceClient (key, redirectUrl);
 
 			Client.AuthRequestCompleted += (sender, e) => {
 				if (e.IsAuthenticated){
@@ -95,28 +96,31 @@ namespace SalesforceSample.iOS
 					{
 						NavigationItem.RightBarButtonItem = null;
 						//PresentViewController(LoadingController, false, null); 
+						ShowLoadingState (LoadingController);
+						LoadAccounts ();
+
 					}));
 
 				Account = e.Account;
 				Client.Save(Account);
 			};
 
-			var accounts = Client.LoadUsers ();
-			if (accounts == null || accounts.Count () == 0)
+			var users = Client.LoadUsers ();
+			if (users.Count () == 0)
 			{
 				var loginController = Client.GetLoginInterface () as UIViewController;
 				PresentViewController (loginController, true, null);
-			}
+			} 
 			else
 			{
-				ShowLoadingState (accounts, LoadingController);
-				LoadAccounts (accounts.FirstOrDefault());
+				ShowLoadingState (LoadingController);
+				LoadAccounts ();
 			}
 		}
 
-		void LoadAccounts (ISalesforceUser account)
+		void LoadAccounts ()
 		{
-			Console.WriteLine (account);
+			Console.WriteLine (Client.CurrentUser);
 
 			var request = new RestRequest {
 				Resource = new SObject()
@@ -134,12 +138,11 @@ namespace SalesforceSample.iOS
 			}
 		}
 
-		public void ShowLoadingState(IEnumerable<ISalesforceUser> accounts, UIViewController controller)
+		public void ShowLoadingState(UIViewController controller)
 		{
-			// TODO: Show account picker, or save selected index to settings.
-			Client.CurrentUser = accounts.FirstOrDefault();
 			//this.View.InsertSubviewAbove (controller.View, View.Subviews.Last ());
-			NavigationItem.RightBarButtonItem = ActivityItem;
+			//NavigationItem.RightBarButtonItem = ActivityItem;
+			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
 		}
 
 		class DataSource : UITableViewSource

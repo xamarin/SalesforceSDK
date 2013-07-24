@@ -21,6 +21,7 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Globalization;
+using System.Json;
 
 namespace Xamarin.Utilities
 {
@@ -29,7 +30,7 @@ namespace Xamarin.Utilities
 		public static string GetCookie (this CookieContainer containers, Uri domain, string name)
 		{
 			var c = containers
-					.GetCookies (domain)
+				.GetCookies (domain)
 					.Cast<Cookie> ()
 					.FirstOrDefault (x => x.Name == name);
 			return c != null ? c.Value : "";
@@ -46,13 +47,13 @@ namespace Xamarin.Utilities
 		public static string GetResponseText (this WebResponse response)
 		{
 			var httpResponse = response as HttpWebResponse;
-			
+
 			var encoding = Encoding.UTF8;
-			
+
 			if (httpResponse != null) {
 				encoding = GetEncodingFromContentType (response.ContentType);
 			}
-			
+
 			using (var s = response.GetResponseStream ()) {
 				using (var r = new StreamReader (s, encoding)) {
 					return r.ReadToEnd ();
@@ -64,7 +65,7 @@ namespace Xamarin.Utilities
 		{
 			return Task
 				.Factory
-				.FromAsync<WebResponse> (request.BeginGetResponse, request.EndGetResponse, null);
+					.FromAsync<WebResponse> (request.BeginGetResponse, request.EndGetResponse, null);
 		}
 
 		static char[] AmpersandChars = new char[] { '&' };
@@ -89,6 +90,21 @@ namespace Xamarin.Utilities
 			return inputs;
 		}
 
+		public static Dictionary<string, string> JsonDecode (string encodedString)
+		{
+			var inputs = new Dictionary<string, string> ();
+			var json = JsonValue.Parse (encodedString) as JsonObject;
+
+			foreach (var kv in json) {
+				var v = kv.Value as JsonValue;
+				if (v != null) {
+					inputs [kv.Key] = (string)v;
+				}
+			}
+
+			return inputs;
+		}
+
 		public static string HtmlEncode (string text)
 		{
 			if (string.IsNullOrEmpty (text)) {
@@ -100,19 +116,19 @@ namespace Xamarin.Utilities
 			int len = text.Length;
 			for (int i = 0; i < len; i++) {
 				switch (text[i]) {
-				case '<':
+					case '<':
 					sb.Append("&lt;");
 					break;
-				case '>':
+					case '>':
 					sb.Append("&gt;");
 					break;
-				case '"':
+					case '"':
 					sb.Append("&quot;");
 					break;
-				case '&':
+					case '&':
 					sb.Append("&amp;");
 					break;
-				default:
+					default:
 					if (text[i] > 159) {
 						sb.Append ("&#");
 						sb.Append (((int)text[i]).ToString (CultureInfo.InvariantCulture));
@@ -130,19 +146,18 @@ namespace Xamarin.Utilities
 
 		public static string GetValueFromJson (string json, string key)
 		{
-		    var p = json.IndexOf ("\"" + key + "\"");
-		    if (p < 0) return "";
-		    var c = json.IndexOf (":", p);
-		    if (c < 0) return "";
-		    var q = json.IndexOf ("\"", c);
-		    if (q < 0) return "";
-		    var b = q + 1;
-		    var e = b;
-		    for (; e < json.Length && json[e] != '\"'; e++) {
-		    }
-		    var r = json.Substring (b, e - b);
-		    return r;
+			var p = json.IndexOf ("\"" + key + "\"");
+			if (p < 0) return "";
+			var c = json.IndexOf (":", p);
+			if (c < 0) return "";
+			var q = json.IndexOf ("\"", c);
+			if (q < 0) return "";
+			var b = q + 1;
+			var e = b;
+			for (; e < json.Length && json[e] != '\"'; e++) {
+			}
+			var r = json.Substring (b, e - b);
+			return r;
 		}
 	}
 }
-

@@ -9,6 +9,7 @@ namespace Salesforce
 	/// </summary>
 	public interface IPlatformAdapter
 	{
+		Authenticator Authenticator { get; set;	}
 		object GetLoginUI();
 		void SaveAccount(ISalesforceUser account);
 		IEnumerable<ISalesforceUser> LoadAccounts();
@@ -39,15 +40,29 @@ namespace Salesforce
 		public AndroidPlatformAdapter ()
 		{
 		}
-	}
+
+		public AndroidPlatformAdapter (Authenticator activator)
+		{
+			this.Authenticator = activator;
+		}
+
+		public IEnumerable<ISalesforceUser> LoadAccounts()
+		{
+			return AccountStore.Create (this).FindAccountsForService (PlatformStrings.Salesforce);
+		}
+
+}
 #endif
 
 #if PLATFORM_IOS
 	internal class UIKitPlatformAdapter : IPlatformAdapter
 	{
-		Authenticator Authenticator { get; set;	}
+		public  Authenticator Authenticator { get; set;	}
 
 		#region IPlatformAdapter implementation
+
+		public UIKitPlatformAdapter() : this(null)
+		{ }
 
 		public UIKitPlatformAdapter(Authenticator activator)
 		{
@@ -71,9 +86,6 @@ namespace Salesforce
 
 		#endregion
 
-		public UIKitPlatformAdapter ()
-		{
-		}
 	}
 #endif
 }

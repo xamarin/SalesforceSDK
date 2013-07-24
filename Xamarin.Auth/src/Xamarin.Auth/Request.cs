@@ -341,6 +341,7 @@ namespace Xamarin.Auth
 			if (request == null) {
 				request = (HttpWebRequest)WebRequest.Create (GetPreparedUrl ());
 				request.Method = Method;
+				request.Headers.Set(HttpRequestHeader.Authorization, "Bearer " + Account.Properties["access_token"]);
 			}
 
 			if (request.CookieContainer == null && Account != null) {
