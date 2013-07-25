@@ -9,7 +9,7 @@ namespace SalesForceSample
 		}
 		public async void Refresh()
 		{
-
+			Items = await SalesForceService.Shared.GetAccounts ();
 		}
 	}
 }

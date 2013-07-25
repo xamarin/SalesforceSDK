@@ -29,10 +29,11 @@ namespace SalesForceSample
 				return Client.CurrentUser;
 			}
 		}
-		public void Init()
-		{
+
+		public SalesForceService()
+		{			
 			Client = new SalesforceClient (key, redirectUrl);
-			
+
 			Client.AuthRequestCompleted += (sender, e) => {
 				if (e.IsAuthenticated){
 					Console.WriteLine("Auth success: " + e.Account.Username);
@@ -41,7 +42,12 @@ namespace SalesForceSample
 						LoggedIn(this, new EventArgs<ISalesforceUser>(e.Account));
 				}
 			};
-			if (Client.CurrentUser == null && ShowLoginScreen != null)
+		}
+
+
+		public void Loaded()
+		{
+			if (CurrentUser == null && ShowLoginScreen != null)
 				ShowLoginScreen (this, new EventArgs<SalesforceClient> (Client));
 		}
 
@@ -54,6 +60,8 @@ namespace SalesForceSample
 
 		List<Account> getAccounts()
 		{
+			if (Client.CurrentUser == null)
+				return new List<Account> ();
 			var request = new RestRequest {
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};

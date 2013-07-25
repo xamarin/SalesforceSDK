@@ -86,6 +86,7 @@
     <Folder Include="Resources\" />
     <Folder Include="SalesForceSample.Core\" />
     <Folder Include="SalesForceSample.Core\Models\" />
+    <Folder Include="ViewControllers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -111,6 +112,7 @@
     <Compile Include="..\SalesForceSample.Core\ViewModels\AccountsViewModel.cs">
       <Link>SalesForceSample.Core\ViewModels\AccountsViewModel.cs</Link>
     </Compile>
+    <Compile Include="ViewControllers\AccountsViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

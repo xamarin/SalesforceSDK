@@ -28,7 +28,7 @@ namespace SalesForceSample.iOS
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
-			window.RootViewController = new UINavigationController ();
+			window.RootViewController = new UINavigationController (new AccountsViewController());
 			// If you have defined a root view controller, set it here:
 			// window.RootViewController = myViewController;
 			// make the window visible
@@ -36,7 +36,7 @@ namespace SalesForceSample.iOS
 
 			SalesForceService.Shared.ShowLoginScreen += ShowLoginScreen;
 			SalesForceService.Shared.LoggedIn += LoggedIn;
-			SalesForceService.Shared.Init ();
+			SalesForceService.Shared.Loaded ();
 			
 			return true;
 		}
