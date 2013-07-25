@@ -63,7 +63,7 @@ namespace SalesForceSample
 			if (Client.CurrentUser == null)
 				return new List<Account> ();
 			var request = new RestRequest {
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber,Industry, Phone FROM Account" }
 			};
 
 			var response = Client.Process<RestRequest> (request);
@@ -75,9 +75,28 @@ namespace SalesForceSample
 				Id = x["Id"],
 				Name = x["Name"],
 				AccountNumber = x["AccountNumber"],
+				Industry = x["Industry"],
+				//Phone = x["Phone"],
+				//LastModifiedBy = x["LastModifiedBy"],
 			}).ToList();
 
 			return accounts;
+		}
+
+		public Task<bool> SaveAccount(Account account)
+		{
+			return Task.Factory.StartNew (() => {
+				//TODO: save
+				return true;
+			});
+		}
+
+		public Task<bool> DeleteAccount(Account account)
+		{
+			return Task.Factory.StartNew (() => {
+				//TODO: save
+				return true;
+			});
 		}
 
 	}
