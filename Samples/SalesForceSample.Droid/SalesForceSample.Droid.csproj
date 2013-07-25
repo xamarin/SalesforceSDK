@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -77,5 +78,11 @@
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <Folder Include="SalesForceSample.Core\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Salesforce.Android\Salesforce.Android.csproj">
+      <Project>{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}</Project>
+      <Name>Salesforce.Android</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

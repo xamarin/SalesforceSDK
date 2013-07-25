@@ -143,6 +143,6 @@ Global
 		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Samples\SalesForceSample.iOS\SalesForceSample.iOS.csproj
+		StartupItem = Samples\SalesForceSample.Droid\SalesForceSample.Droid.csproj
 	EndGlobalSection
 EndGlobal

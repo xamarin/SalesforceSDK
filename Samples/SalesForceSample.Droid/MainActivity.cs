@@ -19,15 +19,23 @@ namespace SalesForceSample.Droid
 
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
+			SalesForceService.Shared.ShowLoginScreen += ShowLoginScreen;
+			SalesForceService.Shared.LoggedIn += LoggedIn;
+			SalesForceService.Shared.Loaded ();
 
-			// Get our button from the layout resource,
-			// and attach an event to it
-			Button button = FindViewById<Button> (Resource.Id.myButton);
-			
-			button.Click += delegate {
-				button.Text = string.Format ("{0} clicks!", count++);
-			};
 		}
+
+		void ShowLoginScreen (object sender, EventArgs<Salesforce.SalesforceClient> e)
+		{
+			//window.RootViewController.PresentViewController (e.Data.GetLoginInterface () as UIViewController, true, null);
+		}
+
+		void LoggedIn (object sender, EventArgs<Xamarin.Auth.ISalesforceUser> e)
+		{
+			window.RootViewController.DismissViewController (true, null);
+		}
+
+
 	}
 }
 
