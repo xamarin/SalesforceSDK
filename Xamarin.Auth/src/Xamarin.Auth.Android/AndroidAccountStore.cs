@@ -189,7 +189,6 @@ using Javax.Security.Auth.Callback;
 using Java.IO;
 using Android.Content;
 using Android.Runtime;
-using Android.Accounts;
 
 namespace Xamarin.Auth
 {
