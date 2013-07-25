@@ -70,7 +70,10 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
+<<<<<<< HEAD
     <None Include="Properties\AndroidManifest.xml" />
+=======
+>>>>>>> de8a0b732384c8b37956fb5de71225551dc4bdde
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
