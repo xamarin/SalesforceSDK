@@ -26,8 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesForceSample.iOS", "Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesForceSample.Droid", "Samples\SalesForceSample.Droid\SalesForceSample.Droid.csproj", "{DF3F709A-FA64-4102-8116-EE9E38E058A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesForceSample.Core", "Samples\SalesForceSample.Core\SalesForceSample.Core.csproj", "{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -38,18 +36,6 @@ Global
 		AppStore|iPhone = AppStore|iPhone
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.AppStore|iPhone.Build.0 = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Release|iPhone.Build.0 = Release|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{A955C126-37B9-4155-92E9-77ECBB09BE0E}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
 		{A955C126-37B9-4155-92E9-77ECBB09BE0E}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
 		{A955C126-37B9-4155-92E9-77ECBB09BE0E}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
@@ -140,7 +126,6 @@ Global
 		{A955C126-37B9-4155-92E9-77ECBB09BE0E} = {EE388814-D4D9-451F-8B16-278A11253B4F}
 		{CE429ADD-3CB7-49BA-870A-7049D844F7D9} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
 		{DF3F709A-FA64-4102-8116-EE9E38E058A3} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
-		{9D4DF39F-3040-4B88-9CE1-0BFF1D48C9BF} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Samples\SalesForceSample.Droid\SalesForceSample.Droid.csproj

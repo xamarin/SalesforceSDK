@@ -45,4 +45,10 @@
     <Folder Include="Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Salesforce.iOS\Salesforce.iOS.csproj">
+      <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
+      <Name>Salesforce.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

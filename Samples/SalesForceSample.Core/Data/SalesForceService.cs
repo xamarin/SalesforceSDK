@@ -6,6 +6,7 @@ using Xamarin.Auth;
 using System.Collections.Generic;
 using System.Linq;
 using System.Json;
+using Xamarin.Auth;
 
 namespace SalesForceSample
 {

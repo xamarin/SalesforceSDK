@@ -32,7 +32,7 @@ namespace SalesForceSample.Droid
 
 		void LoggedIn (object sender, EventArgs<Xamarin.Auth.ISalesforceUser> e)
 		{
-			window.RootViewController.DismissViewController (true, null);
+			//window.RootViewController.DismissViewController (true, null);
 		}
 
 
