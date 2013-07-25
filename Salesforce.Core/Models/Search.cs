@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Salesforce
 {
-	public class Query : ISalesforceResource
+	public class Search : ISalesforceResource
 	{
 		private static readonly string Format = "{0}/";
 
@@ -17,7 +17,7 @@ namespace Salesforce
 
 		string ISalesforceResource.ResourceType {
 			get {
-				return "query";
+				return "search";
 			}
 		}
 
@@ -60,13 +60,13 @@ namespace Salesforce
 		/// The SOQL query statement.
 		/// </summary>
 		/// <value>SOQL query text.</value>
-		public string Statement 
+		public string QueryText 
 		{ 
 			get { return Options ["q"]; } 
 			set { Options ["q"] = value; } 
 		}
 
-		public Query()
+		public Search()
 		{
 			Options = new Dictionary<string, string> ();
 		}

@@ -101,7 +101,8 @@
     <Compile Include="IVersionableRestResource.cs" />
     <Compile Include="Request\RestRequest.cs" />
     <Compile Include="Models\SObject.cs" />
-    <Compile Include="Models\Query.cs" />
+    <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\ObjectQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

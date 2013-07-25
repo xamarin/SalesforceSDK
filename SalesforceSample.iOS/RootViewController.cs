@@ -7,6 +7,7 @@ using Salesforce;
 using Xamarin.Auth;
 using System.Linq;
 using MonoTouch.CoreAnimation;
+using System.Json;
 
 namespace SalesforceSample.iOS
 {
@@ -115,7 +116,8 @@ namespace SalesforceSample.iOS
 			Console.WriteLine (Client.CurrentUser);
 
 			var request = new RestRequest {
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+				Resource = new Search { QueryText = "FIND {John}" }
+//				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
 			var response = Client.Process<RestRequest> (request);
@@ -123,10 +125,12 @@ namespace SalesforceSample.iOS
 
 			var results = System.Json.JsonValue.Parse(result);
 
-			foreach(var r in results["records"])
+			foreach(var r in results/*["records"]*/)
 			{
 				Console.WriteLine (r);
 			}
+
+			dataSource.Objects = results.OfType<object>().ToList();
 		}
 
 		public void ShowLoadingState()
@@ -150,8 +154,9 @@ namespace SalesforceSample.iOS
 				this.controller = controller;
 			}
 
-			public IList<object> Objects {
+			public List<object> Objects {
 				get { return objects; }
+				set { objects = value; this.controller.TableView.ReloadData ();}
 			}
 			// Customize the number of sections in the table view.
 			public override int NumberOfSections (UITableView tableView)
@@ -163,17 +168,19 @@ namespace SalesforceSample.iOS
 			{
 				return objects.Count;
 			}
+
 			// Customize the appearance of table view cells.
 			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 			{
 				var cell = tableView.DequeueReusableCell (CellIdentifier);
 				if (cell == null) {
-					cell = new UITableViewCell (UITableViewCellStyle.Default, CellIdentifier);
+					cell = new UITableViewCell (UITableViewCellStyle.Subtitle, CellIdentifier);
 					cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
 				}
 
-				cell.TextLabel.Text = objects [indexPath.Row].ToString ();
-
+				var o = (JsonObject)objects [indexPath.Row];
+				cell.TextLabel.Text = o["attributes"]["type"];
+				cell.DetailTextLabel.Text = "Id: " + o ["Id"];
 				return cell;
 			}
 

@@ -1,10 +1,16 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Text;
+
+using System.Web;
+using System.Web.Util;
+
+using Xamarin.Utilities;
+using System.Collections.Generic;
 
 namespace Salesforce
 {
-	public class SObject : ISalesforceResource
+	public class Query : ISalesforceResource
 	{
 		private static readonly string Format = "{0}/";
 
@@ -12,7 +18,7 @@ namespace Salesforce
 
 		string ISalesforceResource.ResourceType {
 			get {
-				return "sobjects";
+				return "query";
 			}
 		}
 
@@ -21,7 +27,7 @@ namespace Salesforce
 			private set;
 		}
 
-		public IDictionary<string, string> Options {
+		public System.Collections.Generic.IDictionary<string, string> Options {
 			get ;
 			protected set ;
 		}
@@ -38,17 +44,35 @@ namespace Salesforce
 
 		#region IRestResource implementation
 
-		public string ResourceName { get ; set; }
+		public string ResourceName {
+			get ;
+			set;
+		}
 
 		public Uri AbsoluteUri {
 			get {
-				return new Uri (ToUriString (), UriKind.RelativeOrAbsolute);
+				return new Uri (ToString (), UriKind.RelativeOrAbsolute);
 			}
 		}
 
 		#endregion
 
-		protected virtual string ToUriString()
+		/// <summary>
+		/// The SOQL query statement.
+		/// </summary>
+		/// <value>SOQL query text.</value>
+		public string Statement 
+		{ 
+			get { return Options ["q"]; } 
+			set { Options ["q"] = value; } 
+		}
+
+		public Query()
+		{
+			Options = new Dictionary<string, string> ();
+		}
+
+		public override string ToString ()
 		{
 			var self = (ISalesforceResource)this;
 			var str = new StringBuilder ();
@@ -67,12 +91,17 @@ namespace Salesforce
 			if (!String.IsNullOrWhiteSpace (self.Id))
 				str.AppendFormat (Format, self.Id);
 
-			return str.ToString ();
-		}
+			if (Options.Count > 0)
+			{
+				str.Append ("?");
+				foreach (var option in Options)
+				{
+					str.AppendFormat("{0}={1}&", HttpUtility.UrlEncode(option.Key), HttpUtility.UrlEncode(option.Value));
+				}
+				str.Remove (str.Length - 1, 1); // Remove the trailing ampersand.
+			}
 
-		public override string ToString ()
-		{
-			return ToUriString ();
+			return str.ToString ();
 		}
 	}
 }
