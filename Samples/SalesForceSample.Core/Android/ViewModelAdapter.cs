@@ -2,9 +2,8 @@ using System;
 using Android.Widget;
 using Android.Content;
 using Android.Views;
-using XamarinMobileSample.Core;
 
-namespace XamarinMobileSample
+namespace SalesForceSample
 {
 	public class ViewModelAdapter<T> : BaseAdapter<T>
 	{

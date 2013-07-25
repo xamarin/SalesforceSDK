@@ -46,6 +46,24 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\SalesForceSample.Core\EventArgs.cs">
+      <Link>SalesForceSample.Core\EventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\SalesForceSample.Core\Android\ViewModelAdapter.cs">
+      <Link>SalesForceSample.Core\Android\ViewModelAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\SalesForceSample.Core\Data\SalesForceService.cs">
+      <Link>SalesForceSample.Core\Data\SalesForceService.cs</Link>
+    </Compile>
+    <Compile Include="..\SalesForceSample.Core\Models\Account.cs">
+      <Link>SalesForceSample.Core\Models\Account.cs</Link>
+    </Compile>
+    <Compile Include="..\SalesForceSample.Core\ViewModels\AccountsViewModel.cs">
+      <Link>SalesForceSample.Core\ViewModels\AccountsViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\SalesForceSample.Core\ViewModels\ViewModel.cs">
+      <Link>SalesForceSample.Core\ViewModels\ViewModel.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -57,4 +75,7 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="SalesForceSample.Core\" />
+  </ItemGroup>
 </Project>
