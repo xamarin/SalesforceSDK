@@ -116,16 +116,16 @@ namespace SalesforceSample.iOS
 			Console.WriteLine (Client.CurrentUser);
 
 			var request = new RestRequest {
-				Resource = new Search { QueryText = "FIND {John}" }
-//				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+//				Resource = new Search { QueryText = "FIND {John}" }
+				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
 			var response = Client.Process<RestRequest> (request);
 			var result = response.GetResponseText ();
 
-			var results = System.Json.JsonValue.Parse(result);
+			var results = System.Json.JsonValue.Parse(result)["records"];
 
-			foreach(var r in results/*["records"]*/)
+			foreach(var r in results)
 			{
 				Console.WriteLine (r);
 			}
@@ -179,8 +179,8 @@ namespace SalesforceSample.iOS
 				}
 
 				var o = (JsonObject)objects [indexPath.Row];
-				cell.TextLabel.Text = o["attributes"]["type"];
-				cell.DetailTextLabel.Text = "Id: " + o ["Id"];
+				cell.TextLabel.Text = o["Name"];
+				cell.DetailTextLabel.Text = o["AccountNumber"];
 				return cell;
 			}
 

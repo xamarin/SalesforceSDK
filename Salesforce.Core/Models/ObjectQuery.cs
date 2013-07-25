@@ -74,7 +74,7 @@ namespace Salesforce
 
 		public override string ToString ()
 		{
-			var self = (ISalesforceResource)this;
+			var self = this;
 			var str = new StringBuilder ();
 
 			if (!String.IsNullOrWhiteSpace (self.Version))
@@ -82,8 +82,8 @@ namespace Salesforce
 			else
 				return String.Empty;
 
-			if (!String.IsNullOrWhiteSpace (self.ResourceType))
-				str.AppendFormat (Format, self.ResourceType);
+			if (!String.IsNullOrWhiteSpace (((ISalesforceResource)self).ResourceType))
+				str.AppendFormat (Format, ((ISalesforceResource)self).ResourceType);
 
 			if (!String.IsNullOrWhiteSpace (self.ResourceName))
 				str.AppendFormat (Format, self.ResourceName);

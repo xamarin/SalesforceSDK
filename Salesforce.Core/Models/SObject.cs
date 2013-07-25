@@ -61,8 +61,8 @@ namespace Salesforce
 			if (!String.IsNullOrWhiteSpace (self.ResourceType))
 				str.AppendFormat (Format, self.ResourceType);
 
-			if (!String.IsNullOrWhiteSpace (self.ResourceName))
-				str.AppendFormat (Format, self.ResourceName);
+			if (!String.IsNullOrWhiteSpace (this.ResourceName))
+				str.AppendFormat (Format, this.ResourceName);
 
 			if (!String.IsNullOrWhiteSpace (self.Id))
 				str.AppendFormat (Format, self.Id);

@@ -61,9 +61,9 @@ namespace Xamarin.Auth
 			}
 		}
 
-		public override IEnumerable<Account> FindAccountsForService (string serviceId)
+		public override IEnumerable<ISalesforceUser> FindAccountsForService (string serviceId)
 		{
-			var r = new List<Account> ();
+			var r = new List<SalesforceUser> ();
 
 			var postfix = "-" + serviceId;
 
@@ -75,7 +75,7 @@ namespace Xamarin.Auth
 					if (e != null) {
 						var bytes = e.SecretKey.GetEncoded ();
 						var serialized = System.Text.Encoding.UTF8.GetString (bytes);
-						var acct = Account.Deserialize (serialized);
+						var acct = SalesforceUser.Deserialize (serialized);
 						r.Add (acct);
 					}
 				}
@@ -86,7 +86,7 @@ namespace Xamarin.Auth
 			return r;
 		}
 
-		public override void Save (Account account, string serviceId)
+		public override void Save (ISalesforceUser account, string serviceId)
 		{
 			var alias = MakeAlias (account, serviceId);
 
@@ -101,14 +101,14 @@ namespace Xamarin.Auth
 			}
 		}
 
-		public override void Delete (Account account, string serviceId)
+		public override void Delete (ISalesforceUser account, string serviceId)
 		{
 			var alias = MakeAlias (account, serviceId);
 
 			ks.DeleteEntry (alias);
 		}
 
-		static string MakeAlias (Account account, string serviceId)
+		static string MakeAlias (ISalesforceUser account, string serviceId)
 		{
 			return account.Username + "-" + serviceId;
 		}
@@ -116,7 +116,7 @@ namespace Xamarin.Auth
 		class SecretAccount : Java.Lang.Object, ISecretKey
 		{
 			byte[] bytes;
-			public SecretAccount (Account account)
+			public SecretAccount (ISalesforceUser account)
 			{
 				bytes = System.Text.Encoding.UTF8.GetBytes (account.Serialize ());
 			}

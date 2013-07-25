@@ -116,6 +116,42 @@
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
       <Link>Auth\SalesforceUser.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
+      <Link>Models\ObjectQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Models\SObject.cs">
+      <Link>Models\SObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Models\Search.cs">
+      <Link>Models\Search.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\RestRequest.cs">
+      <Link>Request\RestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\HttpMethod.cs">
+      <Link>HttpMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\IRestRequest.cs">
+      <Link>IRestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\IRestResource.cs">
+      <Link>IRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\ISalesforceResource.cs">
+      <Link>ISalesforceResource.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\IVersionableRestResource.cs">
+      <Link>IVersionableRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\PlatformAdapter.cs">
+      <Link>PlatformAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
+      <Link>System.Web\HttpEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
+      <Link>System.Web\HttpUtility.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -129,5 +165,8 @@
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Auth\" />
+    <Folder Include="Models\" />
+    <Folder Include="Request\" />
+    <Folder Include="System.Web\" />
   </ItemGroup>
 </Project>

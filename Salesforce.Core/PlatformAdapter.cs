@@ -2,6 +2,10 @@ using System;
 using Xamarin.Auth;
 using System.Collections.Generic;
 
+#if PLATFORM_ANDROID
+using Android.Content;
+#endif
+
 namespace Salesforce
 {
 	/// <summary>
@@ -23,16 +27,20 @@ namespace Salesforce
 #if PLATFORM_ANDROID
 	internal class AndroidPlatformAdapter : IPlatformAdapter
 	{
+		public Authenticator Authenticator { get; set;	}
+
+		public Object CurrentPlatformContext { get; set; }
+
 		#region IPlatformAdapter implementation
 
-		public object GetLoginUI ()
+		public object GetLoginUI()
 		{
-			throw new NotImplementedException ();
+			return Authenticator.GetUI (CurrentPlatformContext as Context);
 		}
 
 		public void SaveAccount (ISalesforceUser account)
 		{
-			AccountStore.Create (this).Save (account, PlatformStrings.Salesforce);
+			AccountStore.Create (CurrentPlatformContext as Context).Save (account, PlatformStrings.Salesforce);
 		}
 
 		#endregion
@@ -48,7 +56,7 @@ namespace Salesforce
 
 		public IEnumerable<ISalesforceUser> LoadAccounts()
 		{
-			return AccountStore.Create (this).FindAccountsForService (PlatformStrings.Salesforce);
+			return AccountStore.Create (CurrentPlatformContext as Context).FindAccountsForService (PlatformStrings.Salesforce);
 		}
 
 }
