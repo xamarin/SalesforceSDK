@@ -81,6 +81,10 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="System.Json" />
+    <Reference Include="MonoTouch.Dialog-1" />
+    <Reference Include="BTProgressHUD">
+      <HintPath>..\..\Components\btprogresshud-1.5\lib\ios\BTProgressHUD.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -113,6 +117,7 @@
       <Link>SalesForceSample.Core\ViewModels\AccountsViewModel.cs</Link>
     </Compile>
     <Compile Include="ViewControllers\AccountsViewController.cs" />
+    <Compile Include="ViewControllers\AccountDetailsViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -120,5 +125,12 @@
       <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
       <Name>Salesforce.iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="btprogresshud">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>1.5</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

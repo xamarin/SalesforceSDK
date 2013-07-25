@@ -19,7 +19,15 @@ namespace SalesForceSample.iOS
 				cell.DetailTextLabel.Text = item.AccountNumber;
 				return cell;
 			};
+			ViewModel.ItemSelectedEvent += (sender,args) => {
+				this.NavigationController.PushViewController(new AccountDetailsViewController(args.Data),true);
+			};
 			TableView.Source = Source;
+			this.NavigationItem.RightBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, (sender,args) => {
+				this.NavigationController.PushViewController(new AccountDetailsViewController(new Account()){
+					Title = "Add Account",
+				},true);
+			});
 
 		}
 		public override void ViewWillAppear (bool animated)
