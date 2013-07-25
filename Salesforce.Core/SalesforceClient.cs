@@ -66,7 +66,7 @@ namespace Salesforce
 		public SalesforceClient (String appKey, Uri redirectUrl)
 		{
 			AppKey = appKey;
-			Scheduler = TaskScheduler.Default; //TaskScheduler.FromCurrentSynchronizationContext();
+			Scheduler = TaskScheduler.Default;
 
 			#if PLATFORM_IOS
 			Adapter = new UIKitPlatformAdapter();
@@ -74,8 +74,6 @@ namespace Salesforce
 			Adapter = new AndroidPlatformAdapter();
 			#endif
 
-			// TODO: Need to retrieve accounts before calling the constructor.
-			// If we have the account, then we can refresh the session token.
 			var users = LoadUsers ();
 
 			if (users.Count() > 0)
@@ -109,16 +107,14 @@ namespace Salesforce
 					redirectUrl: redirectUrl,
 					accessTokenUrl: new Uri("https://login.salesforce.com/services/oauth2/token"),
 					getUsernameAsync: new GetUsernameAsyncFunc((dict)=>{
+
 						var client = new WebClient();
 						client.Headers["Authorization"] = "Bearer " + dict["access_token"];
+
 						var results = client.DownloadString(dict["id"]);
 						var resultVals = JsonValue.Parse(results);
-						foreach(var rv in dict)
-					{
-						Console.WriteLine("{0}: {1}", rv.Key, rv.Value);
-					}
+
 						return Task.Factory.StartNew(()=> { 
-							Console.WriteLine(results);
 							return (String)resultVals["username"];
 						});
 					})
@@ -158,23 +154,46 @@ namespace Salesforce
 		}
 
 		/// <summary>
-		/// Initiates a request to the Salesforce API.
+		/// Initiates a synchronous request to the Salesforce API.
 		/// </summary>
 		/// <param name="request">Request.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public Response Process<T>(IRestRequest request) where T: class, IRestRequest
 		{
-			Task<Response> task;
-			try {
+			Task<Response> task = null;
+			Response result = null;
+			try
+			{
 				task = ProcessRequest (request);
 				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
-			} catch (Exception ex) {
-				RefreshSession ();
-				task = ProcessRequest (request);
-				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
+				result = task.Result;
+			}
+			catch (AggregateException ex)
+			{
+
+				if (task.IsFaulted)
+				{
+					// We only want to swallow this 
+					// exception if we have reason to 
+					// believe our access_token is stale.
+					var webEx = task.Exception.Flatten().InnerExceptions.FirstOrDefault (e => e.GetType () == typeof(WebException));
+					if (webEx == null || ((HttpWebResponse)((WebException)webEx).Response).StatusCode != HttpStatusCode.Unauthorized)
+						throw;
+
+					// Refresh the OAuth2 session token.
+					CurrentUser = RefreshSessionToken ();
+					// Retry our request with the new token.
+					var retryTask = ProcessRequest (request);
+					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
+					result = retryTask.Result;
+				}
+			}
+			catch (Exception e)
+			{
+				result = null;
 			}
 
-			return task.Result;
+			return result;
 		}
 
 		/// <summary>
@@ -191,20 +210,17 @@ namespace Salesforce
 
 			Console.WriteLine (oauthRequest.Url);
 			var task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
-				Console.WriteLine(response);
-				if (response.IsFaulted)
-					// TODO: Insert some basic retry logic here.
-					return null;
-				return response;
+				return response.Result;
 			}, Scheduler);
-			return task.Result; // TODO: Create a public invoker that returns a Salesforce domain object.
+			return task; // TODO: Create a public invoker that returns a Salesforce domain object.
 		}
 
-		private ISalesforceUser RefreshSession()
+		/// <summary>
+		/// Requests a new session token.
+		/// </summary>
+		/// <returns>The Salesforce user with the updated session token.</returns>
+		private ISalesforceUser RefreshSessionToken()
 		{
-			// 0 - REMOTE_ACCESS_CLIENT_ID
-			// 1 REMOTE_ACCESS_CLIENT_SECRET
-			//@"https://login.salesforce.com/services/oauth2/token -d 'grant_type=password&client_id={0}&client_secret={1}&username=user@example.com&password=********' -H ""X-PrettyPrint: 1"""
 			var refreshTask = Authenticator.RequestAccessTokenAsync(new Dictionary<string, string> 
 			                                                        {
 				{ "grant_type", "refresh_token" },
@@ -213,7 +229,7 @@ namespace Salesforce
 				{ "refresh_token", CurrentUser.Properties["refresh_token"] }
 			});
 			refreshTask.Wait ();
-			CurrentUser.Properties ["refresh_token"] = refreshTask.Result ["refresh_token"];
+			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];
 			return CurrentUser;
 		}
 

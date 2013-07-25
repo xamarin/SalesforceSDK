@@ -60,11 +60,6 @@ namespace SalesforceSample.iOS
 		SalesforceClient Client;
 		ISalesforceUser Account { get; set; }
 
-		LoadingViewController LoadingController {
-			get;
-			set;
-		}
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -81,13 +76,11 @@ namespace SalesforceSample.iOS
 
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
-			//LoadingController = new LoadingViewController ();
-
 			Client = new SalesforceClient (key, redirectUrl);
 
 			Client.AuthRequestCompleted += (sender, e) => {
 				if (e.IsAuthenticated){
-					// Invoke completion handler.
+					// TODO: Transition to regular application UI.
 					Console.WriteLine("Auth success: " + e.Account.Username);
 				}
 
@@ -95,8 +88,7 @@ namespace SalesforceSample.iOS
 					()=>
 					{
 						NavigationItem.RightBarButtonItem = null;
-						//PresentViewController(LoadingController, false, null); 
-						ShowLoadingState (LoadingController);
+						ShowLoadingState ();
 						LoadAccounts ();
 
 					}));
@@ -113,7 +105,7 @@ namespace SalesforceSample.iOS
 			} 
 			else
 			{
-				ShowLoadingState (LoadingController);
+				ShowLoadingState ();
 				LoadAccounts ();
 			}
 		}
@@ -129,20 +121,22 @@ namespace SalesforceSample.iOS
 			var response = Client.Process<RestRequest> (request);
 			var result = response.GetResponseText ();
 
-			Console.WriteLine(result);
+			var results = System.Json.JsonValue.Parse(result);
 
-			var versions = System.Json.JsonValue.Parse (result);
-			foreach(var v in versions)
+			foreach(var r in results["sobjects"])
 			{
-				Console.WriteLine (v);
+				Console.WriteLine (r);
 			}
 		}
 
-		public void ShowLoadingState(UIViewController controller)
+		public void ShowLoadingState()
 		{
-			//this.View.InsertSubviewAbove (controller.View, View.Subviews.Last ());
-			//NavigationItem.RightBarButtonItem = ActivityItem;
 			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
+		}
+
+		public void HideLoadingState()
+		{
+			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
 		}
 
 		class DataSource : UITableViewSource
