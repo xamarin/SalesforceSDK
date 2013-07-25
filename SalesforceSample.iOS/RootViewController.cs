@@ -115,7 +115,7 @@ namespace SalesforceSample.iOS
 			Console.WriteLine (Client.CurrentUser);
 
 			var request = new RestRequest {
-				Resource = new SObject()
+				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
 			var response = Client.Process<RestRequest> (request);
@@ -123,7 +123,7 @@ namespace SalesforceSample.iOS
 
 			var results = System.Json.JsonValue.Parse(result);
 
-			foreach(var r in results["sobjects"])
+			foreach(var r in results["records"])
 			{
 				Console.WriteLine (r);
 			}

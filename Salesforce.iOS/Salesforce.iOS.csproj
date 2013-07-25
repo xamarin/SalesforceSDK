@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;PLATFORM_IOS;NET_4_5;</DefineConstants>
+    <DefineConstants>DEBUG;PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -41,6 +41,8 @@
     <Folder Include="Resources\" />
     <Folder Include="Auth\" />
     <Folder Include="Request\" />
+    <Folder Include="Models\" />
+    <Folder Include="System.Web\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -118,9 +120,6 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\IRestRequest.cs" />
     <Compile Include="..\Salesforce.Core\HttpMethod.cs" />
-    <Compile Include="..\Salesforce.Core\SObject.cs">
-      <Link>SObject.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\IRestResource.cs" />
     <Compile Include="..\Salesforce.Core\IVersionableRestResource.cs" />
     <Compile Include="..\Salesforce.Core\ISalesforceResource.cs" />
@@ -129,6 +128,18 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\RestRequest.cs">
       <Link>Request\RestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Models\Query.cs">
+      <Link>Models\Query.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Models\SObject.cs">
+      <Link>Models\SObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
+      <Link>System.Web\HttpEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
+      <Link>System.Web\HttpUtility.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

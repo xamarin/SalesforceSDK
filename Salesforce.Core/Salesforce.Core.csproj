@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;NET_4_5;</DefineConstants>
+    <DefineConstants>DEBUG;NET_4_5;NET_4_0;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -93,11 +93,15 @@
     <Compile Include="System.Json\JavaScriptReader.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="IRestRequest.cs" />
-    <Compile Include="Request\ListRequest.cs" />
-    <Compile Include="SObject.cs" />
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
       <Link>Auth\SalesforceUser.cs</Link>
     </Compile>
+    <Compile Include="IRestResource.cs" />
+    <Compile Include="ISalesforceResource.cs" />
+    <Compile Include="IVersionableRestResource.cs" />
+    <Compile Include="Request\RestRequest.cs" />
+    <Compile Include="Models\SObject.cs" />
+    <Compile Include="Models\Query.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -105,5 +109,6 @@
     <Folder Include="System.Json\" />
     <Folder Include="Response\" />
     <Folder Include="Request\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

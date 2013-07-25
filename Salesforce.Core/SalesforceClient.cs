@@ -168,7 +168,7 @@ namespace Salesforce
 				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
 				result = task.Result;
 			}
-			catch (AggregateException ex)
+			catch (AggregateException)
 			{
 
 				if (task.IsFaulted)
@@ -187,10 +187,6 @@ namespace Salesforce
 					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
 					result = retryTask.Result;
 				}
-			}
-			catch (Exception e)
-			{
-				result = null;
 			}
 
 			return result;
