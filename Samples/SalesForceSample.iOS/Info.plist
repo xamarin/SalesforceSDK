@@ -2,26 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleDisplayName</key>
-	<string>SalesforceSample</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.sample.salesforce</string>
-	<key>CFBundleURLTypes</key>
+	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.sample.salesforce</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.sample.salesforce</string>
-			</array>
-		</dict>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>MinimumOSVersion</key>
+	<string>6.0</string>
 </dict>
 </plist>
