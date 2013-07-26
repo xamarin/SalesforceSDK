@@ -88,7 +88,7 @@ namespace SalesforceSample.iOS
 
 			var results = jsonValue["records"];
 
-			DataSource.Objects = results.OfType<object>().ToList();
+			DataSource.Objects = results.OfType<JsonValue>().ToList();
 			SetLoadingState (false);
 		}
 

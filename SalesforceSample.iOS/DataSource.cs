@@ -10,7 +10,7 @@ namespace SalesforceSample.iOS
 	public class DataSource : UITableViewSource
 	{
 		static readonly NSString CellIdentifier = new NSString ("DataSourceCell");
-		List<object> objects = new List<object> ();
+		List<JsonValue> objects = new List<JsonValue> ();
 		readonly RootViewController controller;
 
 		public DataSource (RootViewController controller)
@@ -18,13 +18,13 @@ namespace SalesforceSample.iOS
 			this.controller = controller;
 		}
 
-		public List<object> Objects
+		public List<JsonValue> Objects
 		{
 			get { return objects; }
 			set
 			{
 				objects = value;
-				this.controller.TableView.ReloadData ();
+				controller.TableView.ReloadData ();
 			}
 		}
 
@@ -53,25 +53,22 @@ namespace SalesforceSample.iOS
 			return cell;
 		}
 
-		public override bool CanEditRow (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+		public override bool CanEditRow (UITableView tableView, NSIndexPath indexPath)
 		{
 			return true;
 		}
 
-		public override async void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle,
-			NSIndexPath indexPath)
+		public override async void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle,	NSIndexPath indexPath)
 		{
 			if (editingStyle == UITableViewCellEditingStyle.Delete) {
-
 				var selected = controller.DataSource.Objects.ElementAtOrDefault (indexPath.Row) as JsonValue;
 				var selectedObject = new SObject (selected as JsonObject);
 				// Delete the row from the data source.
 				var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
 
 				await controller.Client.ProcessAsync (request);
-				((DataSource) tableView.Source).Objects.Remove (selectedObject);
+				objects.Remove (selected);
 				tableView.ReloadData ();
-
 			} else if (editingStyle == UITableViewCellEditingStyle.Insert) {
 				// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 			}
