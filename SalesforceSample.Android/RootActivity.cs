@@ -14,7 +14,7 @@ using System.Linq;
 namespace SalesforceSample.Droid
 {
 	[Activity (Label = "Xamarin.Salesforce", MainLauncher = true), IntentFilter(new String[]{"com.sample.salesforce"})]
-	public class MainActivity : ListActivity
+	public class RootActivity : ListActivity
 	{
 		public static SalesforceClient Client { get; private set; }
 
