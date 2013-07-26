@@ -29,8 +29,9 @@ namespace Tests.Android
 				user = new SalesforceUser {
 					Username = "zack@xamarin.form",					
 				};
-				user.Properties ["instance_url"] = @"https://na15.salesforce.com";
+				user.Properties ["instance_url"] = @"https://na15.salesforce.com/";
 				user.Properties ["access_token"] = @"00Di0000000bhOg!ARYAQBe5A8YSKAJhtkXqdnycCfUj7cj7h6_HtRefWefgE7GvfU6sfNzuSN_VgVw8aYswTsgSSZQ0Yvy0QXhpJtEMrok0ij03";
+
 				Client.Save (user);
 			}
 			else
