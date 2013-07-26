@@ -113,6 +113,6 @@ Global
 		{F15665F3-A8F8-42D7-ABD9-28A2DDB8C3BE} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SalesforceSample.iOS\SalesforceSample.iOS.csproj
+		StartupItem = Tests.Android\Tests.Android.csproj
 	EndGlobalSection
 EndGlobal

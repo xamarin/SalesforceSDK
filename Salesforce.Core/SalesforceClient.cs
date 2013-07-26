@@ -63,7 +63,7 @@ namespace Salesforce
 		/// </summary>
 		/// <param name="appKey">App key.</param>
 		/// <param name="callbackUri">Callback URI.</param>
-		public SalesforceClient (String appKey, Uri redirectUrl)
+		public SalesforceClient (String appKey, Uri redirectUrl, object context = null)
 		{
 			AppKey = appKey;
 			Scheduler = TaskScheduler.Default;
@@ -126,6 +126,13 @@ namespace Salesforce
 			Authenticator.Completed += OnCompleted;
 		}
 
+		public static void SetCurrentContext (object context)
+		{
+#if PLATFORM_ANDROID
+			AndroidPlatformAdapter.CurrentPlatformContext = (global::Android.Content.Context)context;
+#endif
+		}
+
 		/// <summary>
 		/// Returns a platform-specific object used to display the Salesforce login/authorization UI.
 		/// </summary>
@@ -168,24 +175,29 @@ namespace Salesforce
 				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
 				result = task.Result;
 			}
-			catch (AggregateException)
+			catch (AggregateException ex)
 			{
+				var flatEx = task.Exception.Flatten ();
 				if (task.IsFaulted)
 				{
 					// We only want to swallow this 
 					// exception if we have reason to 
 					// believe our access_token is stale.
-					var webEx = task.Exception.Flatten().InnerExceptions.FirstOrDefault (e => e.GetType () == typeof(WebException));
+					var webEx = flatEx
+						.InnerExceptions
+						.FirstOrDefault (e => e.GetType () == typeof(WebException));
+
 					if (webEx == null || ((HttpWebResponse)((WebException)webEx).Response).StatusCode != HttpStatusCode.Unauthorized)
 						throw;
 
 					// Refresh the OAuth2 session token.
 					CurrentUser = RefreshSessionToken ();
+
 					// Retry our request with the new token.
 					var retryTask = ProcessAsync (request);
 					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
-					result = retryTask.Result;
 				}
+				throw new ApplicationException(flatEx.Message, flatEx);
 			}
 
 			return result;

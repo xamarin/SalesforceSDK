@@ -27,9 +27,14 @@ namespace Salesforce
 #if PLATFORM_ANDROID
 	internal class AndroidPlatformAdapter : IPlatformAdapter
 	{
+		static AndroidPlatformAdapter()
+		{
+			CurrentPlatformContext = global::Android.App.Application.Context;
+		}
+
 		public Authenticator Authenticator { get; set;	}
 
-		public Object CurrentPlatformContext { get; set; }
+		public static Context CurrentPlatformContext { get; set; }
 
 		#region IPlatformAdapter implementation
 
@@ -40,7 +45,7 @@ namespace Salesforce
 
 		public void SaveAccount (ISalesforceUser account)
 		{
-			AccountStore.Create (CurrentPlatformContext as Context).Save (account, PlatformStrings.Salesforce);
+			AccountStore.Create (CurrentPlatformContext as Context ?? global::Android.App.Application.Context).Save (account, PlatformStrings.Salesforce);
 		}
 
 		#endregion

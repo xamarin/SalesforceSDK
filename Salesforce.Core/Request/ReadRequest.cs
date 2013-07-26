@@ -19,7 +19,7 @@ namespace Salesforce
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
-			var baseUri = new Uri (user.Properties ["instance_url"] + "/services/data/");
+			var baseUri = new Uri (user.Properties ["instance_url"] + "services/data/");
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 			var oauthRequest = new OAuth2Request (Method, uri, Resource.Options, user);
 			return oauthRequest;
