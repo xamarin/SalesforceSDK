@@ -82,9 +82,9 @@ namespace Salesforce
 
 			Scheduler = TaskScheduler.Default;
 
-			#if PLATFORM_IOS
+			#if __IOS__
 			Adapter = new UIKitPlatformAdapter();
-			#elif PLATFORM_ANDROID
+			#elif __ANDROID__
 			Adapter = new AndroidPlatformAdapter();
 			#endif
 
