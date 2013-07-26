@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Json;
+using System.Linq;
 
 namespace Salesforce
 {
@@ -47,6 +49,19 @@ namespace Salesforce
 		}
 
 		#endregion
+
+		public SObject() : this(null) { }
+
+		public SObject(JsonObject restObject)
+		{
+			var options = restObject.SkipWhile (o => o.Key == "attributes").ToArray();
+			this.Options = restObject == null 
+				? new Dictionary<string, string> ()
+					: options.ToDictionary(k => k.Key, v => v.Value != null ? v.Value.ToString() : String.Empty);
+
+			this.ResourceName = restObject["attributes"]["type"];
+			this.Id = restObject["Id"];
+		}
 
 		protected virtual string ToUriString()
 		{

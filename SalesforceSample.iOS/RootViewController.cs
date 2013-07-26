@@ -115,12 +115,12 @@ namespace SalesforceSample.iOS
 		{
 			Console.WriteLine (Client.CurrentUser);
 
-			var request = new RestRequest {
+			var request = new ReadRequest {
 //				Resource = new Search { QueryText = "FIND {John}" }
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
-			var response = Client.Process<RestRequest> (request);
+			var response = Client.Process<ReadRequest> (request);
 			var result = response.GetResponseText ();
 
 			var results = System.Json.JsonValue.Parse(result)["records"];
@@ -190,12 +190,20 @@ namespace SalesforceSample.iOS
 				return true;
 			}
 
-			public override void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath)
+			public async override void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath)
 			{
 				if (editingStyle == UITableViewCellEditingStyle.Delete) {
+
+					var selected = controller.dataSource.Objects.ElementAtOrDefault (indexPath.Row) as JsonValue;
+					var selectedObject = new SObject (selected as JsonObject);
 					// Delete the row from the data source.
-					objects.RemoveAt (indexPath.Row);
-					controller.TableView.DeleteRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+					var request = new DeleteRequest (selectedObject);
+					request.Resource = selectedObject;
+
+					await controller.Client.ProcessAsync (request);
+					((DataSource)tableView.Source).Objects.Remove (selectedObject);
+					tableView.ReloadData ();
+
 				} else if (editingStyle == UITableViewCellEditingStyle.Insert) {
 					// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 				}

@@ -156,21 +156,20 @@ namespace Salesforce
 		/// <summary>
 		/// Initiates a synchronous request to the Salesforce API.
 		/// </summary>
-		/// <param name="request">Request.</param>
-		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public Response Process<T>(IRestRequest request) where T: class, IRestRequest
+		/// <param name="request">An IRestRequest.</param>
+		/// <typeparam name="T">The type of the IRestRequest.</typeparam>
+		public Response Process<T>(IAuthenticatedRequest request) where T: class, IAuthenticatedRequest
 		{
 			Task<Response> task = null;
 			Response result = null;
 			try
 			{
-				task = ProcessRequest (request);
+				task = ProcessAsync (request);
 				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
 				result = task.Result;
 			}
 			catch (AggregateException)
 			{
-
 				if (task.IsFaulted)
 				{
 					// We only want to swallow this 
@@ -183,7 +182,7 @@ namespace Salesforce
 					// Refresh the OAuth2 session token.
 					CurrentUser = RefreshSessionToken ();
 					// Retry our request with the new token.
-					var retryTask = ProcessRequest (request);
+					var retryTask = ProcessAsync (request);
 					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
 					result = retryTask.Result;
 				}
@@ -197,14 +196,12 @@ namespace Salesforce
 		/// </summary>
 		/// <param name="request">Request.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		protected Task<Response> ProcessRequest<T>(T request) where T: class, IRestRequest
+		public Task<Response> ProcessAsync<T>(T request) where T: class, IAuthenticatedRequest
 		{
-			var baseUri = new Uri(CurrentUser.Properties ["instance_url"] + "/services/data/");
-			var uri = new Uri (baseUri, request.Resource.AbsoluteUri);
-
-			var oauthRequest = new OAuth2Request (request.Method, uri, request.Resource.Options, this.CurrentUser);
+			var oauthRequest = request.ToOAuth2Request(CurrentUser);
 
 			Console.WriteLine (oauthRequest.Url);
+
 			var task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
 				return response.Result;
 			}, Scheduler);

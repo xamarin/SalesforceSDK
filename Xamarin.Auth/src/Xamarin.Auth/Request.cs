@@ -53,7 +53,7 @@ namespace Xamarin.Auth
 		/// URL for GET requests, encoded as form a parameters for POSTs, and added as
 		/// multipart values if the request uses <see cref="Multiparts"/>.
 		/// </summary>
-		public IDictionary<string, string> Parameters { get; protected set; }
+		public IDictionary<string, string> Parameters { get; internal set; }
 
 		/// <summary>
 		/// The account that will be used to authenticate this request.

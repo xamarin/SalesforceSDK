@@ -126,9 +126,6 @@
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
       <Link>Auth\SalesforceUser.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Request\RestRequest.cs">
-      <Link>Request\RestRequest.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Models\SObject.cs">
       <Link>Models\SObject.cs</Link>
     </Compile>
@@ -143,6 +140,15 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
       <Link>Models\ObjectQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
+    </Compile>
+    <Compile Include="Request\DeleteRequest.cs" />
+    <Compile Include="Request\UpdateRequest.cs" />
+    <Compile Include="Request\CreateRequest.cs" />
+    <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
+      <Link>IAuthenticatedRequest.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
