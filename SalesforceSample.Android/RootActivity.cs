@@ -23,8 +23,6 @@ namespace SalesforceSample.Droid
 		const string key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
 		Uri redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
-		bool isAuthenticated = false;
-
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -39,8 +37,7 @@ namespace SalesforceSample.Droid
 				StartActivityForResult (intent, 42);
 			} else {
 				// OnResume
-//				isAuthenticated = false;
-//				LoadAccounts ();
+				LoadAccounts ();
 			}
 
 			ListView.ItemClick += (sender,e) => {
@@ -60,8 +57,7 @@ namespace SalesforceSample.Droid
 		{
 			base.OnResume ();
 
-			if (isAuthenticated)
-				LoadAccounts ();
+			LoadAccounts ();
 		}
 
 		void OnAuthenticationCompleted (AuthenticatorCompletedEventArgs e)
@@ -70,8 +66,6 @@ namespace SalesforceSample.Droid
 				// TODO: Handle failed login scenario by re-presenting login form with error
 				throw new Exception ("Login failed and we don't handle that.");
 			}
-
-			isAuthenticated = false;
 
 			LoadAccounts ();
 
@@ -105,6 +99,30 @@ namespace SalesforceSample.Droid
 			ListAdapter = new DataAdapter (this, results.OfType<JsonValue> ().ToList ());
 
 //			SetLoadingState (false);
+		}
+
+
+
+		/// <summary>shortcut back to the main screen</summary>
+		public override bool OnCreateOptionsMenu (IMenu menu)
+		{
+			MenuInflater.Inflate (Resource.Menu.Add, menu);
+			return true;
+		}
+		/// <summary>shortcut back to the main screen</summary>
+		public override bool OnOptionsItemSelected (IMenuItem item)
+		{
+			if (item.ItemId == Resource.Id.add) {
+				// HACK: populate blank fields with blank JSON
+				var extra = @"{""type"": ""Account"", ""Id"": """", ""Name"": """", ""AccountNumber"": """", ""Phone"": """", ""Website"": """", ""Industry"": """"}";
+
+				var intent = new Intent();
+				intent.SetClass(this, typeof(DetailActivity));
+				intent.PutExtra("JsonItem", extra);
+
+				StartActivity(intent);
+			}
+			return true;
 		}
 	}
 }

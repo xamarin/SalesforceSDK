@@ -40,9 +40,9 @@ namespace SalesforceSample.Droid
 			var selectedObject = new SObject (data as JsonObject);
 
 			// Delete the row from the data source.
-			var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
-
-			await RootActivity.Client.ProcessAsync (request);
+//			var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
+//
+//			await RootActivity.Client.ProcessAsync (request);
 		}
 
 		/// <summary>shortcut back to the main screen</summary>

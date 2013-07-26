@@ -67,6 +67,7 @@
     <AndroidResource Include="Resources\layout\RootListViewCell.axml" />
     <AndroidResource Include="Resources\layout\DetailListViewCell.axml" />
     <AndroidResource Include="Resources\menu\Delete.xml" />
+    <AndroidResource Include="Resources\menu\Add.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
