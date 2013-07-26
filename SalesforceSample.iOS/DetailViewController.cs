@@ -14,7 +14,7 @@ namespace SalesforceSample.iOS
 
 		public DetailViewController () : base (UITableViewStyle.Grouped)
 		{
-			Title = NSBundle.MainBundle.LocalizedString ("Detail", "Detail");
+			Title = NSBundle.MainBundle.LocalizedString ("Account Details", "Account Details");
 		}
 
 		public void SetDetailItem (JsonValue newDetailItem)

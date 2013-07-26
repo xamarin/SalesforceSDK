@@ -19,7 +19,7 @@ namespace SalesforceSample.iOS
 
 		public RootViewController () : base ("RootViewController", null)
 		{
-			Title = NSBundle.MainBundle.LocalizedString ("Master", "Master");
+			Title = NSBundle.MainBundle.LocalizedString ("Accounts", "Accounts");
 		}
 
 		void AddNewItem (object sender, EventArgs args)
