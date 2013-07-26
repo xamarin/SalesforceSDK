@@ -126,6 +126,13 @@ namespace Salesforce
 			Authenticator.Completed += OnCompleted;
 		}
 
+		/// <summary>
+		/// Sets the current UI context.
+		/// </summary>
+		/// <remarks>
+		/// On Android, the context defaults to the application context.
+		/// </remarks>
+		/// <param name="context">Context.</param>
 		public static void SetCurrentContext (object context)
 		{
 #if PLATFORM_ANDROID

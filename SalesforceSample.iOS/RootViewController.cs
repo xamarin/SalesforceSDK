@@ -111,7 +111,7 @@ namespace SalesforceSample.iOS
 			}
 		}
 
-		void LoadAccounts ()
+		async void LoadAccounts ()
 		{
 			Console.WriteLine (Client.CurrentUser);
 
@@ -120,10 +120,10 @@ namespace SalesforceSample.iOS
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
-			var response = Client.Process<ReadRequest> (request);
+			var response = await Client.ProcessAsync<ReadRequest> (request);
 			var result = response.GetResponseText ();
 
-			var results = System.Json.JsonValue.Parse(result)["records"];
+			var results = JsonValue.Parse(result)["records"];
 
 			foreach(var r in results)
 			{
@@ -131,6 +131,8 @@ namespace SalesforceSample.iOS
 			}
 
 			dataSource.Objects = results.OfType<object>().ToList();
+
+			HideLoadingState ();
 		}
 
 		public void ShowLoadingState()
