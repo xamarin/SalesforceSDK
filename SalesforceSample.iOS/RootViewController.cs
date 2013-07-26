@@ -81,7 +81,13 @@ namespace SalesforceSample.iOS
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
 			};
 
-			Response response = await Client.ProcessAsync (request);
+			Response response = null;
+			try {
+				response = await Client.ProcessAsync (request);
+			} catch (Exception ex) {
+				// TODO: If a bad request, display the error message from Salesforce.
+				throw;
+			}
 			var result = response.GetResponseText ();
 			var jsonValue = JsonValue.Parse(result);
 

@@ -53,19 +53,20 @@ namespace Salesforce
 		/// <value>The scheduler.</value>
 		protected TaskScheduler Scheduler { get; set; }
 
-		string AppKey {
-			get;
-			set;
-		}
+		/// <summary>
+		/// Your Salesforce application's Customer Id.
+		/// </summary>
+		/// <value>The app key.</value>
+		string ClientId { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
 		/// </summary>
 		/// <param name="appKey">App key.</param>
 		/// <param name="callbackUri">Callback URI.</param>
-		public SalesforceClient (String appKey, Uri redirectUrl, object context = null)
+		public SalesforceClient (String clientId, Uri redirectUrl, object context = null)
 		{
-			AppKey = appKey;
+			ClientId = clientId;
 			Scheduler = TaskScheduler.Default;
 
 			#if PLATFORM_IOS
@@ -88,7 +89,7 @@ namespace Salesforce
 				}
 
 				Authenticator = new OAuth2Authenticator (
-					clientId: appKey,
+					clientId: clientId,
 					clientSecret: ClientSecret,
 					scope: "refresh_token", // TODO: Convert this to a static struct. Or not.
 					authorizeUrl: new Uri(AuthPath),
@@ -100,7 +101,7 @@ namespace Salesforce
 			else
 			{
 				Authenticator = new OAuth2Authenticator (
-					clientId: appKey,
+					clientId: clientId,
 					clientSecret: ClientSecret,
 					scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
 					authorizeUrl: new Uri(AuthPath),
@@ -210,6 +211,21 @@ namespace Salesforce
 			return result;
 		}
 
+		bool IsUnauthorizedError (AggregateException exception)
+		{
+			var ex = exception.Flatten()
+				.InnerExceptions
+					.FirstOrDefault (e => e.GetType () == typeof(WebException));
+
+			if (ex == null) return false;
+
+			var webEx = ex as WebException;
+			if (webEx == null) return false;
+
+			var response = webEx.Response as HttpWebResponse;
+			return response.StatusCode == HttpStatusCode.Unauthorized;
+		}
+
 		/// <summary>
 		/// Process the specified request.
 		/// </summary>
@@ -221,9 +237,21 @@ namespace Salesforce
 
 			Console.WriteLine (oauthRequest.Url);
 
-			var task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
-				return response.Result;
-			}, Scheduler);
+			Task<Response> task = null;
+ 				task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
+					if (response.IsFaulted && IsUnauthorizedError(response.Exception))
+					{
+						// Refresh the OAuth2 session token.
+						CurrentUser = RefreshSessionToken ();
+
+						// Retry our request with the new token.
+						var retryTask = ProcessAsync (request);
+						retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
+						return retryTask.Result;
+					}
+					return response.Result;
+				}, Scheduler);
+
 			return task; // TODO: Create a public invoker that returns a Salesforce domain object.
 		}
 
@@ -233,14 +261,15 @@ namespace Salesforce
 		/// <returns>The Salesforce user with the updated session token.</returns>
 		private ISalesforceUser RefreshSessionToken()
 		{
+			var refreshToken = CurrentUser.Properties ["refresh_token"];
 			var refreshTask = Authenticator.RequestAccessTokenAsync(new Dictionary<string, string> 
 			                                                        {
 				{ "grant_type", "refresh_token" },
-				{ "client_id", AppKey },
+				{ "client_id", ClientId },
 				{ "client_secret", ClientSecret },
-				{ "refresh_token", CurrentUser.Properties["refresh_token"] }
+				{ "refresh_token", refreshToken }
 			});
-			refreshTask.Wait ();
+			refreshTask.Wait (TimeSpan.FromSeconds(90)); // TODO: Move this to a config setting.
 			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];
 			return CurrentUser;
 		}
