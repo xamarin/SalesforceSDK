@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Salesforce
 {
-	public class RestRequest : IRestRequest
+	public class ReadRequest : IRestRequest
 	{
 		public String RequestType { get; set; }
 
@@ -15,7 +15,7 @@ namespace Salesforce
 
 		public IDictionary<string, string> Options { get; private set; }
 
-		public RestRequest ()
+		public ReadRequest ()
 		{
 			Options = new Dictionary<string,string> ();
 			Headers = new Dictionary<string,string> ();

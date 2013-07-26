@@ -125,9 +125,6 @@
     <Compile Include="..\Salesforce.Core\Models\Search.cs">
       <Link>Models\Search.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Request\RestRequest.cs">
-      <Link>Request\RestRequest.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -151,6 +148,9 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
       <Link>System.Web\HttpUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
