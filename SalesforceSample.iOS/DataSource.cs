@@ -80,7 +80,6 @@ namespace SalesforceSample.iOS
 				controller.DetailViewController = new DetailViewController ();
 
 			controller.DetailViewController.SetDetailItem (objects[indexPath.Row]);
-
 			controller.NavigationController.PushViewController (controller.DetailViewController, true);
 		}
 	}

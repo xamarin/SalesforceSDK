@@ -45,21 +45,7 @@ namespace SalesforceSample.iOS
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
 			Client = new SalesforceClient (key, redirectUrl);
-			Client.AuthRequestCompleted += (sender, e) => {
-				if (e.IsAuthenticated){
-					// TODO: Transition to regular application UI.
-					Console.WriteLine("Auth success: " + e.Account.Username);
-				}
-
-				DismissViewController(true, () => {
-					NavigationItem.RightBarButtonItem = null;
-					SetLoadingState (true);
-					LoadAccounts ();
-				});
-
-				Account = e.Account;
-				Client.Save(Account);
-			};
+			Client.AuthRequestCompleted += (sender, e) => OnAuthenticationCompleted (e);
 
 			var users = Client.LoadUsers ();
 			
@@ -67,13 +53,29 @@ namespace SalesforceSample.iOS
 				var loginController = Client.GetLoginInterface () as UIViewController;
 				PresentViewController (loginController, true, null);
 			} else {
-				SetLoadingState (true);
 				LoadAccounts ();
 			}
 		}
 
+		void OnAuthenticationCompleted (AuthenticatorCompletedEventArgs e)
+		{
+			if (!e.IsAuthenticated) {
+				// TODO: Handle failed login scenario by re-presenting login form with error
+				throw new Exception ("Login failed and we don't handle that.");
+			}
+
+			DismissViewController (true, () => {
+				NavigationItem.RightBarButtonItem = null;
+				LoadAccounts ();
+			});
+
+			Account = e.Account;
+			Client.Save (Account);
+		}
+
 		async void LoadAccounts ()
 		{
+			SetLoadingState (true);
 			var request = new ReadRequest {
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
