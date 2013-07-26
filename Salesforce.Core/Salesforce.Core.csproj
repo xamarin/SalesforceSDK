@@ -100,10 +100,10 @@
     <Compile Include="IRestResource.cs" />
     <Compile Include="ISalesforceResource.cs" />
     <Compile Include="IVersionableRestResource.cs" />
+    <Compile Include="Request\RestRequest.cs" />
     <Compile Include="Models\SObject.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\ObjectQuery.cs" />
-    <Compile Include="Request\ReadRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

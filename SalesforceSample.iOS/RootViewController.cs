@@ -115,12 +115,12 @@ namespace SalesforceSample.iOS
 		{
 			Console.WriteLine (Client.CurrentUser);
 
-			var request = new ReadRequest {
+			var request = new RestRequest {
 //				Resource = new Search { QueryText = "FIND {John}" }
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
-			var response = Client.Process<ReadRequest> (request);
+			var response = Client.Process<RestRequest> (request);
 			var result = response.GetResponseText ();
 
 			var results = System.Json.JsonValue.Parse(result)["records"];
