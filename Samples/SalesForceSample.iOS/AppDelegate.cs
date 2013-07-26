@@ -4,7 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace SalesforceSample.iOS
+namespace SalesForceSample.iOS
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the 
 	// User Interface of the application, as well as listening (and optionally responding) to 
@@ -13,7 +13,6 @@ namespace SalesforceSample.iOS
 	public partial class AppDelegate : UIApplicationDelegate
 	{
 		// class-level declarations
-		UINavigationController navigationController;
 		UIWindow window;
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this 
@@ -24,16 +23,32 @@ namespace SalesforceSample.iOS
 		//
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
+
+
+			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
-			var controller = new RootViewController ();
-			navigationController = new UINavigationController (controller);
-			window.RootViewController = navigationController;
-
+			window.RootViewController = new UINavigationController (new AccountsViewController());
+			// If you have defined a root view controller, set it here:
+			// window.RootViewController = myViewController;
 			// make the window visible
 			window.MakeKeyAndVisible ();
+
+			SalesForceService.Shared.ShowLoginScreen += ShowLoginScreen;
+			SalesForceService.Shared.LoggedIn += LoggedIn;
+			SalesForceService.Shared.Loaded ();
 			
 			return true;
+		}
+
+		void ShowLoginScreen (object sender, EventArgs<Salesforce.SalesforceClient> e)
+		{
+			window.RootViewController.PresentViewController (e.Data.GetLoginInterface () as UIViewController, true, null);
+		}
+
+		void LoggedIn (object sender, EventArgs<Xamarin.Auth.ISalesforceUser> e)
+		{
+			window.RootViewController.DismissViewController (true, null);
 		}
 	}
 }

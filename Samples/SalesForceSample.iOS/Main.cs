@@ -4,7 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace SalesforceSample.iOS
+namespace SalesForceSample.iOS
 {
 	public class Application
 	{
