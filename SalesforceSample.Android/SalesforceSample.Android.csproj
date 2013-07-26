@@ -16,7 +16,7 @@
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AssemblyName>SalesforceSample.Android</AssemblyName>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="Salesforce.Android">
+      <HintPath>..\Salesforce.Android\bin\Release\Salesforce.Android.dll</HintPath>
+    </Reference>
     <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
@@ -64,12 +67,11 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
     <AndroidResource Include="Resources\layout\RootListViewCell.axml" />
     <AndroidResource Include="Resources\layout\DetailListViewCell.axml" />
+    <AndroidResource Include="Resources\menu\Delete.xml" />
+    <AndroidResource Include="Resources\menu\Add.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Salesforce.Android\Salesforce.Android.csproj">
-      <Project>{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}</Project>
-      <Name>Salesforce.Android</Name>
-    </ProjectReference>
+    <Folder Include="Resources\menu\" />
   </ItemGroup>
 </Project>

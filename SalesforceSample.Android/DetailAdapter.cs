@@ -16,19 +16,12 @@ namespace SalesforceSample.Droid
 	{
 		Activity context;
 		JsonValue data;
-//		List<Tuple<string,string>> datapairs;
 
 		public DetailAdapter(Activity activity, JsonValue item)
 			: base()
 		{
 			context = activity;
 			data = item;
-//			datapairs = new List<Tuple<string,string>> (); 
-//			for (var c = 0; c < data.Count; c++) {
-//				var d = data[c]; 
-//				datapairs.Add (new Tuple<string, string> (d.ToString(), data [(int)d]));
-//			};
-
 		}
 
 		public JsonValue Data
@@ -39,21 +32,9 @@ namespace SalesforceSample.Droid
 				if (data == value)
 					return;
 				data = value;
-				//controller.TableView.ReloadData ();
+				// refresh ((ListActivity)context).ListView.
 			}
 		}
-
-//		public List<Tuple<string,string>> DataList
-//		{
-//			get
-//			{ 
-//				return datapairs; 
-//			}
-//			set
-//			{
-//				//data = value;
-//			}
-//		}
 
 		public override long GetItemId(int position)
 		{
@@ -61,7 +42,9 @@ namespace SalesforceSample.Droid
 		}
 		public override Tuple<string,string> this[int position]
 		{
-			get { return new Tuple<string,string> ("",""); }//datapairs[position]; 
+			get { 
+				//var key = 
+				return new Tuple<string,string> ("",""); }//datapairs[position]; 
 		}
 		public override int Count
 		{
@@ -106,4 +89,3 @@ namespace SalesforceSample.Droid
 		}
 	}
 }
-
