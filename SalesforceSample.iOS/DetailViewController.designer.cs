@@ -7,19 +7,6 @@ using MonoTouch.Foundation;
 
 namespace SalesforceSample.iOS
 {
-	[Register ("DetailViewController")]
-	partial class DetailViewController
-	{
-		[Outlet]
-		MonoTouch.UIKit.UILabel detailDescriptionLabel { get; set; }
-		
-		void ReleaseDesignerOutlets ()
-		{
-			if (detailDescriptionLabel != null) {
-				detailDescriptionLabel.Dispose ();
-				detailDescriptionLabel = null;
-			}
-		}
-	}
+
 }
 

@@ -1,45 +1,41 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Json;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace SalesforceSample.iOS
 {
-	public partial class DetailViewController : UIViewController
+	public class DetailViewController : UITableViewController
 	{
-		object detailItem;
+		JsonValue detailItem;
+		DetailSource source;
 
-		public DetailViewController () : base ("DetailViewController", null)
+		public DetailViewController () : base (UITableViewStyle.Grouped)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Detail", "Detail");
-
-			// Custom initialization
 		}
 
-		public void SetDetailItem (object newDetailItem)
+		public void SetDetailItem (JsonValue newDetailItem)
 		{
 			if (detailItem != newDetailItem) {
 				detailItem = newDetailItem;
 				
 				// Update the view
-				ConfigureView ();
+				ConfigureView (detailItem);
 			}
 		}
 
-		void ConfigureView ()
+		void ConfigureView (JsonValue target)
 		{
-			// Update the user interface for the detail item
-			if (IsViewLoaded && detailItem != null)
-				detailDescriptionLabel.Text = detailItem.ToString ();
-		}
+			if (TableView == null)
+				return;
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
+			if (TableView.Source == null)
+				TableView.Source = source = new DetailSource (this);
+
+			source.Data = target;
 		}
 
 		public override void ViewDidLoad ()
@@ -47,7 +43,7 @@ namespace SalesforceSample.iOS
 			base.ViewDidLoad ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
-			ConfigureView ();
+			ConfigureView (detailItem);
 		}
 	}
 }

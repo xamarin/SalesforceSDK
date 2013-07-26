@@ -77,7 +77,8 @@ namespace SalesforceSample.iOS
 		{
 			SetLoadingState (true);
 			var request = new ReadRequest {
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+				// TODO : Add error handling for when this query asks for stuff that does not exist (mispell a field to reproduce)
+				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
 			};
 
 			Response response = await Client.ProcessAsync (request);
