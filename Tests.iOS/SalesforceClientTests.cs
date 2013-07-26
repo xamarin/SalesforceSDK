@@ -16,9 +16,10 @@ namespace Tests.iOS
 			var passed = false;
 
 			var key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
+			var secret = "5754078534436456018";
 			var callback = new Uri ("sfdc://success");
 
-			var authMan = new SalesforceClient (key, callback);
+			var authMan = new SalesforceClient (key, secret, callback);
 
 			authMan.AuthenticationComplete += (sender, e) => {
 				if (e.IsAuthenticated){
