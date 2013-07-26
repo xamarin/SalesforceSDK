@@ -11,145 +11,109 @@ using System.Json;
 
 namespace SalesforceSample.iOS
 {
-	public partial class RootViewController : UITableViewController
+	public sealed partial class RootViewController : UITableViewController
 	{
 		DataSource dataSource;
+		SalesforceClient client;
 
-		UIBarButtonItem ActivityItem {
-			get;
-			set;
-		}
+		ISalesforceUser Account { get; set; }
+
+		UIBarButtonItem ActivityItem { get; set; }
+
+		DetailViewController DetailViewController { get; set; }
+
+		UIViewController LoginController { get; set; }
 
 		public RootViewController () : base ("RootViewController", null)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Master", "Master");
 
-			var item = new UIActivityIndicatorView (UIActivityIndicatorViewStyle.White);
-			item.Hidden = false;
+			var item = new UIActivityIndicatorView (UIActivityIndicatorViewStyle.White) {Hidden = false};
 			item.StartAnimating();
 
 			ActivityItem = new UIBarButtonItem (item);
-
-			// Custom initialization
 		}
-
-		public DetailViewController DetailViewController {
-			get;
-			set;
-		}
-
-		public UIViewController LoginController { get; protected set; }
 
 		void AddNewItem (object sender, EventArgs args)
 		{
 			try {
-				LoginController = Client.GetLoginInterface () as UIViewController;
+				LoginController = client.GetLoginInterface () as UIViewController;
 				PresentViewController(LoginController, true, null);
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
 			}
 		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
-		SalesforceClient Client;
-		ISalesforceUser Account { get; set; }
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
-			// Perform any additional setup after loading the view, typically from a nib.
 			NavigationItem.RightBarButtonItem = EditButtonItem;
-
-			var addButton = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
-			NavigationItem.LeftBarButtonItem = addButton;
+			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
 
 			TableView.Source = dataSource = new DataSource (this);
 
-			var key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-
+			const string key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
-			Client = new SalesforceClient (key, redirectUrl);
-
-			Client.AuthRequestCompleted += (sender, e) => {
+			client = new SalesforceClient (key, redirectUrl);
+			client.AuthRequestCompleted += (sender, e) => {
 				if (e.IsAuthenticated){
 					// TODO: Transition to regular application UI.
 					Console.WriteLine("Auth success: " + e.Account.Username);
 				}
 
-				DismissViewController(true, new NSAction(
-					()=>
-					{
-						NavigationItem.RightBarButtonItem = null;
-						ShowLoadingState ();
-						LoadAccounts ();
-
-					}));
+				DismissViewController(true, () => {
+					NavigationItem.RightBarButtonItem = null;
+					SetLoadingState (true);
+					LoadAccounts ();
+				});
 
 				Account = e.Account;
-				Client.Save(Account);
+				client.Save(Account);
 			};
 
-			var users = Client.LoadUsers ();
-			if (users.Count () == 0)
-			{
-				var loginController = Client.GetLoginInterface () as UIViewController;
+			var users = client.LoadUsers ();
+			
+			if (!users.Any()) {
+				var loginController = client.GetLoginInterface () as UIViewController;
 				PresentViewController (loginController, true, null);
-			} 
-			else
-			{
-				ShowLoadingState ();
+			} else {
+				SetLoadingState (true);
 				LoadAccounts ();
 			}
 		}
 
 		async void LoadAccounts ()
 		{
-			Console.WriteLine (Client.CurrentUser);
-
 			var request = new ReadRequest {
-//				Resource = new Search { QueryText = "FIND {John}" }
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
 			};
 
-			var response = await Client.ProcessAsync<ReadRequest> (request);
+			Response response = await client.ProcessAsync (request);
 			var result = response.GetResponseText ();
+			var jsonValue = JsonValue.Parse(result);
 
-			var results = JsonValue.Parse(result)["records"];
-
-			foreach(var r in results)
-			{
-				Console.WriteLine (r);
+			if (jsonValue == null) {
+				throw new Exception("Could not parse Json data");
 			}
 
+			var results = jsonValue["records"];
+
 			dataSource.Objects = results.OfType<object>().ToList();
-
-			HideLoadingState ();
+			SetLoadingState (false);
 		}
 
-		public void ShowLoadingState()
+		static void SetLoadingState(bool loading)
 		{
-			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
-		}
-
-		public void HideLoadingState()
-		{
-			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = loading;
 		}
 
 		class DataSource : UITableViewSource
 		{
 			static readonly NSString CellIdentifier = new NSString ("DataSourceCell");
 			List<object> objects = new List<object> ();
-			RootViewController controller;
+			readonly RootViewController controller;
 
 			public DataSource (RootViewController controller)
 			{
@@ -160,7 +124,7 @@ namespace SalesforceSample.iOS
 				get { return objects; }
 				set { objects = value; this.controller.TableView.ReloadData ();}
 			}
-			// Customize the number of sections in the table view.
+			
 			public override int NumberOfSections (UITableView tableView)
 			{
 				return 1;
@@ -171,7 +135,6 @@ namespace SalesforceSample.iOS
 				return objects.Count;
 			}
 
-			// Customize the appearance of table view cells.
 			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 			{
 				var cell = tableView.DequeueReusableCell (CellIdentifier);
@@ -188,7 +151,6 @@ namespace SalesforceSample.iOS
 
 			public override bool CanEditRow (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
 			{
-				// Return false if you do not want the specified item to be editable.
 				return true;
 			}
 
@@ -199,10 +161,9 @@ namespace SalesforceSample.iOS
 					var selected = controller.dataSource.Objects.ElementAtOrDefault (indexPath.Row) as JsonValue;
 					var selectedObject = new SObject (selected as JsonObject);
 					// Delete the row from the data source.
-					var request = new DeleteRequest (selectedObject);
-					request.Resource = selectedObject;
+					var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
 
-					await controller.Client.ProcessAsync (request);
+					await controller.client.ProcessAsync (request);
 					((DataSource)tableView.Source).Objects.Remove (selectedObject);
 					tableView.ReloadData ();
 
@@ -210,20 +171,7 @@ namespace SalesforceSample.iOS
 					// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 				}
 			}
-			/*
-			// Override to support rearranging the table view.
-			public override void MoveRow (UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath)
-			{
-			}
-			*/
-			/*
-			// Override to support conditional rearranging of the table view.
-			public override bool CanMoveRow (UITableView tableView, NSIndexPath indexPath)
-			{
-				// Return false if you do not want the item to be re-orderable.
-				return true;
-			}
-			*/
+
 			public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 			{
 				if (controller.DetailViewController == null)
@@ -231,7 +179,6 @@ namespace SalesforceSample.iOS
 
 				controller.DetailViewController.SetDetailItem (objects [indexPath.Row]);
 
-				// Pass the selected object to the new view controller.
 				controller.NavigationController.PushViewController (controller.DetailViewController, true);
 			}
 		}

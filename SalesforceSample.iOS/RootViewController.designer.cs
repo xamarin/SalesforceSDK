@@ -9,7 +9,7 @@ using MonoTouch.Foundation;
 namespace SalesforceSample.iOS
 {
 	[Register ("RootViewController")]
-	partial class RootViewController
+	sealed partial class RootViewController
 	{
 		void ReleaseDesignerOutlets ()
 		{
