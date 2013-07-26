@@ -8,8 +8,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleDisplayName</key>
-	<string>SalesforceSample</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.sample.salesforce</string>
 	<key>CFBundleURLTypes</key>
@@ -23,5 +21,13 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon</string>
+		<string>Icon@2x</string>
+		<string>Icon-72</string>
+	</array>
+	<key>CFBundleDisplayName</key>
+	<string>Accounts</string>
 </dict>
 </plist>

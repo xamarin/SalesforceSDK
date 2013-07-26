@@ -11,8 +11,6 @@ namespace Salesforce
 {
 	public class SalesforceClient
 	{
-		private readonly string ClientSecret = "5754078534436456018"; // TODO: Convert to ctor param.
-
 		/// <summary>
 		/// The Salesforce OAuth authorization endpoint.
 		/// </summary>
@@ -65,16 +63,23 @@ namespace Salesforce
 		/// Your Salesforce application's Customer Id.
 		/// </summary>
 		/// <value>The app key.</value>
-		string ClientId { get; set; }
+		private readonly string ClientId;
+
+		/// <summary>
+		/// Your Salesforce application's Customer Secret.
+		/// </summary>
+		private readonly string ClientSecret;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
 		/// </summary>
 		/// <param name="appKey">App key.</param>
 		/// <param name="callbackUri">Callback URI.</param>
-		public SalesforceClient (String clientId, Uri redirectUrl)
+		public SalesforceClient (String clientId, String clientSecret, Uri redirectUrl)
 		{
 			ClientId = clientId;
+			ClientSecret = clientSecret;
+
 			Scheduler = TaskScheduler.Default;
 
 			#if PLATFORM_IOS
@@ -85,50 +90,35 @@ namespace Salesforce
 
 			var users = LoadUsers ().ToArray();
 
-			if (users.Count() > 0)
-			{
+			if (users.Count () > 0) {
 				CurrentUser = users.First ();
 
 				Debug.WriteLine (CurrentUser);
 
-				foreach(var p in CurrentUser.Properties)
-				{
-					Debug.WriteLine("{0}\t{1}", p.Key, p.Value);
+				foreach (var p in CurrentUser.Properties) {
+					Debug.WriteLine ("{0}\t{1}", p.Key, p.Value);
 				}
-
-				Authenticator = new OAuth2Authenticator (
-					clientId: clientId,
-					clientSecret: ClientSecret,
-					scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
-					authorizeUrl: new Uri(AuthPath),
-					redirectUrl: redirectUrl,
-					accessTokenUrl: new Uri (TokenPath),
-					getUsernameAsync: null
-				);
-			} 
-			else
-			{
-				Authenticator = new OAuth2Authenticator (
-					clientId: clientId,
-					clientSecret: ClientSecret,
-					scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
-					authorizeUrl: new Uri(AuthPath),
-					redirectUrl: redirectUrl,
-					accessTokenUrl: new Uri(TokenPath),
-					getUsernameAsync: new GetUsernameAsyncFunc((dict)=>{
-
-						var client = new WebClient();
-						client.Headers["Authorization"] = "Bearer " + dict["access_token"];
-
-						var results = client.DownloadString(dict["id"]);
-						var resultVals = JsonValue.Parse(results);
-
-						return Task.Factory.StartNew(()=> { 
-							return (String)resultVals["username"];
-						});
-					})
-				);
 			}
+
+			Authenticator = new OAuth2Authenticator (
+				clientId: clientId,
+				clientSecret: ClientSecret,
+				scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
+				authorizeUrl: new Uri(AuthPath),
+				redirectUrl: redirectUrl,
+				accessTokenUrl: new Uri(TokenPath),
+				getUsernameAsync: new GetUsernameAsyncFunc((dict)=>{
+					var client = new WebClient();
+					client.Headers["Authorization"] = "Bearer " + dict["access_token"];
+
+					var results = client.DownloadString(dict["id"]);
+					var resultVals = JsonValue.Parse(results);
+
+					return Task.Factory.StartNew(()=> { 
+						return (String)resultVals["username"];
+					});
+				})
+			);
 
 			Adapter.Authenticator = Authenticator;
 

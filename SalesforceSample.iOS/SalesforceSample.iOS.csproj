@@ -24,9 +24,8 @@
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
-    <MtouchArch>Default, ARMv7</MtouchArch>
+    <MtouchArch>ARMv7</MtouchArch>
     <MtouchSdkVersion>5.0</MtouchSdkVersion>
-    <MtouchExtraArgs />
     <MtouchUseSGen>True</MtouchUseSGen>
     <MtouchOptimizePNGs>True</MtouchOptimizePNGs>
   </PropertyGroup>
@@ -120,5 +119,10 @@
       <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
       <Name>Salesforce.iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon.png" />
+    <BundleResource Include="Resources\Icon%402x.png" />
+    <BundleResource Include="Resources\Icon-72.png" />
   </ItemGroup>
 </Project>

@@ -25,8 +25,8 @@ namespace SalesforceSample.iOS
 		void AddNewItem (object sender, EventArgs args)
 		{
 			try {
-				LoginController = Client.GetLoginInterface () as UIViewController;
-				PresentViewController(LoginController, true, null);
+				// TODO: Present an AddAccountController.
+				//PresentViewController(LoginController, true, null);
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
 			}
@@ -36,15 +36,16 @@ namespace SalesforceSample.iOS
 		{
 			base.ViewDidLoad ();
 
-			NavigationItem.RightBarButtonItem = EditButtonItem;
-			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
+//			NavigationItem.RightBarButtonItem = EditButtonItem;
+//			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
 
 			TableView.Source = DataSource = new DataSource (this);
 
-			const string key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
+			const string clientId = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
+			const string clientSecret = "5754078534436456018"; // TODO: Convert to ctor param.
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
-			Client = new SalesforceClient (key, redirectUrl);
+			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			var users = Client.LoadUsers ();
