@@ -42,7 +42,7 @@ namespace SalesforceSample.iOS
 			TableView.Source = DataSource = new DataSource (this);
 
 			const string clientId = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-			const string clientSecret = "5754078534436456018"; // TODO: Convert to ctor param.
+			const string clientSecret = "5754078534436456018";
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
 			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
