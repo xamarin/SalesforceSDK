@@ -38,6 +38,8 @@ x64/
 *.vssscc
 .builds
 
+*/*/Resource.designer.cs
+
 # Visual C++ cache files
 ipch/
 *.aps
