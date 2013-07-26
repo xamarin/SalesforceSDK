@@ -66,25 +66,6 @@ namespace Tests.Android
 			}
 			Assert.True (true);
 		}
-
-		[Test]
-		public void Fail ()
-		{
-			Assert.False (true);
-		}
-
-		[Test]
-		[Ignore ("another time")]
-		public void Ignore ()
-		{
-			Assert.True (false);
-		}
-
-		[Test]
-		public void Inconclusive ()
-		{
-			Assert.Inconclusive ("Inconclusive");
-		}
 	}
 }
 
