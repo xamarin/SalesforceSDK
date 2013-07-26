@@ -110,9 +110,6 @@
       <DependentUpon>RootViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="DetailViewController.cs" />
-    <Compile Include="DetailViewController.designer.cs">
-      <DependentUpon>DetailViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="LoadingViewController.cs" />
     <Compile Include="LoadingViewController.designer.cs">
       <DependentUpon>LoadingViewController.cs</DependentUpon>
@@ -120,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="RootViewController.xib" />
-    <InterfaceDefinition Include="DetailViewController.xib" />
     <InterfaceDefinition Include="LoadingViewController.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
