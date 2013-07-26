@@ -20,7 +20,7 @@ namespace Tests.iOS
 
 			var authMan = new SalesforceClient (key, callback);
 
-			authMan.AuthRequestCompleted += (sender, e) => {
+			authMan.AuthenticationComplete += (sender, e) => {
 				if (e.IsAuthenticated){
 					// Invoke completion handler.
 					Console.WriteLine("Auth success: " + e.Account.Username);

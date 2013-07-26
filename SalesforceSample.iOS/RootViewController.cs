@@ -45,7 +45,7 @@ namespace SalesforceSample.iOS
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 
 			Client = new SalesforceClient (key, redirectUrl);
-			Client.AuthRequestCompleted += (sender, e) => OnAuthenticationCompleted (e);
+			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			var users = Client.LoadUsers ();
 			

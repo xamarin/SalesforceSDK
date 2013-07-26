@@ -26,13 +26,8 @@
     <MtouchI18n />
     <MtouchArch>Default, ARMv7</MtouchArch>
     <MtouchSdkVersion>5.0</MtouchSdkVersion>
-    <MtouchProfiling>False</MtouchProfiling>
     <MtouchExtraArgs />
-    <MtouchFastDev>False</MtouchFastDev>
-    <MtouchUseLlvm>False</MtouchUseLlvm>
-    <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchUseSGen>True</MtouchUseSGen>
-    <MtouchUseRefCounting>False</MtouchUseRefCounting>
     <MtouchOptimizePNGs>True</MtouchOptimizePNGs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">

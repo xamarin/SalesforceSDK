@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Json;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Salesforce
 {
@@ -16,6 +17,11 @@ namespace Salesforce
 		/// The Salesforce OAuth authorization endpoint.
 		/// </summary>
 		protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+
+		/// <summary>
+		/// The Salesforce OAuth token endpoint.
+		/// </summary>
+		protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
 
 		/// <summary>
 		/// Handles the actual OAuth handshake.
@@ -34,8 +40,10 @@ namespace Salesforce
 		/// </remarks>
 		protected IPlatformAdapter Adapter { get; set; }
 
-		// TODO: Refactor this to return a Salesforce account object.
-		public event EventHandler<AuthenticatorCompletedEventArgs> AuthRequestCompleted;
+		/// <summary>
+		/// Occurs when Salesforce OAuth authentication has completed.
+		/// </summary>
+		public event EventHandler<AuthenticatorCompletedEventArgs> AuthenticationComplete;
 
 		/// <summary>
 		/// The currently authenticated Salesforce user.
@@ -64,7 +72,7 @@ namespace Salesforce
 		/// </summary>
 		/// <param name="appKey">App key.</param>
 		/// <param name="callbackUri">Callback URI.</param>
-		public SalesforceClient (String clientId, Uri redirectUrl, object context = null)
+		public SalesforceClient (String clientId, Uri redirectUrl)
 		{
 			ClientId = clientId;
 			Scheduler = TaskScheduler.Default;
@@ -75,26 +83,26 @@ namespace Salesforce
 			Adapter = new AndroidPlatformAdapter();
 			#endif
 
-			var users = LoadUsers ();
+			var users = LoadUsers ().ToArray();
 
 			if (users.Count() > 0)
 			{
 				CurrentUser = users.First ();
 
-				Console.WriteLine (CurrentUser);
+				Debug.WriteLine (CurrentUser);
 
 				foreach(var p in CurrentUser.Properties)
 				{
-					Console.WriteLine("{0}\t{1}", p.Key, p.Value);
+					Debug.WriteLine("{0}\t{1}", p.Key, p.Value);
 				}
 
 				Authenticator = new OAuth2Authenticator (
 					clientId: clientId,
 					clientSecret: ClientSecret,
-					scope: "refresh_token", // TODO: Convert this to a static struct. Or not.
+					scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
 					authorizeUrl: new Uri(AuthPath),
 					redirectUrl: redirectUrl,
-					accessTokenUrl: new Uri("https://login.salesforce.com/services/oauth2/token"),
+					accessTokenUrl: new Uri (TokenPath),
 					getUsernameAsync: null
 				);
 			} 
@@ -106,7 +114,7 @@ namespace Salesforce
 					scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
 					authorizeUrl: new Uri(AuthPath),
 					redirectUrl: redirectUrl,
-					accessTokenUrl: new Uri("https://login.salesforce.com/services/oauth2/token"),
+					accessTokenUrl: new Uri(TokenPath),
 					getUsernameAsync: new GetUsernameAsyncFunc((dict)=>{
 
 						var client = new WebClient();
@@ -211,21 +219,6 @@ namespace Salesforce
 			return result;
 		}
 
-		bool IsUnauthorizedError (AggregateException exception)
-		{
-			var ex = exception.Flatten()
-				.InnerExceptions
-					.FirstOrDefault (e => e.GetType () == typeof(WebException));
-
-			if (ex == null) return false;
-
-			var webEx = ex as WebException;
-			if (webEx == null) return false;
-
-			var response = webEx.Response as HttpWebResponse;
-			return response.StatusCode == HttpStatusCode.Unauthorized;
-		}
-
 		/// <summary>
 		/// Process the specified request.
 		/// </summary>
@@ -238,21 +231,46 @@ namespace Salesforce
 			Console.WriteLine (oauthRequest.Url);
 
 			Task<Response> task = null;
- 				task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
-					if (response.IsFaulted && IsUnauthorizedError(response.Exception))
-					{
-						// Refresh the OAuth2 session token.
-						CurrentUser = RefreshSessionToken ();
+			task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
 
-						// Retry our request with the new token.
-						var retryTask = ProcessAsync (request);
-						retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
-						return retryTask.Result;
-					}
-					return response.Result;
-				}, Scheduler);
+				if (!response.IsFaulted) return response.Result;
+
+				if (IsUnauthorizedError(response.Exception))
+				{
+					// Refresh the OAuth2 session token.
+					CurrentUser = RefreshSessionToken ();
+
+					// Retry our request with the new token.
+					var retryTask = ProcessAsync (request);
+					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
+					return retryTask.Result;
+				}
+				// TODO: Detect if the refresh token itself has expired.
+
+				return response.Result;
+			}, Scheduler);
 
 			return task; // TODO: Create a public invoker that returns a Salesforce domain object.
+		}
+
+		/// <summary>
+		/// Determines whether a request failed due to an invalid access token.
+		/// </summary>
+		/// <returns><c>true</c> if this threw an WebException with a StatusCode set to Unauthorized; otherwise, <c>false</c>.</returns>
+		/// <param name="exception">Exception.</param>
+		protected bool IsUnauthorizedError (AggregateException exception)
+		{
+			var ex = exception.Flatten()
+				.InnerExceptions
+					.FirstOrDefault (e => e.GetType () == typeof(WebException));
+
+			if (ex == null) return false;
+
+			var webEx = ex as WebException;
+			if (webEx == null) return false;
+
+			var response = webEx.Response as HttpWebResponse;
+			return response.StatusCode == HttpStatusCode.Unauthorized;
 		}
 
 		/// <summary>
@@ -284,7 +302,7 @@ namespace Salesforce
 			if (!args.IsAuthenticated)
 				return;
 
-			var ev = AuthRequestCompleted;
+			var ev = AuthenticationComplete;
 			if ( ev != null)
 			{
 				CurrentUser = args.Account;
