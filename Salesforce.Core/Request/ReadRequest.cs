@@ -4,11 +4,8 @@ using Xamarin.Auth;
 
 namespace Salesforce
 {
-
 	public class ReadRequest : IAuthenticatedRequest
 	{
-		private static readonly string RestApiPath = "/services/data/";
-
 		public String RequestType { get; set; }
 
 		public ISalesforceResource Resource {	get ; set ; }
@@ -21,7 +18,7 @@ namespace Salesforce
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
-			var path = user.Properties ["instance_url"] + RestApiPath;
+			var path = user.Properties ["instance_url"] + SalesforceClient.RestApiPath;
 			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 			var oauthRequest = new OAuth2Request (Method, uri, Resource.Options, user);

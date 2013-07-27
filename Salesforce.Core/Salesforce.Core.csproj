@@ -105,6 +105,7 @@
     <Compile Include="Models\ObjectQuery.cs" />
     <Compile Include="Request\ReadRequest.cs" />
     <Compile Include="IAuthenticatedRequest.cs" />
+    <Compile Include="Exceptions\DeleteFailedException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -113,5 +114,6 @@
     <Folder Include="Response\" />
     <Folder Include="Request\" />
     <Folder Include="Models\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

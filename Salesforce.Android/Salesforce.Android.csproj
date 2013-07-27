@@ -157,6 +157,9 @@
     <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
       <Link>IAuthenticatedRequest.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
+      <Link>Exceptions\DeleteFailedException.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -170,4 +173,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
 </Project>

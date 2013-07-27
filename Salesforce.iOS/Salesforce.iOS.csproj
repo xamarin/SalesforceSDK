@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -146,6 +147,9 @@
     <Compile Include="Request\CreateRequest.cs" />
     <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
       <Link>IAuthenticatedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
+      <Link>Exceptions\DeleteFailedException.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

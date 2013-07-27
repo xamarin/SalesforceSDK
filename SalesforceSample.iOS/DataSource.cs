@@ -63,10 +63,27 @@ namespace SalesforceSample.iOS
 			if (editingStyle == UITableViewCellEditingStyle.Delete) {
 				var selected = controller.DataSource.Objects.ElementAtOrDefault (indexPath.Row) as JsonValue;
 				var selectedObject = new SObject (selected as JsonObject);
+
 				// Delete the row from the data source.
 				var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
 
-				await controller.Client.ProcessAsync (request);
+				try 
+				{
+					await controller.Client.ProcessAsync (request);
+				}
+				catch (DeleteFailedException ex) 
+				{
+					var message = string.Format ("Well, that didn't work for {0} reason{2}: {1}",
+					                             ex.FailureReasons.Count (), 
+					                             string.Join ("; and ", ex.FailureReasons.Select (r => r.Message + ": " + string.Join(", ", r.RelatedIds))),
+					                             ex.FailureReasons.Count() == 1 ? string.Empty : "s"
+					                             );
+					var alertView = new UIAlertView("Oops!", message, null, "Dismiss", null);
+					alertView.Show();
+
+					tableView.ReloadData ();
+					return;
+				}
 				objects.Remove (selected);
 				tableView.ReloadData ();
 			} else if (editingStyle == UITableViewCellEditingStyle.Insert) {

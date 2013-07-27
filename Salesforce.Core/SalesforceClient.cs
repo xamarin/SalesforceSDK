@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.Json;
 using System.Linq;
 using System.Diagnostics;
+using System.IO;
 
 namespace Salesforce
 {
 	public class SalesforceClient
 	{
+		internal const string RestApiPath = "/services/data/";
+
 		/// <summary>
 		/// The Salesforce OAuth authorization endpoint.
 		/// </summary>
@@ -224,6 +227,22 @@ namespace Salesforce
 			task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
 
 				if (!response.IsFaulted) return response.Result;
+
+				var webEx = response.Exception.InnerException.InnerException as WebException;
+
+				var responseBody = String.Empty;
+				if (webEx != null)
+					responseBody = new StreamReader(webEx.Response.GetResponseStream()).ReadToEnd();
+
+				var errorDetails = JsonValue.Parse(responseBody);
+
+				Debug.WriteLine(responseBody);
+
+				var code = errorDetails[0]["errorCode"];
+				var message = errorDetails[0]["message"];
+
+				if (code == "DELETE_FAILED")
+					throw new DeleteFailedException(message);
 
 				if (IsUnauthorizedError(response.Exception))
 				{
