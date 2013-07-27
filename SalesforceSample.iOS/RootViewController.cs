@@ -5,6 +5,7 @@ using Salesforce;
 using Xamarin.Auth;
 using System.Linq;
 using System.Json;
+using System.Threading.Tasks;
 
 namespace SalesforceSample.iOS
 {
@@ -41,18 +42,23 @@ namespace SalesforceSample.iOS
 
 			TableView.Source = DataSource = new DataSource (this);
 
+			InitializeSalesforce ();
+		}
+
+		void InitializeSalesforce ()
+		{
 			const string clientId = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
 			const string clientSecret = "5754078534436456018";
-			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
+			var redirectUrl = new Uri ("com.sample.salesforce:/oauth2Callback");
 
 			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			var users = Client.LoadUsers ();
-			
-			if (!users.Any()) {
+			if (!users.Any ()) {
 				StartAuthorization ();
-			} else {
+			}
+			else {
 				LoadAccounts ();
 			}
 		}
