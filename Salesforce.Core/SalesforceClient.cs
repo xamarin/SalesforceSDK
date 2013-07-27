@@ -260,6 +260,8 @@ namespace Salesforce
 			if (webEx == null) return false;
 
 			var response = webEx.Response as HttpWebResponse;
+			if (response == null) return false;
+
 			return response.StatusCode == HttpStatusCode.Unauthorized;
 		}
 

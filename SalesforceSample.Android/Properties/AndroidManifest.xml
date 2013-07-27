@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="SalesforceSample.Android">
 	<uses-sdk />
-	<application android:label="Xamarin.Salesforce">
-		<data android:scheme="com.sample.salesforce" /> 
+	<application android:label="Accounts">
+		<data android:scheme="com.sample.salesforce" />
 	</application>
 	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>

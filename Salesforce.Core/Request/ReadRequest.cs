@@ -7,11 +7,8 @@ namespace Salesforce
 
 	public class ReadRequest : IAuthenticatedRequest
 	{
-#if PLATFORM_ANDROID
-		private static readonly string RestApiPath = "services/data/";
-#else
 		private static readonly string RestApiPath = "/services/data/";
-#endif
+
 		public String RequestType { get; set; }
 
 		public ISalesforceResource Resource {	get ; set ; }
@@ -24,7 +21,8 @@ namespace Salesforce
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
-			var baseUri = new Uri (user.Properties ["instance_url"] + RestApiPath);
+			var path = user.Properties ["instance_url"] + RestApiPath;
+			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 			var oauthRequest = new OAuth2Request (Method, uri, Resource.Options, user);
 			return oauthRequest;
