@@ -70,25 +70,41 @@ namespace SalesforceSample.iOS
 				try 
 				{
 					await controller.Client.ProcessAsync (request);
+					objects.Remove (selected);
+				}
+				catch (InsufficientRightsException) 
+				{
+					ShowInsuffientRightsMessage (tableView);
 				}
 				catch (DeleteFailedException ex) 
 				{
-					var message = string.Format ("Well, that didn't work for {0} reason{2}: {1}",
-					                             ex.FailureReasons.Count (), 
-					                             string.Join ("; and ", ex.FailureReasons.Select (r => r.Message + ": " + string.Join(", ", r.RelatedIds))),
-					                             ex.FailureReasons.Count() == 1 ? string.Empty : "s"
-					                             );
-					var alertView = new UIAlertView("Oops!", message, null, "Dismiss", null);
-					alertView.Show();
-
-					tableView.ReloadData ();
-					return;
+					ShowDeleteFailedMessage (tableView, ex);
 				}
-				objects.Remove (selected);
 				tableView.ReloadData ();
 			} else if (editingStyle == UITableViewCellEditingStyle.Insert) {
 				// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 			}
+		}
+
+		static void ShowDeleteFailedMessage (UITableView tableView, DeleteFailedException ex)
+		{
+			var message = string.Format ("Well, that didn't work for {0} reason{2}: {1}",
+			                             ex.FailureReasons.Count (),
+			                             string.Join ("; and ", ex.FailureReasons.Select (r => r.Message + ": " + string.Join (", ", r.RelatedIds))),
+			                             ex.FailureReasons.Count () == 1 ? string.Empty : "s");
+			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
+			alertView.Show ();
+			tableView.ReloadData ();
+			return;
+		}
+
+		static void ShowInsuffientRightsMessage (UITableView tableView)
+		{
+			var message = "Looks like either you don't have permission to delete that, or someone made it readonly.";
+			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
+			alertView.Show ();
+			tableView.ReloadData ();
+			return;
 		}
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)

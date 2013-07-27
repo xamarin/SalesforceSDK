@@ -228,38 +228,57 @@ namespace Salesforce
 
 				if (!response.IsFaulted) return response.Result;
 
-				var webEx = response.Exception.InnerException.InnerException as WebException;
-
-				var responseBody = String.Empty;
-				if (webEx != null)
-					responseBody = new StreamReader(webEx.Response.GetResponseStream()).ReadToEnd();
+				var responseBody = ProcessResponseBody (response);
 
 				var errorDetails = JsonValue.Parse(responseBody);
 
 				Debug.WriteLine(responseBody);
 
 				var code = errorDetails[0]["errorCode"];
-				var message = errorDetails[0]["message"];
 
-				if (code == "DELETE_FAILED")
-					throw new DeleteFailedException(message);
+				if (code == "DELETE_FAILED") 
+				{
+					var message = errorDetails [0] ["message"];
+					throw new DeleteFailedException (message);
+				}
 
-				if (IsUnauthorizedError(response.Exception))
+				if (code == "INVALID_SESSION_ID")
 				{
 					// Refresh the OAuth2 session token.
 					CurrentUser = RefreshSessionToken ();
 
 					// Retry our request with the new token.
-					var retryTask = ProcessAsync (request);
-					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
+					var retryTask = ProcessAsync (request).ContinueWith(retryResponse => {
+						if (!retryResponse.IsFaulted) return retryResponse.Result;
+
+						responseBody = ProcessResponseBody(retryResponse);
+						if (code == "INVALID_SESSION_ID")
+							throw new InvalidSessionException(retryResponse.Exception.Message);
+
+						return retryResponse.Result;
+					});
+
 					return retryTask.Result;
 				}
-				// TODO: Detect if the refresh token itself has expired.
 
+				if (code == "INSUFFICIENT_ACCESS_OR_READONLY")
+				{
+					var message = errorDetails [0] ["message"];
+					throw new InsufficientRightsException (message);
+				}
 				return response.Result;
 			}, Scheduler);
 
 			return task; // TODO: Create a public invoker that returns a Salesforce domain object.
+		}
+
+		static string ProcessResponseBody (Task response)
+		{
+			var webEx = response.Exception.InnerException.InnerException as WebException;
+			var responseBody = String.Empty;
+			if (webEx != null)
+				responseBody = new StreamReader (webEx.Response.GetResponseStream ()).ReadToEnd ();
+			return responseBody;
 		}
 
 		/// <summary>
@@ -297,6 +316,17 @@ namespace Salesforce
 				{ "client_id", ClientId },
 				{ "client_secret", ClientSecret },
 				{ "refresh_token", refreshToken }
+			}).ContinueWith(response => {
+				if (!response.IsFaulted) return response.Result;
+
+				var responseBody = ProcessResponseBody(response);
+				Debug.WriteLine(responseBody);
+				var responseData = JsonValue.Parse(responseBody);
+
+				if (responseData.ContainsKey("error") && responseData["error"] == "invalid_grant")
+					throw new InvalidSessionException(responseData["error_description"]);
+
+				return response.Result;
 			});
 			refreshTask.Wait (TimeSpan.FromSeconds(90)); // TODO: Move this to a config setting.
 			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];

@@ -51,11 +51,16 @@ namespace SalesforceSample.iOS
 			var users = Client.LoadUsers ();
 			
 			if (!users.Any()) {
-				var loginController = Client.GetLoginInterface () as UIViewController;
-				PresentViewController (loginController, true, null);
+				StartAuthorization ();
 			} else {
 				LoadAccounts ();
 			}
+		}
+
+		public void StartAuthorization ()
+		{
+			var loginController = Client.GetLoginInterface () as UIViewController;
+			PresentViewController (loginController, true, null);
 		}
 
 		void OnAuthenticationCompleted (AuthenticatorCompletedEventArgs e)
@@ -82,8 +87,18 @@ namespace SalesforceSample.iOS
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
 			};
 
-			var response = await Client.ProcessAsync (request);
-
+			var response = await Client.ProcessAsync (request).ContinueWith<Response>(r => {
+				if (r.IsFaulted && r.Exception.InnerException.InnerException is InvalidSessionException) 
+				{
+					return null;
+				}
+				return r.Result;
+			});
+			if (response == null)
+			{
+				StartAuthorization ();
+				return;
+			}
 			var result = response.GetResponseText ();
 			var jsonValue = JsonValue.Parse(result);
 
