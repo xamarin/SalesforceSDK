@@ -17,6 +17,11 @@ namespace SalesforceSample.iOS
 			Title = NSBundle.MainBundle.LocalizedString ("Account Details", "Account Details");
 		}
 
+		public void SendUpdate ()
+		{
+			NavigationController.PopViewControllerAnimated (true);
+		}
+
 		public void SetDetailItem (JsonValue newDetailItem)
 		{
 			if (detailItem != newDetailItem) {

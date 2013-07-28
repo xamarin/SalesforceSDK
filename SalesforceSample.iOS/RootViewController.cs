@@ -23,21 +23,6 @@ namespace SalesforceSample.iOS
 			Title = NSBundle.MainBundle.LocalizedString ("Accounts", "Accounts");
 		}
 
-//		IAsyncResult StartAddAccount()
-//		{
-//			var action = new Action<UIViewController, bool, NSAction> (PresentViewController);
-//
-////			NSAction callback = new NSAction (FinishAddAccount);
-//
-//			return action.BeginInvoke (AddAccountController, true, callback, FinishAddAccount, action);
-//		}
-
-//		void FinishAddAccount (IAsyncResult result)
-//		{
-//			var action = result.AsyncState as Action<UIViewController, bool, NSAction>;
-//			var r = action.EndInvoke ();
-//		}
-
 		Task AddAccountAsync (Action callback)
 		{
 			var action = new Action (()=>{
@@ -54,8 +39,7 @@ namespace SalesforceSample.iOS
 		async void AddNewItem (object sender, EventArgs args)
 		{
 			try {
-				Action callback;
-				callback = new Action(async ()=>{
+				Action callback = async () => {
 					var account = new SObject();
 					account.ResourceName = "Account";
 					if (AddAccountController.Name != null)
@@ -69,11 +53,11 @@ namespace SalesforceSample.iOS
 					if (AddAccountController.AccountNumber != null)
 						account.Options["AccountNumber"] = AddAccountController.AccountNumber;
 					var createRequest = new CreateRequest(account);
-					var result = await Client.ProcessAsync<CreateRequest>(createRequest).ConfigureAwait(true);
+					var result = await Client.ProcessAsync (createRequest).ConfigureAwait(true);
 					var json = result.GetResponseText();
 					account.Id = JsonValue.Parse(json)["id"];
 					FinishAddAccount(account);
-				});
+				};
 				await AddAccountAsync (callback);
 			} catch (Exception ex) {
 				Debug.WriteLine (ex.Message);
@@ -152,7 +136,7 @@ namespace SalesforceSample.iOS
 
 			var handledAlready = false;
 
-		var scheduler = TaskScheduler.FromCurrentSynchronizationContext ();
+			var scheduler = TaskScheduler.FromCurrentSynchronizationContext ();
 			var response = await Client.ProcessAsync (request).ContinueWith<Response>(r => {
 				if (r.IsFaulted && r.Exception.InnerException.InnerException is InvalidSessionException) 
 				{
