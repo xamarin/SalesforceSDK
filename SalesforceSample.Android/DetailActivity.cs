@@ -25,7 +25,7 @@ namespace SalesforceSample.Droid
 			// Create your application here
 
 			var extra = Intent.GetStringExtra ("JsonItem");
-			Debug.WriteLine ("extra;" + extra);
+			System.Diagnostics.Debug.WriteLine ("extra;" + extra);
 			data = JsonValue.Parse (extra);
 
 
