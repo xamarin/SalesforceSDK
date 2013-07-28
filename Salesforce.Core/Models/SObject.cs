@@ -20,7 +20,7 @@ namespace Salesforce
 
 		public string Id {
 			get ;
-			private set;
+			set;
 		}
 
 		public IDictionary<string, string> Options {
@@ -54,13 +54,16 @@ namespace Salesforce
 
 		public SObject(JsonObject restObject)
 		{
-			var options = restObject.SkipWhile (o => o.Key == "attributes").ToArray();
-			this.Options = restObject == null 
-				? new Dictionary<string, string> ()
-					: options.ToDictionary(k => k.Key, v => v.Value != null ? v.Value.ToString() : String.Empty);
-
-			this.ResourceName = restObject["attributes"]["type"];
-			this.Id = restObject["Id"];
+			if (restObject == null)
+			{
+				this.Options = new Dictionary<string, string> ();
+			}
+			else
+			{
+				this.Options = restObject.Where (o => o.Key != "attributes").ToDictionary(k => k.Key, v => v.Value != null ? v.Value.ToString() : String.Empty);
+				this.ResourceName = restObject["attributes"]["type"];
+				this.Id = restObject["Id"];
+			}
 		}
 
 		protected virtual string ToUriString()

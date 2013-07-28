@@ -315,7 +315,8 @@ namespace Xamarin.Auth
 				s.Write (body, 0, body.Length);
 			}
 			return req.GetResponseAsync ().ContinueWith (task => {
-				var text = task.Result.GetResponseText ();
+				var res = task.Result;
+				var text = res.GetResponseText ();
 
 		        // Parse the response
 		        var data = text.Contains ("{") ? WebEx.JsonDecode (text) : WebEx.FormDecode (text);
@@ -327,7 +328,7 @@ namespace Xamarin.Auth
 				} else {
 					throw new AuthException ("Expected access_token in access token response, but did not receive one.");
 				}
-			});
+			}, TaskScheduler.Default);
 		}
 
 		/// <summary>

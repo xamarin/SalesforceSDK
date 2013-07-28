@@ -23,12 +23,15 @@ namespace Salesforce
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 
 			var oauthRequest = new OAuth2Request (Method, uri, Resource.Options, user);
+
 			return oauthRequest;
 		}
 
 		public CreateRequest (ISalesforceResource resource)
 		{
-			Headers = new Dictionary<string,string> ();
+			Headers = new Dictionary<string,string>{
+				{ "Content-Type", "application/json" }
+			};
 			Resource = resource;
 			if (Resource == null) return;
 

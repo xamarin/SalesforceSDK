@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using Xamarin.Auth;
 using Xamarin.Utilities;
+using System.Json;
 
 namespace Xamarin.Auth
 {
@@ -217,10 +218,10 @@ namespace Xamarin.Auth
 					}, cancellationToken);
 				}, cancellationToken).Unwrap();
 			} else if (Method == "POST" && Parameters.Count > 0) {
-				var body = Parameters.FormEncode ();
+				var body = new JsonObject (Parameters.Select(k => new KeyValuePair<string,JsonValue>(k.Key, new JsonPrimitive(k.Value))).ToArray()).ToString();
 				var bodyData = System.Text.Encoding.UTF8.GetBytes (body);
 				request.ContentLength = bodyData.Length;
-				request.ContentType = "application/x-www-form-urlencoded";
+				request.ContentType = "application/json";
 
 				return Task.Factory
 						.FromAsync<Stream> (request.BeginGetRequestStream, request.EndGetRequestStream, null)
