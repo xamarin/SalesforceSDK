@@ -1,0 +1,1 @@
+# SalesforceSDK-1.0 details
