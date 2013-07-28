@@ -385,7 +385,7 @@ namespace Salesforce
 					throw new InvalidSessionException(responseData["error_description"]);
 
 				return response.Result;
-			});
+			}, TaskScheduler.Default);
 			refreshTask.Wait (TimeSpan.FromSeconds(90)); // TODO: Move this to a config setting.
 			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];
 			return CurrentUser;

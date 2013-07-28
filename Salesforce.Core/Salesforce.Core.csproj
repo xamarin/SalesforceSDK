@@ -108,6 +108,9 @@
     <Compile Include="Exceptions\DeleteFailedException.cs" />
     <Compile Include="Exceptions\InvalidSessionException.cs" />
     <Compile Include="Exceptions\InsufficientRightsException.cs" />
+    <Compile Include="Request\CreateRequest.cs" />
+    <Compile Include="Request\UpdateRequest.cs" />
+    <Compile Include="Request\DeleteRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

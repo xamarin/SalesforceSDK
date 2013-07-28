@@ -16,29 +16,89 @@ namespace SalesforceSample.iOS
 		public SalesforceClient Client { get; private set; }
 		public DetailViewController DetailViewController { get; set; }
 
-		UIViewController LoginController { get; set; }
+		AddAccountController AddAccountController { get; set; }
 
 		public RootViewController () : base ("RootViewController", null)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Accounts", "Accounts");
 		}
 
-		void AddNewItem (object sender, EventArgs args)
+//		IAsyncResult StartAddAccount()
+//		{
+//			var action = new Action<UIViewController, bool, NSAction> (PresentViewController);
+//
+////			NSAction callback = new NSAction (FinishAddAccount);
+//
+//			return action.BeginInvoke (AddAccountController, true, callback, FinishAddAccount, action);
+//		}
+
+//		void FinishAddAccount (IAsyncResult result)
+//		{
+//			var action = result.AsyncState as Action<UIViewController, bool, NSAction>;
+//			var r = action.EndInvoke ();
+//		}
+
+		Task AddAccountAsync (Action callback)
+		{
+			var action = new Action (()=>{
+				AddAccountController = new AddAccountController ();
+				AddAccountController.Finished = callback;
+				PresentViewController (AddAccountController, true, null);
+			});
+
+			var newAccountTask = new Task (action);
+			newAccountTask.Start (TaskScheduler.FromCurrentSynchronizationContext ());
+			return newAccountTask;
+		}
+
+		async void AddNewItem (object sender, EventArgs args)
 		{
 			try {
-				// TODO: Present an AddAccountController.
-				//PresentViewController(LoginController, true, null);
+				Action callback;
+				callback = new Action(async ()=>{
+					var account = new SObject();
+					account.ResourceName = "Account";
+					if (AddAccountController.Name != null)
+						account.Options["Name"] = AddAccountController.Name;
+					if (AddAccountController.Phone != null)
+						account.Options["Phone"] = AddAccountController.Phone;
+					if (AddAccountController.Industry != null)
+						account.Options["Industry"] = AddAccountController.Industry;
+					if (AddAccountController.Website != null)
+						account.Options["Website"] = AddAccountController.Website;
+					if (AddAccountController.AccountNumber != null)
+						account.Options["AccountNumber"] = AddAccountController.AccountNumber;
+					var createRequest = new CreateRequest(account);
+					var result = await Client.ProcessAsync<CreateRequest>(createRequest).ConfigureAwait(true);
+					var json = result.GetResponseText();
+					account.Id = JsonValue.Parse(json)["id"];
+					FinishAddAccount(account);
+				});
+				await AddAccountAsync (callback);
 			} catch (Exception ex) {
 				Debug.WriteLine (ex.Message);
 			}
+		}
+
+		void FinishAddAccount (SObject account)
+		{
+			// Reset the form for the next use.
+			AddAccountController.DismissViewController(true, new NSAction(async ()=>{
+				var readRequest = new ReadRequest { Resource = account};
+				var readResult = await Client.ProcessAsync<ReadRequest>(readRequest).ConfigureAwait(true);
+				var jsonval = JsonValue.Parse(readResult.GetResponseText());
+				AddAccountController.Dispose();
+				DataSource.Objects.Add(jsonval);
+				TableView.ReloadData();
+			}));
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
-//			NavigationItem.RightBarButtonItem = EditButtonItem;
-//			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
+			NavigationItem.RightBarButtonItem = EditButtonItem;
+			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
 
 			TableView.Source = DataSource = new DataSource (this);
 
