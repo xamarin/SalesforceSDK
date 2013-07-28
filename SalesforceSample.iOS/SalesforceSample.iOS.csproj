@@ -111,10 +111,17 @@
     <Compile Include="LoadingViewController.designer.cs">
       <DependentUpon>LoadingViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddAccountController.cs" />
+    <Compile Include="ContactSource.cs" />
+    <Compile Include="ContactRowCell.cs" />
+    <Compile Include="AddAccountController.designer.cs">
+      <DependentUpon>AddAccountController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="RootViewController.xib" />
     <InterfaceDefinition Include="LoadingViewController.xib" />
+    <InterfaceDefinition Include="AddAccountController.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>

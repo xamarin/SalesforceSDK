@@ -18,16 +18,24 @@ namespace Salesforce
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
-			var baseUri = new Uri (user.Properties ["instance_url"] + "/services/data/");
+			var path = user.Properties ["instance_url"] + SalesforceClient.RestApiPath;
+			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
+
 			var oauthRequest = new OAuth2Request (Method, uri, Resource.Options, user);
+
 			return oauthRequest;
 		}
 
-		public CreateRequest ()
+		public CreateRequest (ISalesforceResource resource)
 		{
-			Options = new Dictionary<string,string> ();
-			Headers = new Dictionary<string,string> ();
+			Headers = new Dictionary<string,string>{
+				{ "Content-Type", "application/json" }
+			};
+			Resource = resource;
+			if (Resource == null) return;
+
+			Options = resource.Options ?? new Dictionary<string,string> ();
 		}
 
 		public override string ToString () 

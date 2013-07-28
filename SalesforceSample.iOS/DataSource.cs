@@ -73,7 +73,7 @@ namespace SalesforceSample.iOS
 				{
 					rootController.SetLoadingState(true);
 					var response = await controller.Client.ProcessAsync<DeleteRequest> (request);
-					if (response.StatusCode == System.Net.HttpStatusCode.OK)
+					if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
 						objects.Remove (selected);
 				}
 				catch (InsufficientRightsException) 
@@ -87,8 +87,8 @@ namespace SalesforceSample.iOS
 				finally
 				{
 					rootController.SetLoadingState(false);
+					tableView.ReloadData ();
 				}
-				tableView.ReloadData ();
 			} else if (editingStyle == UITableViewCellEditingStyle.Insert) {
 				// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 			}

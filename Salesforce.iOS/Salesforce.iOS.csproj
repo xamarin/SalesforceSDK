@@ -143,9 +143,6 @@
     <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
       <Link>Request\ReadRequest.cs</Link>
     </Compile>
-    <Compile Include="Request\DeleteRequest.cs" />
-    <Compile Include="Request\UpdateRequest.cs" />
-    <Compile Include="Request\CreateRequest.cs" />
     <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
       <Link>IAuthenticatedRequest.cs</Link>
     </Compile>
@@ -157,6 +154,15 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
       <Link>Exceptions\InsufficientRightsException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
+      <Link>Request\CreateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\DeleteRequest.cs">
+      <Link>Request\DeleteRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\UpdateRequest.cs">
+      <Link>Request\UpdateRequest.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
