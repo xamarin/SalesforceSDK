@@ -32,7 +32,7 @@ namespace Tests.Android
 					Username = "zack@xamarin.form",					
 				};
 				user.Properties ["instance_url"] = @"https://na15.salesforce.com/";
-				user.Properties ["access_token"] = @"00Di0000000bhOg!ARYAQBe5A8YSKAJhtkXqdnycCfUj7cj7h6_HtRefWefgE7GvfU6sfNzuSN_VgVw8aYswTsgSSZQ0Yvy0QXhpJtEMrok0ij03";
+				user.Properties ["access_token"] = @"00Di0000000bhOg!ARYAQLWetbW6H_Lw78K0SlJ3IU7bBCeOMEhtlP8hTvaWALsYNuxfkikbC5tbAfgdNvxjSkZJ6wHVr8A5qIKM7.KeBmGnoIlg";
 
 				Client.Save (user);
 			}
@@ -52,12 +52,17 @@ namespace Tests.Android
 		[Test]
 		public async void Pass ()
 		{
-			var request = new ReadRequest {
-				//				Resource = new Search { QueryText = "FIND {John}" }
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+			var json = "{{\"attributes\": {\"type\": \"Account\", \"url\": \"/services/data/v28.0/sobjects/Account/001i000000Jss8EAAR\"}, \"Id\": \"001i000000Jss8EAAR\", \"Name\": \"Joe's Hostel\", \"AccountNumber\": \"FDFGGDFG345\", \"Phone\": \"415-555-1212\", \"Website\": \"http://www.foofoo.com\", \"Industry\": \"Hotels\"}}";
+
+			var account = new SObject { Id = "001i000000Jss8EAAR", ResourceName = "Account" };
+			account.Options.Add("Website", "http://hostilehostel.com");
+			var request = new UpdateRequest {
+//				Resource = new Search { QueryText = "FIND {John}" }
+//				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+				Resource = account
 			};
 
-			var response = await Client.ProcessAsync<ReadRequest> (request);
+			var response = await Client.ProcessAsync<UpdateRequest> (request);
 			var result = response.GetResponseText ();
 
 			var results = System.Json.JsonValue.Parse(result)["records"];

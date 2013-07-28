@@ -27,6 +27,8 @@ namespace Salesforce
 			return oauthRequest;
 		}
 
+		public UpdateRequest () : this (null) { }
+
 		public UpdateRequest (ISalesforceResource resource)
 		{	
 			Headers = new Dictionary<string,string>{
