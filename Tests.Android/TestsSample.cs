@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Salesforce;
 using System.Linq;
 using Xamarin.Auth;
+using System.Diagnostics;
 
 namespace Tests.Android
 {
@@ -17,8 +18,9 @@ namespace Tests.Android
 			var key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
 
 			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
+			var secret = "5754078534436456018";
 
-			Client = new SalesforceClient (key, redirectUrl);
+			Client = new SalesforceClient (key, secret, redirectUrl);
 
 
 			var users = Client.LoadUsers ();
