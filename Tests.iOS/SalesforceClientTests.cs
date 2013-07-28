@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using Salesforce;
 using System.Threading;
@@ -38,9 +39,7 @@ namespace Tests.iOS
 			}
 
 			Debug.WriteLine (passed);
-			Assert.That (() => passed, new DelayedConstraint(new PredicateConstraint<bool>((o) => {
-				return passed;
-			}), 10000));
+			Assert.That (() => passed, new DelayedConstraint(new PredicateConstraint<bool>((o) => passed), 10000));
 
 		}
 
