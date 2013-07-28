@@ -4,6 +4,7 @@ using Salesforce;
 using System.Linq;
 using Xamarin.Auth;
 using System.Diagnostics;
+using System.Net;
 
 namespace Tests.Android
 {
@@ -52,8 +53,6 @@ namespace Tests.Android
 		[Test]
 		public async void Pass ()
 		{
-			var json = "{{\"attributes\": {\"type\": \"Account\", \"url\": \"/services/data/v28.0/sobjects/Account/001i000000Jss8EAAR\"}, \"Id\": \"001i000000Jss8EAAR\", \"Name\": \"Joe's Hostel\", \"AccountNumber\": \"FDFGGDFG345\", \"Phone\": \"415-555-1212\", \"Website\": \"http://www.foofoo.com\", \"Industry\": \"Hotels\"}}";
-
 			var account = new SObject { Id = "001i000000Jss8EAAR", ResourceName = "Account" };
 			account.Options.Add("Website", "http://hostilehostel.com");
 			var request = new UpdateRequest {
@@ -63,15 +62,16 @@ namespace Tests.Android
 			};
 
 			var response = await Client.ProcessAsync<UpdateRequest> (request);
-			var result = response.GetResponseText ();
-
-			var results = System.Json.JsonValue.Parse(result)["records"];
-
-			foreach(var r in results)
-			{
-				Debug.WriteLine (r);
-			}
-			Assert.True (true);
+			Assert.That (response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+//			var result = response.GetResponseText ();
+//
+//			var results = System.Json.JsonValue.Parse(result)["records"];
+//
+//			foreach(var r in results)
+//			{
+//				Debug.WriteLine (r);
+//			}
+//			Assert.True (true);
 		}
 	}
 }
