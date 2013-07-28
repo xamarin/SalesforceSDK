@@ -217,7 +217,7 @@ namespace Xamarin.Auth
 						return new Response ((HttpWebResponse)resTask.Result);
 					}, cancellationToken);
 				}, cancellationToken).Unwrap();
-			} else if (Method == "POST" && Parameters.Count > 0) {
+			} else if ((Method == "POST" || Method == "PATCH") && Parameters.Count > 0) {
 				var body = new JsonObject (Parameters.Select(k => new KeyValuePair<string,JsonValue>(k.Key, new JsonPrimitive(k.Value))).ToArray()).ToString();
 				var bodyData = System.Text.Encoding.UTF8.GetBytes (body);
 				request.ContentLength = bodyData.Length;
