@@ -51,14 +51,14 @@ namespace System.Web.Util
 	{
 		static char [] hexChars = "0123456789abcdef".ToCharArray ();
 		static object entitiesLock = new object ();
-		static SortedDictionary <string, char> entities;
+		volatile static SortedDictionary <string, char> entities;
 		#if NET_4_0
 		static Lazy <HttpEncoder> defaultEncoder;
 		static Lazy <HttpEncoder> currentEncoderLazy;
 		#else
-		static HttpEncoder defaultEncoder;
+		volatile static HttpEncoder defaultEncoder;
 		#endif
-		static HttpEncoder currentEncoder;
+		volatile static HttpEncoder currentEncoder;
 
 		static IDictionary <string, char> Entities {
 			get {

@@ -27,6 +27,7 @@ namespace Xamarin.Auth
 		string Username { get; set; }
 		Dictionary<string, string> Properties { get; }
 		CookieContainer Cookies { get; }
+		bool RequiresReauthentication { get; }
 		string Serialize ();
 	}
 
@@ -54,6 +55,11 @@ namespace Xamarin.Auth
 		/// </summary>
 		public virtual CookieContainer Cookies { get; private set; }
 
+		/// <summary>
+		/// Indicates the user need to reauthenticate themselves.
+		/// </summary>
+		/// <value><c>true</c> if requires reauthentication; otherwise, <c>false</c>.</value>
+		public virtual bool RequiresReauthentication { get; internal set; }
 
 		/// <summary>
 		/// Initializes a new blank <see cref="Xamarin.Auth.SalesforceUser"/>.
@@ -116,6 +122,7 @@ namespace Xamarin.Auth
 		/// </param>
 		public SalesforceUser (string username, IDictionary<string, string> properties, CookieContainer cookies)
 		{
+			RequiresReauthentication = true;
 			Username = username;
 			Properties = (properties == null) ?
 				new Dictionary<string, string> () :
@@ -147,6 +154,8 @@ namespace Xamarin.Auth
 				sb.Append (Uri.EscapeDataString (SerializeCookies ()));
 			}
 
+			sb.Append ("&force_expiry=");
+			sb.Append (RequiresReauthentication);
 			return sb.ToString ();
 		}
 
@@ -170,6 +179,8 @@ namespace Xamarin.Auth
 					acct.Cookies = DeserializeCookies (val);
 				} else if (key == "__username__") {
 					acct.Username = val;
+				} else if (key == "force_expiry") {
+					acct.RequiresReauthentication = Boolean.Parse(val);
 				} else {
 					acct.Properties [key] = val;
 				}

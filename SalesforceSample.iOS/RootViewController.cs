@@ -6,6 +6,7 @@ using Xamarin.Auth;
 using System.Linq;
 using System.Json;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SalesforceSample.iOS
 {
@@ -15,7 +16,6 @@ namespace SalesforceSample.iOS
 		public SalesforceClient Client { get; private set; }
 		public DetailViewController DetailViewController { get; set; }
 
-		ISalesforceUser Account { get; set; }
 		UIViewController LoginController { get; set; }
 
 		public RootViewController () : base ("RootViewController", null)
@@ -29,7 +29,7 @@ namespace SalesforceSample.iOS
 				// TODO: Present an AddAccountController.
 				//PresentViewController(LoginController, true, null);
 			} catch (Exception ex) {
-				Console.WriteLine (ex.Message);
+				Debug.WriteLine (ex.Message);
 			}
 		}
 
@@ -80,9 +80,6 @@ namespace SalesforceSample.iOS
 				NavigationItem.RightBarButtonItem = null;
 				LoadAccounts ();
 			});
-
-			Account = e.Account;
-			Client.Save (Account);
 		}
 
 		async void LoadAccounts ()
@@ -93,16 +90,36 @@ namespace SalesforceSample.iOS
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
 			};
 
+			var handledAlready = false;
+
+		var scheduler = TaskScheduler.FromCurrentSynchronizationContext ();
 			var response = await Client.ProcessAsync (request).ContinueWith<Response>(r => {
 				if (r.IsFaulted && r.Exception.InnerException.InnerException is InvalidSessionException) 
 				{
+					Debug.WriteLine("loadaccounts: process returned: " + r.Exception);
+					return null;
+				} 
+				else if (r.IsFaulted)
+				{
+					Debug.WriteLine(r.Exception.Flatten().InnerException);
+					ShowGeneralNetworkError();
+					handledAlready = true;
 					return null;
 				}
 				return r.Result;
-			});
+			}, scheduler);
+
+			if (handledAlready)
+			{
+				SetLoadingState (false);
+				return;
+			}
+
 			if (response == null)
 			{
-				StartAuthorization ();
+				Debug.WriteLine("loadaccounts: re-initializing salesforce.");
+
+				InitializeSalesforce (); //StartAuthorization ();
 				return;
 			}
 			var result = response.GetResponseText ();
@@ -118,7 +135,14 @@ namespace SalesforceSample.iOS
 			SetLoadingState (false);
 		}
 
-		static void SetLoadingState(bool loading)
+		static void ShowGeneralNetworkError ()
+		{
+			var message = "Looks like you aren't connected to the Internet.";
+			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
+			alertView.Show ();
+		}
+
+		internal void SetLoadingState(bool loading)
 		{
 			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = loading;
 		}

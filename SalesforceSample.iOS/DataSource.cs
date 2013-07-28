@@ -4,6 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Salesforce;
+using System;
 
 namespace SalesforceSample.iOS
 {
@@ -58,7 +59,7 @@ namespace SalesforceSample.iOS
 			return true;
 		}
 
-		public override async void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle,	NSIndexPath indexPath)
+		public async override void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle,	NSIndexPath indexPath)
 		{
 			if (editingStyle == UITableViewCellEditingStyle.Delete) {
 				var selected = controller.DataSource.Objects.ElementAtOrDefault (indexPath.Row) as JsonValue;
@@ -67,10 +68,13 @@ namespace SalesforceSample.iOS
 				// Delete the row from the data source.
 				var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
 
+				var rootController = controller as RootViewController;
 				try 
 				{
-					await controller.Client.ProcessAsync (request);
-					objects.Remove (selected);
+					rootController.SetLoadingState(true);
+					var response = await controller.Client.ProcessAsync<DeleteRequest> (request);
+					if (response.StatusCode == System.Net.HttpStatusCode.OK)
+						objects.Remove (selected);
 				}
 				catch (InsufficientRightsException) 
 				{
@@ -79,6 +83,10 @@ namespace SalesforceSample.iOS
 				catch (DeleteFailedException ex) 
 				{
 					ShowDeleteFailedMessage (tableView, ex);
+				}
+				finally
+				{
+					rootController.SetLoadingState(false);
 				}
 				tableView.ReloadData ();
 			} else if (editingStyle == UITableViewCellEditingStyle.Insert) {

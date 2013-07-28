@@ -62,7 +62,7 @@ namespace Tests.Android
 
 			foreach(var r in results)
 			{
-				Console.WriteLine (r);
+				Debug.WriteLine (r);
 			}
 			Assert.True (true);
 		}

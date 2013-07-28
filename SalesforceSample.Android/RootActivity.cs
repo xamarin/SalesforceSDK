@@ -43,7 +43,7 @@ namespace SalesforceSample.Droid
 			ListView.ItemClick += (sender,e) => {
 				var t = ((DataAdapter)ListAdapter).GetItem(e.Position);
 
-				Console.WriteLine("Clicked on " + t.ToString());
+				Debug.WriteLine("Clicked on " + t.ToString());
 
 				var intent = new Intent();
 				intent.SetClass(this, typeof(DetailActivity));
@@ -93,7 +93,7 @@ namespace SalesforceSample.Droid
 
 			var resultRecords = results.OfType<JsonValue> ().ToList ();
 
-			Console.WriteLine ("records: {0}", resultRecords.Count);
+			Debug.WriteLine ("records: {0}", resultRecords.Count);
 			ListAdapter = new DataAdapter (this, resultRecords);
 
 //			SetLoadingState (false);

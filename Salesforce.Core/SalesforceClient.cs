@@ -46,11 +46,20 @@ namespace Salesforce
 		/// </summary>
 		public event EventHandler<AuthenticatorCompletedEventArgs> AuthenticationComplete;
 
+		volatile ISalesforceUser currentUser;
+
 		/// <summary>
 		/// The currently authenticated Salesforce user.
 		/// </summary>
 		/// <value>The current user.</value>
-		public ISalesforceUser CurrentUser { get; set; }
+		public ISalesforceUser CurrentUser {
+			get {
+				return currentUser;
+			}
+			set {
+				currentUser = value;
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the scheduler.
@@ -61,6 +70,16 @@ namespace Salesforce
 		/// </remarks>
 		/// <value>The scheduler.</value>
 		protected TaskScheduler Scheduler { get; set; }
+		
+		/// <summary>
+		/// Gets or sets the UI thread's scheduler.
+		/// </summary>
+		/// <remarks>
+		/// Constructor should be called from the UI thread
+		/// to ensure safe dispatch to UI elements.
+		/// </remarks>
+		/// <value>The scheduler.</value>
+		protected TaskScheduler MainThreadScheduler { get; set; }
 
 		/// <summary>
 		/// Your Salesforce application's Customer Id.
@@ -82,7 +101,7 @@ namespace Salesforce
 		{
 			ClientId = clientId;
 			ClientSecret = clientSecret;
-
+			MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
 			Scheduler = TaskScheduler.Default;
 
 			#if PLATFORM_IOS
@@ -91,7 +110,7 @@ namespace Salesforce
 			Adapter = new AndroidPlatformAdapter();
 			#endif
 
-			var users = LoadUsers ().ToArray();
+			var users = LoadUsers ().Where(u => !u.RequiresReauthentication).ToArray();
 
 			if (users.Count () > 0) {
 				CurrentUser = users.First ();
@@ -122,6 +141,9 @@ namespace Salesforce
 					});
 				})
 			);
+
+			if (CurrentUser == null || CurrentUser.RequiresReauthentication)
+				Authenticator.AccessTokenUrl = null;
 
 			Adapter.Authenticator = Authenticator;
 
@@ -157,6 +179,7 @@ namespace Salesforce
 		/// <param name="account">Account.</param>
 		public void Save(ISalesforceUser account)
 		{
+			Debug.WriteLine ("Saving user: " + account);
 			Adapter.SaveAccount (account);
 		}
 
@@ -166,7 +189,9 @@ namespace Salesforce
 		/// <returns>The accounts.</returns>
 		public IEnumerable<ISalesforceUser> LoadUsers()
 		{
-			return Adapter.LoadAccounts ();
+			var users = Adapter.LoadAccounts ().Where(u => !u.RequiresReauthentication);
+			Debug.WriteLine ("Loading {0} users", users.Count());
+			return users;
 		}
 
 		/// <summary>
@@ -177,39 +202,24 @@ namespace Salesforce
 		public Response Process<T>(IAuthenticatedRequest request) where T: class, IAuthenticatedRequest
 		{
 			Task<Response> task = null;
-			Response result = null;
 			try
 			{
 				task = ProcessAsync (request);
 				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
-				result = task.Result;
+				if (!task.IsFaulted)
+					return task.Result;
+
+				Debug.WriteLine ("Process rethrowing exception: " + task.Exception);
+				throw task.Exception.InnerException;
 			}
-			catch (AggregateException ex)
+			catch (AggregateException)
 			{
-				var flatEx = task.Exception.Flatten ();
-				if (task.IsFaulted)
-				{
-					// We only want to swallow this 
-					// exception if we have reason to 
-					// believe our access_token is stale.
-					var webEx = flatEx
-						.InnerExceptions
-						.FirstOrDefault (e => e.GetType () == typeof(WebException));
-
-					if (webEx == null || ((HttpWebResponse)((WebException)webEx).Response).StatusCode != HttpStatusCode.Unauthorized)
-						throw;
-
-					// Refresh the OAuth2 session token.
-					CurrentUser = RefreshSessionToken ();
-
-					// Retry our request with the new token.
-					var retryTask = ProcessAsync (request);
-					retryTask.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
-				}
-				throw new ApplicationException(flatEx.Message, flatEx);
+				// We're hiding the fact that this method
+				// is using the async version. That means
+				// we need to remove the aggregate exception
+				// wrapper and retrow the actual exception.
+				throw task.Exception.InnerException;
 			}
-
-			return result;
 		}
 
 		/// <summary>
@@ -221,38 +231,56 @@ namespace Salesforce
 		{
 			var oauthRequest = request.ToOAuth2Request(CurrentUser);
 
-			Console.WriteLine (oauthRequest.Url);
+			Debug.WriteLine (oauthRequest.Url);
 
 			Task<Response> task = null;
+			var scheduler = TaskScheduler.FromCurrentSynchronizationContext ();
 			task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
 
 				if (!response.IsFaulted) return response.Result;
 
+				var innerEx = response.Exception.Flatten().InnerException;
+				if (!(innerEx is WebException))
+					throw innerEx;
+
 				var responseBody = ProcessResponseBody (response);
+				if (responseBody == String.Empty) throw innerEx;
 
-				var errorDetails = JsonValue.Parse(responseBody);
+				Debug.WriteLine("request fail: " + responseBody);
 
-				Debug.WriteLine(responseBody);
+				var errorDetails = JsonValue.Parse(responseBody).OfType<JsonObject>().ToArray();
 
-				var code = errorDetails[0]["errorCode"];
-
-				if (code == "DELETE_FAILED") 
+				if (errorDetails.Any (e => e.ContainsKey("error") && e["error"] == "invalid_grant"))
 				{
-					var message = errorDetails [0] ["message"];
-					throw new DeleteFailedException (message);
+					ForceUserReauthorization(true);
+
+					var message = errorDetails [0] ["error_description"];
+					Debug.WriteLine("reason: " + message);
+					throw new InvalidSessionException (message);
 				}
 
-				if (code == "INVALID_SESSION_ID")
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_SESSION_ID"))
 				{
 					// Refresh the OAuth2 session token.
 					CurrentUser = RefreshSessionToken ();
+
+					var message = errorDetails [0] ["error_description"];
+					Debug.WriteLine("reason: " + message);
 
 					// Retry our request with the new token.
 					var retryTask = ProcessAsync (request).ContinueWith(retryResponse => {
 						if (!retryResponse.IsFaulted) return retryResponse.Result;
 
-						responseBody = ProcessResponseBody(retryResponse);
-						if (code == "INVALID_SESSION_ID")
+						ForceUserReauthorization(true);
+
+						var retryResponseBody = ProcessResponseBody(retryResponse);
+						var retryErrorDetails = JsonValue.Parse(retryResponseBody).OfType<JsonObject>().ToArray();
+
+						Debug.WriteLine("retry request fail: " + retryResponseBody);
+
+						if (retryErrorDetails.Any (e => 
+						                      (e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_SESSION_ID") ||
+						    				  (e.ContainsKey("error") && e["error"] == "invalid_grant")))
 							throw new InvalidSessionException(retryResponse.Exception.Message);
 
 						return retryResponse.Result;
@@ -261,13 +289,24 @@ namespace Salesforce
 					return retryTask.Result;
 				}
 
-				if (code == "INSUFFICIENT_ACCESS_OR_READONLY")
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "DELETE_FAILED"))
 				{
 					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
+					throw new DeleteFailedException (message);
+				}
+
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INSUFFICIENT_ACCESS_OR_READONLY"))
+				{
+					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
 					throw new InsufficientRightsException (message);
 				}
+
+				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + task.Exception.ToString());
+
 				return response.Result;
-			}, Scheduler);
+			}, scheduler);
 
 			return task; // TODO: Create a public invoker that returns a Salesforce domain object.
 		}
@@ -275,9 +314,13 @@ namespace Salesforce
 		static string ProcessResponseBody (Task response)
 		{
 			var webEx = response.Exception.InnerException.InnerException as WebException;
-			var responseBody = String.Empty;
-			if (webEx != null)
-				responseBody = new StreamReader (webEx.Response.GetResponseStream ()).ReadToEnd ();
+			if (webEx == null) return string.Empty;
+			if (webEx.Response == null) return string.Empty;
+
+			var stream = webEx.Response.GetResponseStream ();
+			if (stream == null) return string.Empty;
+
+			var responseBody = new StreamReader (stream).ReadToEnd ();
 			return responseBody;
 		}
 
@@ -303,6 +346,15 @@ namespace Salesforce
 			return response.StatusCode == HttpStatusCode.Unauthorized;
 		}
 
+		void ForceUserReauthorization (bool required)
+		{
+			if (CurrentUser == null) return;
+
+			((SalesforceUser)CurrentUser).RequiresReauthentication = required;
+			Debug.WriteLine ("{0} forced to reauth? {1}", CurrentUser.Username, required);
+			Save (CurrentUser);
+		}
+
 		/// <summary>
 		/// Requests a new session token.
 		/// </summary>
@@ -317,7 +369,13 @@ namespace Salesforce
 				{ "client_secret", ClientSecret },
 				{ "refresh_token", refreshToken }
 			}).ContinueWith(response => {
-				if (!response.IsFaulted) return response.Result;
+				if (!response.IsFaulted)
+				{
+					ForceUserReauthorization(false);
+					return response.Result;
+				}
+
+				ForceUserReauthorization(true);
 
 				var responseBody = ProcessResponseBody(response);
 				Debug.WriteLine(responseBody);
@@ -340,17 +398,20 @@ namespace Salesforce
 		/// <param name="args">Arguments.</param>
 		private void OnCompleted (object sender, AuthenticatorCompletedEventArgs args)
 		{
-			if (!args.IsAuthenticated)
+			if (!args.IsAuthenticated) {
+				ForceUserReauthorization (true);
 				return;
+			}
 
 			var ev = AuthenticationComplete;
 			if ( ev != null)
 			{
 				CurrentUser = args.Account;
+				ForceUserReauthorization (false);
 				ev (sender, args);
 			}
 			else
-				Console.WriteLine("No activation completion handler.");
+				Debug.WriteLine("No activation completion handler.");
 		}
 
 	}

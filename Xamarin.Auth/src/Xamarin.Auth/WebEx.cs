@@ -68,8 +68,8 @@ namespace Xamarin.Utilities
 					.FromAsync<WebResponse> (request.BeginGetResponse, request.EndGetResponse, null);
 		}
 
-		static char[] AmpersandChars = new char[] { '&' };
-		static char[] EqualsChars = new char[] { '=' };
+		static readonly char[] AmpersandChars = new char[] { '&' };
+		static readonly char[] EqualsChars = new char[] { '=' };
 
 		public static IDictionary<string, string> FormDecode (string encodedString)
 		{

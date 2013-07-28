@@ -170,6 +170,8 @@ namespace Xamarin.Auth
 			this.requestState = new string (chars);
 		}
 
+		public Uri AccessTokenUrl { get { return accessTokenUrl; } set { accessTokenUrl = value; }}
+
 		bool IsImplicit { get { return accessTokenUrl == null; } }
 
 		/// <summary>

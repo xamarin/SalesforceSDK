@@ -24,7 +24,7 @@ namespace Tests.iOS
 			authMan.AuthenticationComplete += (sender, e) => {
 				if (e.IsAuthenticated){
 					// Invoke completion handler.
-					Console.WriteLine("Auth success: " + e.Account.Username);
+					Debug.WriteLine("Auth success: " + e.Account.Username);
 					passed = true;
 				}
 			};
@@ -34,10 +34,10 @@ namespace Tests.iOS
 				var obj = authMan.GetLoginInterface();
 				Assert.NotNull(obj);
 			} catch (Exception ex) {
-				Console.WriteLine (ex.Message);
+				Debug.WriteLine (ex.Message);
 			}
 
-			Console.WriteLine (passed);
+			Debug.WriteLine (passed);
 			Assert.That (() => passed, new DelayedConstraint(new PredicateConstraint<bool>((o) => {
 				return passed;
 			}), 10000));
