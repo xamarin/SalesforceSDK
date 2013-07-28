@@ -4,6 +4,7 @@ using Salesforce;
 using System.Linq;
 using Xamarin.Auth;
 using System.Diagnostics;
+using System.Net;
 
 namespace Tests.Android
 {
@@ -32,7 +33,7 @@ namespace Tests.Android
 					Username = "zack@xamarin.form",					
 				};
 				user.Properties ["instance_url"] = @"https://na15.salesforce.com/";
-				user.Properties ["access_token"] = @"00Di0000000bhOg!ARYAQBe5A8YSKAJhtkXqdnycCfUj7cj7h6_HtRefWefgE7GvfU6sfNzuSN_VgVw8aYswTsgSSZQ0Yvy0QXhpJtEMrok0ij03";
+				user.Properties ["access_token"] = @"00Di0000000bhOg!ARYAQLWetbW6H_Lw78K0SlJ3IU7bBCeOMEhtlP8hTvaWALsYNuxfkikbC5tbAfgdNvxjSkZJ6wHVr8A5qIKM7.KeBmGnoIlg";
 
 				Client.Save (user);
 			}
@@ -52,21 +53,25 @@ namespace Tests.Android
 		[Test]
 		public async void Pass ()
 		{
-			var request = new ReadRequest {
-				//				Resource = new Search { QueryText = "FIND {John}" }
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+			var account = new SObject { Id = "001i000000Jss8EAAR", ResourceName = "Account" };
+			account.Options.Add("Website", "http://hostilehostel.com");
+			var request = new UpdateRequest {
+//				Resource = new Search { QueryText = "FIND {John}" }
+//				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber FROM Account" }
+				Resource = account
 			};
 
-			var response = await Client.ProcessAsync<ReadRequest> (request);
-			var result = response.GetResponseText ();
-
-			var results = System.Json.JsonValue.Parse(result)["records"];
-
-			foreach(var r in results)
-			{
-				Debug.WriteLine (r);
-			}
-			Assert.True (true);
+			var response = await Client.ProcessAsync<UpdateRequest> (request);
+			Assert.That (response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+//			var result = response.GetResponseText ();
+//
+//			var results = System.Json.JsonValue.Parse(result)["records"];
+//
+//			foreach(var r in results)
+//			{
+//				Debug.WriteLine (r);
+//			}
+//			Assert.True (true);
 		}
 	}
 }

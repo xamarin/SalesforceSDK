@@ -12,7 +12,11 @@ namespace Salesforce
 {
 	public class SalesforceClient
 	{
+#if URI_FIX
+		internal const string RestApiPath = "services/data/";
+#else
 		internal const string RestApiPath = "/services/data/";
+#endif
 
 		/// <summary>
 		/// The Salesforce OAuth authorization endpoint.
@@ -303,7 +307,9 @@ namespace Salesforce
 					throw new InsufficientRightsException (message);
 				}
 
-				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + task.Exception.ToString());
+				// TODO: Handle this: [{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]
+
+				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + response.Exception);
 
 				return response.Result;
 			}, scheduler);

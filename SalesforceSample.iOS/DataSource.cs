@@ -47,7 +47,6 @@ namespace SalesforceSample.iOS
 					Accessory = UITableViewCellAccessory.DisclosureIndicator
 				};
 			}
-
 			var o = (JsonObject) objects[indexPath.Row];
 			cell.TextLabel.Text = o["Name"];
 			cell.DetailTextLabel.Text = o["AccountNumber"];
