@@ -238,7 +238,7 @@ namespace Salesforce
 			Debug.WriteLine (oauthRequest.Url);
 
 			Task<Response> task = null;
-			var scheduler = TaskScheduler.FromCurrentSynchronizationContext ();
+
 			task = oauthRequest.GetResponseAsync ().ContinueWith (response => {
 
 				if (!response.IsFaulted) return response.Result;
@@ -267,12 +267,13 @@ namespace Salesforce
 				{
 					// Refresh the OAuth2 session token.
 					CurrentUser = RefreshSessionToken ();
+					Save (CurrentUser);
 
-					var message = errorDetails [0] ["error_description"];
-					Debug.WriteLine("reason: " + message);
+					Debug.WriteLine("reason: invalid session id.");
 
 					// Retry our request with the new token.
 					var retryTask = ProcessAsync (request).ContinueWith(retryResponse => {
+						Debug.WriteLine("Retrying with new token.");
 						if (!retryResponse.IsFaulted) return retryResponse.Result;
 
 						ForceUserReauthorization(true);
@@ -288,7 +289,7 @@ namespace Salesforce
 							throw new InvalidSessionException(retryResponse.Exception.Message);
 
 						return retryResponse.Result;
-					});
+					}, TaskScheduler.Default);
 
 					return retryTask.Result;
 				}
@@ -307,14 +308,21 @@ namespace Salesforce
 					throw new InsufficientRightsException (message);
 				}
 
-				// TODO: Handle this: [{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]
+				// [{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "NOT_FOUND"))
+				{
+					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
+					throw new MissingResourceException (message);
+				}
+
 
 				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + response.Exception);
 
 				return response.Result;
-			}, scheduler);
+			});
 
-			return task; // TODO: Create a public invoker that returns a Salesforce domain object.
+			return task;
 		}
 
 		static string ProcessResponseBody (Task response)

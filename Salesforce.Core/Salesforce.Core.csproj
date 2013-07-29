@@ -111,6 +111,7 @@
     <Compile Include="Request\CreateRequest.cs" />
     <Compile Include="Request\UpdateRequest.cs" />
     <Compile Include="Request\DeleteRequest.cs" />
+    <Compile Include="Exceptions\MissingResourceException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
