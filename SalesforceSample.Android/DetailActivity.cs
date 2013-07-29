@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
+
 using System.Json;
 using Salesforce;
+
 using Debug = System.Diagnostics.Debug;
 
 namespace SalesforceSample.Droid
@@ -26,15 +22,12 @@ namespace SalesforceSample.Droid
 			// Create your application here
 
 			var extra = Intent.GetStringExtra ("JsonItem");
-			System.Diagnostics.Debug.WriteLine ("extra;" + extra);
+			Debug.WriteLine ("extra;" + extra);
 			data = JsonValue.Parse (extra);
 
 
 			ListAdapter = new DetailAdapter (this, data);
-
-
 		}
-
 
 		async void Delete () 
 		{
@@ -43,8 +36,10 @@ namespace SalesforceSample.Droid
 			// Delete the row from the data source.
 			var request = new DeleteRequest (selectedObject) { Resource = selectedObject } ;
 
-			await RootActivity.Client.ProcessAsync (request);
-			Debug.WriteLine("delete finished.");
+			await RootActivity.Client.ProcessAsync (request).ContinueWith (response => {
+				Debug.WriteLine ("delete finished.");
+				StartActivity (typeof(RootActivity));
+			});
 		}
 
 		/// <summary>shortcut back to the main screen</summary>
@@ -57,8 +52,7 @@ namespace SalesforceSample.Droid
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			if (item.ItemId == Resource.Id.delete) {
-				StartActivity (typeof(RootActivity));
-
+				Delete ();
 			}
 			return true;
 		}

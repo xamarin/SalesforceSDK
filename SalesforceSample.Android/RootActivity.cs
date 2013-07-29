@@ -21,13 +21,14 @@ namespace SalesforceSample.Droid
 		ISalesforceUser Account { get; set; }
 
 		const string key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
+		const string secret = "5754078534436456018";
 		Uri redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback");
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
-			Client = new SalesforceClient (key, "5754078534436456018", redirectUrl);
+			Client = new SalesforceClient (key, secret, redirectUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			var users = Client.LoadUsers ();
@@ -95,11 +96,7 @@ namespace SalesforceSample.Droid
 
 			System.Diagnostics.Debug.WriteLine ("records: {0}", resultRecords.Count);
 			ListAdapter = new DataAdapter (this, resultRecords);
-
-//			SetLoadingState (false);
 		}
-
-
 
 		/// <summary>shortcut back to the main screen</summary>
 		public override bool OnCreateOptionsMenu (IMenu menu)
@@ -112,7 +109,7 @@ namespace SalesforceSample.Droid
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
 			if (item.ItemId == Resource.Id.add) {
-				// HACK: populate blank fields with blank JSON
+				// Populate blank fields with blank JSON
 				var extra = @"{""type"": ""Account"", ""Id"": """", ""Name"": """", ""AccountNumber"": """", ""Phone"": """", ""Website"": """", ""Industry"": """"}";
 
 				var intent = new Intent();
