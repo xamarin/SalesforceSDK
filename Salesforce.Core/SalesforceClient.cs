@@ -66,10 +66,13 @@ namespace Salesforce
 				return; // TODO : Error handling/reporting
 		}
 
-		public static async Task<IEnumerable<SObject>> ReadAsync (this SalesforceClient self, string soql)
+		public static Task<IEnumerable<SObject>> ReadAsync (this SalesforceClient self, string soql)
 		{
-			var request = new ReadRequest {Resource = new Query {Statement = soql}};
+			return self.ReadAsync (new ReadRequest {Resource = new Query {Statement = soql}});
+		}
 
+		public static async Task<IEnumerable<SObject>> ReadAsync (this SalesforceClient self, ReadRequest request)
+		{
 			Response response;
 
 			try {
@@ -90,6 +93,17 @@ namespace Salesforce
 
 			var results = jsonValue["records"];
 			return results.OfType<JsonObject> ().Select (j => new SObject (j));
+		}
+
+		public static IEnumerable<SObject> Read (this SalesforceClient self, ReadRequest request)
+		{
+			var result = self.ReadAsync (request);
+			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout))) {
+				Debug.WriteLine ("Request timed out");
+				return Enumerable.Empty<SObject> ();
+			}
+
+			return result.Result;
 		}
 
 		public static IEnumerable<SObject> Read (this SalesforceClient self, string soql)
