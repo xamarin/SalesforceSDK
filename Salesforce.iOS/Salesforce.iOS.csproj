@@ -42,6 +42,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -166,6 +167,9 @@
     </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
       <Link>Exceptions\MissingResourceException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
