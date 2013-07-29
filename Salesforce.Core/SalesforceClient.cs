@@ -18,6 +18,15 @@ namespace Salesforce
 		internal const string RestApiPath = "/services/data/";
 #endif
 
+		static int defaultNetworkTimeout = 90;
+		public static int DefaultNetworkTimeout 
+		{
+			get 
+			{
+				return defaultNetworkTimeout;
+			}
+		}
+
 		/// <summary>
 		/// The Salesforce OAuth authorization endpoint.
 		/// </summary>
@@ -129,7 +138,7 @@ namespace Salesforce
 			Authenticator = new OAuth2Authenticator (
 				clientId: clientId,
 				clientSecret: ClientSecret,
-				scope: "api refresh_token", // TODO: Convert this to a static struct. Or not.
+				scope: "api refresh_token",
 				authorizeUrl: new Uri(AuthPath),
 				redirectUrl: redirectUrl,
 				accessTokenUrl: new Uri(TokenPath),
@@ -209,7 +218,7 @@ namespace Salesforce
 			try
 			{
 				task = ProcessAsync (request);
-				task.Wait (TimeSpan.FromSeconds (90)); // TODO: Move this to a config setting.
+				task.Wait (TimeSpan.FromSeconds(DefaultNetworkTimeout));
 				if (!task.IsFaulted)
 					return task.Result;
 
@@ -253,6 +262,8 @@ namespace Salesforce
 				Debug.WriteLine("request fail: " + responseBody);
 
 				var errorDetails = JsonValue.Parse(responseBody).OfType<JsonObject>().ToArray();
+
+				//TODO: Needs refactoring. This method is too long.
 
 				if (errorDetails.Any (e => e.ContainsKey("error") && e["error"] == "invalid_grant"))
 				{
@@ -308,7 +319,7 @@ namespace Salesforce
 					throw new InsufficientRightsException (message);
 				}
 
-				// [{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]
+				// Handles: [{"message":"The requested resource does not exist","errorCode":"NOT_FOUND"}]
 				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "NOT_FOUND"))
 				{
 					var message = errorDetails [0] ["message"];
@@ -400,7 +411,7 @@ namespace Salesforce
 
 				return response.Result;
 			}, TaskScheduler.Default);
-			refreshTask.Wait (TimeSpan.FromSeconds(90)); // TODO: Move this to a config setting.
+			refreshTask.Wait (TimeSpan.FromSeconds (DefaultNetworkTimeout));
 			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];
 			return CurrentUser;
 		}
