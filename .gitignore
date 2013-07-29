@@ -113,3 +113,7 @@ Documentation/SalesforceMobileSDK-iOS/
 _UpgradeReport_Files/
 Backup*/
 UpgradeLog*.XML
+
+*.xam
+
+Package/SalesforceSDK-1.0/lib/ios/Salesforce.dll
