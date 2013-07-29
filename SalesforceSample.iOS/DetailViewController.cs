@@ -19,11 +19,11 @@ namespace SalesforceSample.iOS
 	}
 	public class DetailViewController : UITableViewController
 	{
-		JsonValue detailItem;
+		AccountObject detailItem;
 		DetailSource source;
 		SalesforceClient client;
 
-		public event EventHandler<JsonValue> ItemUpdated;
+		public event EventHandler<AccountObject> ItemUpdated;
 
 		public DetailViewController (SalesforceClient client) : base (UITableViewStyle.Grouped)
 		{
@@ -37,7 +37,7 @@ namespace SalesforceSample.iOS
 				ItemUpdated (this, detailItem);
 		}
 
-		public void SetDetailItem (JsonValue newDetailItem)
+		public void SetDetailItem (AccountObject newDetailItem)
 		{
 			if (detailItem != newDetailItem) {
 				detailItem = newDetailItem;
@@ -47,7 +47,7 @@ namespace SalesforceSample.iOS
 			}
 		}
 
-		void ConfigureView (JsonValue target)
+		void ConfigureView (AccountObject target)
 		{
 			if (TableView == null)
 				return;

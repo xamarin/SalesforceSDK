@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Json;
 
 namespace Salesforce
 {
@@ -7,7 +8,7 @@ namespace Salesforce
 	{
 		string ResourceType { get; }
 		string Id { get; }
-		IDictionary<string, string> Options { get; }
+		IDictionary<string, JsonValue> Options { get; }
 	}
 }
 
