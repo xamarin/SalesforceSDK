@@ -10,7 +10,7 @@ namespace Salesforce
 	{
 		private static readonly string Format = "{0}/";
 		string id;
-		IDictionary<string, string> options;
+		IDictionary<string, JsonValue> options;
 		string resourceName;
 		bool constructedFromJson;
 		SObject innerObject;
@@ -45,7 +45,7 @@ namespace Salesforce
 			}
 		}
 
-		public IDictionary<string, string> Options
+		public IDictionary<string, JsonValue> Options
 		{
 			get { return innerObject == null ? options : innerObject.Options; }
 			protected set { options = value; }
@@ -63,7 +63,7 @@ namespace Salesforce
 
 		#region IRestResource implementation
 
-		public string ResourceName
+		public virtual string ResourceName
 		{
 			get { return innerObject == null ? resourceName : innerObject.ResourceName; }
 			set
@@ -84,10 +84,10 @@ namespace Salesforce
 		public SObject(JsonObject restObject)
 		{
 			if (restObject == null) {
-				Options = new Dictionary<string, string> ();
+				Options = new Dictionary<string, JsonValue> ();
 			} else {
 				constructedFromJson = true;
-				Options = restObject.Where (o => o.Key != "attributes").ToDictionary(k => k.Key, v => v.Value != null ? (string)v.Value : String.Empty);
+				Options = restObject.Where (o => o.Key != "attributes").ToDictionary(k => k.Key, v => v.Value);
 				ResourceName = restObject["attributes"]["type"];
 				Id = restObject["Id"];
 				if (Options.ContainsKey ("Id"))
@@ -95,7 +95,7 @@ namespace Salesforce
 			}
 		}
 
-		protected T GetOption<T> (string key, T @default, Func<string, T> convertFunc)
+		protected T GetOption<T> (string key, T @default, Func<JsonValue, T> convertFunc)
 		{
 			if (!Options.ContainsKey (key)) {
 				return @default;
@@ -104,15 +104,19 @@ namespace Salesforce
 			return convertFunc (obj);
 		}
 
-		protected string GetOption (string key, string @default = null)
+		protected string GetOption (string key, string @default = "")
 		{
 			if (!Options.ContainsKey (key)) {
 				return @default;
 			}
-			return Options[key];
+
+			var result = Options[key];
+			if (result != null && result.JsonType == JsonType.String)
+				return result;
+			return @default;
 		}
 
-		protected void SetOption<T> (string key, T value, Func<T, string> convertFunc = null)
+		protected void SetOption<T> (string key, T value, Func<T, JsonValue> convertFunc = null)
 		{
 			if (convertFunc == null)
 				Options[key] = value.ToString ();

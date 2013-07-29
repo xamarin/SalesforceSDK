@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Json;
 using System.Text;
 
 using System.Web;
@@ -26,7 +27,7 @@ namespace Salesforce
 			private set;
 		}
 
-		public System.Collections.Generic.IDictionary<string, string> Options {
+		public IDictionary<string, JsonValue> Options {
 			get ;
 			protected set ;
 		}
@@ -68,7 +69,7 @@ namespace Salesforce
 
 		public Search()
 		{
-			Options = new Dictionary<string, string> ();
+			Options = new Dictionary<string, JsonValue> ();
 		}
 
 		public override string ToString ()

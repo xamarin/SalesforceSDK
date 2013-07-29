@@ -12,6 +12,8 @@ namespace SalesforceSample.iOS
 {
 	public class AccountObject : SObject
 	{
+		public override string ResourceName { get { return "Account"; } set { } }
+
 		public string Name
 		{
 			get { return GetOption ("Name", string.Empty); }
@@ -80,7 +82,7 @@ namespace SalesforceSample.iOS
 			AddAccountController.DismissViewController(true, async ()=>{
 				var readRequest = new ReadRequest { Resource = account};
 				var readResult = await Client.ProcessAsync<ReadRequest>(readRequest).ConfigureAwait(true);
-				var jsonval = SObject.Parse (JsonValue.Parse(readResult.GetResponseText())).As<AccountObject> ();
+				var jsonval = SObject.Parse (readResult.GetResponseText()).As<AccountObject> ();
 				AddAccountController.Dispose();
 				AddAccountController = null;
 				DataSource.Objects.Add(jsonval);
