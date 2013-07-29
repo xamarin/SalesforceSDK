@@ -2,8 +2,11 @@ using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Json;
+using System.Net;
+using System.Threading.Tasks;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Salesforce;
 
 namespace SalesforceSample.iOS
 {
@@ -11,15 +14,34 @@ namespace SalesforceSample.iOS
 	{
 		JsonValue detailItem;
 		DetailSource source;
+		SalesforceClient client;
 
-		public DetailViewController () : base (UITableViewStyle.Grouped)
+		public event EventHandler ItemUpdated;
+
+		public DetailViewController (SalesforceClient client) : base (UITableViewStyle.Grouped)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Account Details", "Account Details");
+			this.client = client;
 		}
 
-		public void SendUpdate ()
+		public async Task<bool> SendUpdate ()
 		{
+			var account = new SObject { Id = detailItem["Id"], ResourceName = "Account" };
+			account.Options.Add("Name", detailItem["Name"]);
+			account.Options.Add("Industry", detailItem["Industry"]);
+			account.Options.Add("Phone", detailItem["Phone"]);
+			account.Options.Add("Website", detailItem["Website"]);
+			account.Options.Add("AccountNumber", detailItem["AccountNumber"]);
+			var request = new UpdateRequest {
+				Resource = account
+			};
+
+			var response = await client.ProcessAsync (request);
+
+			if (ItemUpdated != null)
+				ItemUpdated (this, EventArgs.Empty);
 			NavigationController.PopViewControllerAnimated (true);
+			return response.StatusCode == HttpStatusCode.NoContent;
 		}
 
 		public void SetDetailItem (JsonValue newDetailItem)

@@ -26,8 +26,7 @@ namespace SalesforceSample.iOS
 		Task AddAccountAsync (Action callback)
 		{
 			var action = new Action (()=>{
-				AddAccountController = new AddAccountController ();
-				AddAccountController.Finished = callback;
+				AddAccountController = new AddAccountController {Finished = callback};
 				PresentViewController (AddAccountController, true, null);
 			});
 
@@ -97,6 +96,9 @@ namespace SalesforceSample.iOS
 
 			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
+
+			DetailViewController = new DetailViewController(Client);
+			DetailViewController.ItemUpdated += (sender, args) => LoadAccounts ();
 
 			var users = Client.LoadUsers ();
 			if (!users.Any ()) {

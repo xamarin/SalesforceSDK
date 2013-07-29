@@ -102,7 +102,6 @@ namespace SalesforceSample.iOS
 			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
 			alertView.Show ();
 			tableView.ReloadData ();
-			return;
 		}
 
 		static void ShowInsuffientRightsMessage (UITableView tableView)
@@ -111,14 +110,10 @@ namespace SalesforceSample.iOS
 			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
 			alertView.Show ();
 			tableView.ReloadData ();
-			return;
 		}
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
-			if (controller.DetailViewController == null)
-				controller.DetailViewController = new DetailViewController ();
-
 			controller.DetailViewController.SetDetailItem (objects[indexPath.Row]);
 			controller.NavigationController.PushViewController (controller.DetailViewController, true);
 		}

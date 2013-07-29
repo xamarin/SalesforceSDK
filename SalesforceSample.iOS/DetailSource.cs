@@ -43,6 +43,11 @@ namespace SalesforceSample.iOS
 		{
 			tableView.DeselectRow (indexPath, true);
 			if (indexPath.Section == 1) {
+				Data["Name"] = textBoxes["Name"].Text;
+				Data["Industry"] = textBoxes["Industry"].Text;
+				Data["Phone"] = textBoxes["Phone"].Text;
+				Data["Website"] = textBoxes["Website"].Text;
+				Data["AccountNumber"] = textBoxes["Account"].Text;
 				controller.SendUpdate ();
 			}
 		}
@@ -54,7 +59,7 @@ namespace SalesforceSample.iOS
 			return true;
 		}
 
-		List<UIView> cellsList = new List<UIView>();
+		Dictionary<string, UITextField> textBoxes = new Dictionary<string, UITextField> (); 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
 			if (indexPath.Section == 1) {
@@ -101,8 +106,7 @@ namespace SalesforceSample.iOS
 				break;
 			}
 
-			cellsList.Add (cell);
-			cellsList.Add (textField);
+			textBoxes[cell.TextLabel.Text] = textField;
 			cell.ContentView.Add (textField);
 			return cell;
 		}
