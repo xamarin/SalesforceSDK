@@ -1,62 +1,43 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Json;
 
 namespace SalesforceSample.Droid
 {
-	public class DataAdapter : BaseAdapter<JsonValue>
+	public class DataAdapter : BaseAdapter<AccountObject>
 	{
-		Activity context;
-		List<JsonObject> objects = new List<JsonObject> ();
+		readonly Activity context;
+		readonly List<AccountObject> objects = new List<AccountObject> ();
 
-		public DataAdapter(Activity activity, List<JsonObject> items)
-			: base()
+		public DataAdapter(Activity activity, List<AccountObject> items)
 		{
 			context = activity;
 			objects = items;
-		}
-
-		public List<JsonObject> Objects
-		{
-			get { return 
-				objects; }
-			set
-			{
-				objects = value;
-
-			}
 		}
 
 		public override long GetItemId(int position)
 		{
 			return position;
 		}
-		public override JsonValue this[int position]
+
+		public override AccountObject this[int position]
 		{
-			get { 
-				return objects[position]; }
+			get { return objects[position]; }
 		}
+
 		public override int Count
 		{
 			get { return objects.Count; }
 		}
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{
-			var o = (JsonObject) objects[position];
+			var o = objects[position];
 		
-			View view = convertView;
-			if (view == null) // no view to re-use, create new
-				view = context.LayoutInflater.Inflate(Resource.Layout.RootListViewCell, null);
-			view.FindViewById<TextView>(Resource.Id.Text1).Text = o["Name"];
-			view.FindViewById<TextView>(Resource.Id.Text2).Text =  o["AccountNumber"];
+			var view = convertView ?? context.LayoutInflater.Inflate(Resource.Layout.RootListViewCell, null);
+			view.FindViewById<TextView>(Resource.Id.Text1).Text = o.Name;
+			view.FindViewById<TextView>(Resource.Id.Text2).Text = o.AccountNumber;
 
 			return view;
 		}

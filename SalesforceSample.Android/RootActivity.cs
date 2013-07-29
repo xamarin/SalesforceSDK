@@ -20,15 +20,15 @@ namespace SalesforceSample.Droid
 
 		ISalesforceUser Account { get; set; }
 
-		const string key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-		const string secret = "5754078534436456018";
-		Uri redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback");
+		const string Key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
+		const string Secret = "5754078534436456018";
+		readonly Uri redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback");
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
-			Client = new SalesforceClient (key, secret, redirectUrl);
+			Client = new SalesforceClient (Key, Secret, redirectUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			var users = Client.LoadUsers ();
@@ -37,28 +37,21 @@ namespace SalesforceSample.Droid
 				var intent = Client.GetLoginInterface () as Intent;
 				StartActivityForResult (intent, 42);
 			} else {
-				// OnResume
 				LoadAccounts ();
 			}
 
 			ListView.ItemClick += (sender,e) => {
-				var t = ((DataAdapter)ListAdapter).GetItem(e.Position);
+				var t = ((DataAdapter)ListAdapter)[e.Position];
 
 				System.Diagnostics.Debug.WriteLine("Clicked on " + t.ToString());
 
 				var intent = new Intent();
 				intent.SetClass(this, typeof(DetailActivity));
-				intent.PutExtra("JsonItem", t.ToString());
+				intent.PutExtra("JsonItem", "{\"attributes\": {\"type\": \"Account\", \"url\": \"/services/data/v28.0/sobjects/Account/\"}, " + 
+					string.Format ("\"Id\": \"{0}\", \"Name\": \"{1}\", \"AccountNumber\": \"{2}\", \"Phone\": \"{3}\", \"Website\": \"{4}\", \"Industry\": \"{5}\"", t.Id, t.Name, t.AccountNumber, t.Phone, t.Website, t.Industry) + "}");
 
 				StartActivity(intent);
 			};
-		}
-
-		protected override void OnResume ()
-		{
-			base.OnResume ();
-
-			//LoadAccounts ();
 		}
 
 		void OnAuthenticationCompleted (AuthenticatorCompletedEventArgs e)
@@ -76,23 +69,8 @@ namespace SalesforceSample.Droid
 
 		async void LoadAccounts ()
 		{
-			var request = new ReadRequest () {
-				// TODO : Add error handling for when this query asks for stuff that does not exist (mispell a field to reproduce)
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
-			};
-
-			Response response = await Client.ProcessAsync (request);
-			var result = response.GetResponseText ();
-
-			var jsonValue = JsonValue.Parse(result);
-
-			if (jsonValue == null) {
-				throw new Exception("Could not parse Json data");
-			}
-
-			var results = jsonValue["records"];
-
-			var resultRecords = results.OfType<JsonObject> ().ToList ();
+			var results = await Client.ReadAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
+			var resultRecords = results.Select (s => s.As<AccountObject> ()).ToList ();
 
 			System.Diagnostics.Debug.WriteLine ("records: {0}", resultRecords.Count);
 			ListAdapter = new DataAdapter (this, resultRecords);
@@ -110,7 +88,7 @@ namespace SalesforceSample.Droid
 		{
 			if (item.ItemId == Resource.Id.add) {
 				// Populate blank fields with blank JSON
-				var extra = @"{""attributes"": {""type"": ""Account"", ""url"": ""/services/data/v28.0/sobjects/Account/""}, ""Id"": """", ""Name"": """", ""AccountNumber"": """", ""Phone"": """", ""Website"": """", ""Industry"": """"}";
+				const string extra = @"{""attributes"": {""type"": ""Account"", ""url"": ""/services/data/v28.0/sobjects/Account/""}, ""Id"": """", ""Name"": """", ""AccountNumber"": """", ""Phone"": """", ""Website"": """", ""Industry"": """"}";
 
 				var intent = new Intent();
 				intent.SetClass(this, typeof(EditActivity));
