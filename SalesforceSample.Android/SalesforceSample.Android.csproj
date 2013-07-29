@@ -53,6 +53,8 @@
     <Compile Include="DataAdapter.cs" />
     <Compile Include="DetailActivity.cs" />
     <Compile Include="DetailAdapter.cs" />
+    <Compile Include="EditActivity.cs" />
+    <Compile Include="EditAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -66,6 +68,8 @@
     <AndroidResource Include="Resources\layout\DetailListViewCell.axml" />
     <AndroidResource Include="Resources\menu\Delete.xml" />
     <AndroidResource Include="Resources\menu\Add.xml" />
+    <AndroidResource Include="Resources\layout\EditListViewCell.axml" />
+    <AndroidResource Include="Resources\menu\Save.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>

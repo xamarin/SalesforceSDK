@@ -10,10 +10,11 @@ using Debug = System.Diagnostics.Debug;
 
 namespace SalesforceSample.Droid
 {
-	[Activity (Label = "Account Details")]			
-	public class DetailActivity : ListActivity
+	
+	[Activity (Label = "Add/Edit Account")]			
+	public class EditActivity : ListActivity
 	{
-		JsonValue data;
+		JsonObject data;
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -23,20 +24,20 @@ namespace SalesforceSample.Droid
 
 			var extra = Intent.GetStringExtra ("JsonItem");
 			Debug.WriteLine ("extra;" + extra);
-			data = JsonValue.Parse (extra);
+			data = (JsonObject)JsonValue.Parse (extra);
 
-			ListAdapter = new DetailAdapter (this, data);
+			ListAdapter = new EditAdapter (this, (JsonObject)data);
 		}
 
-		async void Delete () 
+		async void Save () 
 		{
-			var selectedObject = new SObject (data as JsonObject);
+			var selectedObject = new SObject (data);
 
 			// Delete the row from the data source.
-			var request = new DeleteRequest (selectedObject) { Resource = selectedObject } ;
+			var request = new CreateRequest (selectedObject) { Resource = selectedObject } ;
 
 			await RootActivity.Client.ProcessAsync (request).ContinueWith (response => {
-				Debug.WriteLine ("delete finished.");
+				Debug.WriteLine ("save finished.");
 				StartActivity (typeof(RootActivity));
 			});
 		}
@@ -44,17 +45,17 @@ namespace SalesforceSample.Droid
 		/// <summary>shortcut back to the main screen</summary>
 		public override bool OnCreateOptionsMenu (IMenu menu)
 		{
-			MenuInflater.Inflate (Resource.Menu.Delete, menu);
+			MenuInflater.Inflate (Resource.Menu.Save, menu);
 			return true;
 		}
+
 		/// <summary>shortcut back to the main screen</summary>
 		public override bool OnOptionsItemSelected (IMenuItem item)
 		{
-			if (item.ItemId == Resource.Id.delete) {
-				Delete ();
+			if (item.ItemId == Resource.Id.save) {
+				Save ();
 			}
 			return true;
 		}
 	}
 }
-

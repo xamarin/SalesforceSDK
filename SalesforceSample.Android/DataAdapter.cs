@@ -15,18 +15,19 @@ namespace SalesforceSample.Droid
 	public class DataAdapter : BaseAdapter<JsonValue>
 	{
 		Activity context;
-		List<JsonValue> objects = new List<JsonValue> ();
+		List<JsonObject> objects = new List<JsonObject> ();
 
-		public DataAdapter(Activity activity, List<JsonValue> items)
+		public DataAdapter(Activity activity, List<JsonObject> items)
 			: base()
 		{
 			context = activity;
 			objects = items;
 		}
 
-		public List<JsonValue> Objects
+		public List<JsonObject> Objects
 		{
-			get { return objects; }
+			get { return 
+				objects; }
 			set
 			{
 				objects = value;
@@ -40,7 +41,8 @@ namespace SalesforceSample.Droid
 		}
 		public override JsonValue this[int position]
 		{
-			get { return objects[position]; }
+			get { 
+				return objects[position]; }
 		}
 		public override int Count
 		{

@@ -92,7 +92,7 @@ namespace SalesforceSample.Droid
 
 			var results = jsonValue["records"];
 
-			var resultRecords = results.OfType<JsonValue> ().ToList ();
+			var resultRecords = results.OfType<JsonObject> ().ToList ();
 
 			System.Diagnostics.Debug.WriteLine ("records: {0}", resultRecords.Count);
 			ListAdapter = new DataAdapter (this, resultRecords);
@@ -110,10 +110,10 @@ namespace SalesforceSample.Droid
 		{
 			if (item.ItemId == Resource.Id.add) {
 				// Populate blank fields with blank JSON
-				var extra = @"{""type"": ""Account"", ""Id"": """", ""Name"": """", ""AccountNumber"": """", ""Phone"": """", ""Website"": """", ""Industry"": """"}";
+				var extra = @"{""attributes"": {""type"": ""Account"", ""url"": ""/services/data/v28.0/sobjects/Account/""}, ""Id"": """", ""Name"": """", ""AccountNumber"": """", ""Phone"": """", ""Website"": """", ""Industry"": """"}";
 
 				var intent = new Intent();
-				intent.SetClass(this, typeof(DetailActivity));
+				intent.SetClass(this, typeof(EditActivity));
 				intent.PutExtra("JsonItem", extra);
 
 				StartActivity(intent);
