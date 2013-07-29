@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using Salesforce;
@@ -34,15 +35,7 @@ namespace SalesforceSample.iOS
 		async void OnItemAdded (object sender, AccountObject account)
 		{
 			// Create salesforce creation request from generated account object
-			var createRequest = new CreateRequest (account);
-			var result = await Client.ProcessAsync (createRequest).ConfigureAwait (true);
-			var json = result.GetResponseText ();
-			var jsonValue = JsonValue.Parse (json);
-			if (jsonValue != null) {
-				// Grab the newly created objects ID from the result and store on account object
-				// We will need this set for any future operations we do on this object.
-				account.Id = jsonValue["id"];
-			}
+			string newId = await Client.CreateAsync (account);
 			FinishAddAccount (account);
 		}
 
@@ -76,8 +69,7 @@ namespace SalesforceSample.iOS
 
 		async void OnItemUpdated (object sender, AccountObject args)
 		{
-			var request = new UpdateRequest { Resource = args };
-			await Client.ProcessAsync (request);
+			await Client.UpdateAsync (args);
 			LoadAccounts ();
 			NavigationController.PopViewControllerAnimated (true);
 		}
@@ -125,58 +117,22 @@ namespace SalesforceSample.iOS
 		async void LoadAccounts ()
 		{
 			SetLoadingState (true);
-			var request = new ReadRequest {
-				// TODO : Add error handling for when this query asks for stuff that does not exist (mispell a field to reproduce)
-				// Query language is SOQL. Documentation can be found at http://www.salesforce.com/us/developer/docs/soql_sosl/
-				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
-			};
-
-			var handledAlready = false;
-			Response response = null;
+			IEnumerable<SObject> response;
 
 			try {
-				response = await Client.ProcessAsync (request);
-			} catch (AggregateException ex) {
-
-				// Since we're using process async, we're going to
-				// get an aggregate exception that we need to unwrap
-				// before we decide how to handle it.
-				var e = ex.Flatten ().InnerException;
-				Debug.WriteLine ("loadaccounts: process returned: " + e);
-
-				if (e is InvalidSessionException)
-					InitializeSalesforce ();
-				else if (e is WebException)
-					ShowGeneralNetworkError ();
-				else
-					throw e;
-
-				handledAlready = true;
-			}
-
-			if (handledAlready)
-			{
+				response = await Client.ReadAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
+			} catch (InvalidSessionException) {
+				InitializeSalesforce ();
+				SetLoadingState (false);
+				return;
+			} catch (WebException) {
+				ShowGeneralNetworkError();
 				SetLoadingState (false);
 				return;
 			}
 
-			if (response == null)
-			{
-				Debug.WriteLine("loadaccounts: re-initializing salesforce.");
-				InitializeSalesforce (); //StartAuthorization ();
-				return;
-			}
-			var result = response.GetResponseText ();
-			var jsonValue = JsonValue.Parse(result);
-
-			if (jsonValue == null) {
-				throw new Exception("Could not parse Json data");
-			}
-
-			var results = jsonValue["records"];
-
 			// Marshal our data into account objects
-			DataSource.Objects = results.OfType<JsonObject>().Select (j => new SObject(j).As<AccountObject> ()).ToList();
+			DataSource.Objects = response.Select (s => s.As<AccountObject> ()).ToList();
 			SetLoadingState (false);
 		}
 
