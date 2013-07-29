@@ -61,15 +61,11 @@ namespace SalesforceSample.iOS
 			if (editingStyle == UITableViewCellEditingStyle.Delete) {
 				var selectedObject = controller.DataSource.Objects.ElementAtOrDefault (indexPath.Row);
 
-				// Delete the row from the data source.
-				var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
-
-				var rootController = controller;
 				try 
 				{
 					RootViewController.SetLoadingState(true);
-					var response = await controller.Client.ProcessAsync (request);
-					if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+					var deleted = await controller.Client.DeleteAsync (selectedObject);
+					if (deleted)
 						objects.Remove (selectedObject);
 				}
 				catch (InsufficientRightsException) 

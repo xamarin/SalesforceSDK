@@ -10,6 +10,118 @@ using System.IO;
 
 namespace Salesforce
 {
+	public static class SalesforceClientExtensions
+	{
+		public static async Task<string> CreateAsync (this SalesforceClient self, SObject @object)
+		{
+			var createRequest = new CreateRequest (@object);
+			Response result;
+			try {
+				result = await self.ProcessAsync (createRequest).ConfigureAwait (true);
+			} catch (AggregateException ex) {
+				Debug.WriteLine (ex.Message);
+				return null;
+			}
+			var json = result.GetResponseText ();
+			var jsonValue = JsonValue.Parse (json);
+			if (jsonValue == null)
+				return null;
+			@object.Id = jsonValue["id"];
+			return @object.Id;
+		}
+
+		public static string Create (this SalesforceClient self, SObject @object)
+		{
+			var createRequest = new CreateRequest (@object);
+			var result = self.ProcessAsync (createRequest);
+			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
+				return null;
+
+			if (result.IsFaulted)
+				return null; // TODO: Do error reporting
+
+			var json = result.Result.GetResponseText ();
+			var jsonValue = JsonValue.Parse (json);
+			if (jsonValue == null)
+				return null;
+			@object.Id = jsonValue["id"];
+			return @object.Id;
+		}
+
+		public static async Task UpdateAsync (this SalesforceClient self, SObject @object)
+		{
+			var updateRequest = new UpdateRequest (@object);
+			try {
+				await self.ProcessAsync (updateRequest).ConfigureAwait (true);
+			} catch (AggregateException ex) {
+				Debug.WriteLine (ex.Message);
+			}
+		}
+
+		public static void Update (this SalesforceClient self, SObject @object)
+		{
+			var updateRequest = new UpdateRequest (@object);
+			var result = self.ProcessAsync (updateRequest);
+			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
+				return; // TODO : Error handling/reporting
+		}
+
+		public static async Task<IEnumerable<SObject>> ReadAsync (this SalesforceClient self, string soql)
+		{
+			var request = new ReadRequest {Resource = new Query {Statement = soql}};
+
+			Response response;
+
+			try {
+				response = await self.ProcessAsync (request);
+			} catch (AggregateException ex) {
+				throw ex.Flatten ().InnerException;
+			}
+
+			if (response == null) {
+				return Enumerable.Empty<SObject> ();
+			}
+
+			var result = response.GetResponseText ();
+			var jsonValue = JsonValue.Parse (result);
+
+			if (jsonValue == null)
+				throw new Exception ("Could not parse Json data");
+
+			var results = jsonValue["records"];
+			return results.OfType<JsonObject> ().Select (j => new SObject (j));
+		}
+
+		public static IEnumerable<SObject> Read (this SalesforceClient self, string soql)
+		{
+			var result = self.ReadAsync (soql);
+			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout))) {
+				Debug.WriteLine ("Request timed out");
+				return Enumerable.Empty<SObject> ();
+			}
+
+			return result.Result;
+		}
+
+		public static async Task<bool> DeleteAsync (this SalesforceClient self, SObject @object)
+		{
+			// Delete the row from the data source.
+			var request = new DeleteRequest (@object);
+			var response = await self.ProcessAsync (request);
+			return response.StatusCode != System.Net.HttpStatusCode.NoContent;
+		}
+
+		public static bool Delete (this SalesforceClient self, SObject @object)
+		{
+			var result = self.DeleteAsync (@object);
+			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout))) {
+				Debug.WriteLine ("Request timed out");
+				return false;
+			}
+			return result.Result;
+		}
+	}
+
 	public class SalesforceClient
 	{
 #if URI_FIX
