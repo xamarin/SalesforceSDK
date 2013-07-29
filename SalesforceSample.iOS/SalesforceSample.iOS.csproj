@@ -96,6 +96,7 @@
     <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountObject.cs" />
     <Compile Include="DataSource.cs" />
     <Compile Include="DetailSource.cs" />
     <Compile Include="Main.cs" />

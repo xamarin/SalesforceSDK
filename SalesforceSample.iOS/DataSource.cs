@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Json;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Salesforce;
-using System;
 
 namespace SalesforceSample.iOS
 {
@@ -69,8 +67,8 @@ namespace SalesforceSample.iOS
 				var rootController = controller;
 				try 
 				{
-					rootController.SetLoadingState(true);
-					var response = await controller.Client.ProcessAsync<DeleteRequest> (request);
+					RootViewController.SetLoadingState(true);
+					var response = await controller.Client.ProcessAsync (request);
 					if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
 						objects.Remove (selectedObject);
 				}
@@ -84,11 +82,9 @@ namespace SalesforceSample.iOS
 				}
 				finally
 				{
-					rootController.SetLoadingState(false);
+					RootViewController.SetLoadingState(false);
 					tableView.ReloadData ();
 				}
-			} else if (editingStyle == UITableViewCellEditingStyle.Insert) {
-				// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 			}
 		}
 
@@ -105,7 +101,7 @@ namespace SalesforceSample.iOS
 
 		static void ShowInsuffientRightsMessage (UITableView tableView)
 		{
-			var message = "Looks like either you don't have permission to delete that, or someone made it readonly.";
+			const string message = "Looks like either you don't have permission to delete that, or someone made it readonly.";
 			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
 			alertView.Show ();
 			tableView.ReloadData ();

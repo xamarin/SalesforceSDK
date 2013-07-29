@@ -10,41 +10,6 @@ using System.Diagnostics;
 
 namespace SalesforceSample.iOS
 {
-	public class AccountObject : SObject
-	{
-		public override string ResourceName { get { return "Account"; } set { } }
-
-		public string Name
-		{
-			get { return GetOption ("Name"); }
-			set { SetOption ("Name", value); }
-		}
-
-		public string Phone
-		{
-			get { return GetOption ("Phone"); }
-			set { SetOption ("Phone", value); }
-		}
-
-		public string Industry
-		{
-			get { return GetOption ("Industry"); }
-			set { SetOption ("Industry", value); }
-		}
-
-		public string Website
-		{
-			get { return GetOption ("Website"); }
-			set { SetOption ("Website", value); }
-		}
-
-		public string AccountNumber
-		{
-			get { return GetOption ("AccountNumber"); }
-			set { SetOption ("AccountNumber", value); }
-		}
-	}
-
 	public sealed partial class RootViewController : UITableViewController
 	{
 		public DataSource DataSource { get; private set; }
@@ -60,33 +25,36 @@ namespace SalesforceSample.iOS
 
 		void AddNewItem ()
 		{
-			AddAccountController = new AddViewController (Client);
-
-			AddAccountController.SetDetailItem (new AccountObject ());
+			AddAccountController = new AddViewController ();
 			AddAccountController.ItemUpdated += OnItemAdded;
 			PresentViewController (AddAccountController, true, null);
 		}
 
 		async void OnItemAdded (object sender, AccountObject account)
 		{
+			// Create salesforce creation request from generated account object
 			var createRequest = new CreateRequest (account);
 			var result = await Client.ProcessAsync (createRequest).ConfigureAwait (true);
 			var json = result.GetResponseText ();
-			account.Id = JsonValue.Parse (json)["id"];
+			var jsonValue = JsonValue.Parse (json);
+			if (jsonValue != null) {
+				// Grab the newly created objects ID from the result and store on account object
+				// We will need this set for any future operations we do on this object.
+				account.Id = jsonValue["id"];
+			}
 			FinishAddAccount (account);
 		}
 
-		void FinishAddAccount (SObject account)
+		void FinishAddAccount (AccountObject account)
 		{
 			// Reset the form for the next use.
-			AddAccountController.DismissViewController(true, async ()=>{
-				var readRequest = new ReadRequest { Resource = account};
-				var readResult = await Client.ProcessAsync<ReadRequest>(readRequest).ConfigureAwait(true);
-				var jsonval = SObject.Parse (readResult.GetResponseText()).As<AccountObject> ();
+			AddAccountController.DismissViewController(true, ()=> {
+				// Insert our newly created object into the table
+				DataSource.Objects.Add(account);
+				TableView.ReloadData();
+
 				AddAccountController.Dispose();
 				AddAccountController = null;
-				DataSource.Objects.Add(jsonval);
-				TableView.ReloadData();
 			});
 		}
 
@@ -100,6 +68,17 @@ namespace SalesforceSample.iOS
 			TableView.Source = DataSource = new DataSource (this);
 
 			InitializeSalesforce ();
+
+			DetailViewController = new DetailViewController();
+			DetailViewController.ItemUpdated += OnItemUpdated;
+		}
+
+		async void OnItemUpdated (object sender, AccountObject args)
+		{
+			var request = new UpdateRequest { Resource = args };
+			await Client.ProcessAsync (request);
+			LoadAccounts ();
+			NavigationController.PopViewControllerAnimated (true);
 		}
 
 		void InitializeSalesforce ()
@@ -108,30 +87,22 @@ namespace SalesforceSample.iOS
 			const string clientSecret = "5754078534436456018";
 			var redirectUrl = new Uri ("com.sample.salesforce:/oauth2Callback");
 
+			// Creates our connection to salesforce.
 			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
-			DetailViewController = new DetailViewController(Client);
-			DetailViewController.ItemUpdated += async (sender, args) => {
-				var request = new UpdateRequest {
-					Resource = args
-				};
-
-				var response = await Client.ProcessAsync (request);
-				LoadAccounts ();
-				NavigationController.PopViewControllerAnimated (true);
-			};
-
+			// Get authenticated users from the local keystore
 			var users = Client.LoadUsers ();
 			if (!users.Any ()) {
-				StartAuthorization ();
-			}
-			else {
-				LoadAccounts ();
+				// Begin OAuth journey
+				StartAuthorization (); 
+			} else {
+				// Immediately go to accounts screen
+				LoadAccounts (); 
 			}
 		}
 
-		public void StartAuthorization ()
+		void StartAuthorization ()
 		{
 			var loginController = Client.GetLoginInterface () as UIViewController;
 			PresentViewController (loginController, true, null);
@@ -155,27 +126,22 @@ namespace SalesforceSample.iOS
 			SetLoadingState (true);
 			var request = new ReadRequest {
 				// TODO : Add error handling for when this query asks for stuff that does not exist (mispell a field to reproduce)
+				// Query language is SOQL. Documentation can be found at http://www.salesforce.com/us/developer/docs/soql_sosl/
 				Resource = new Query { Statement = "SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account" }
 			};
 
 			var handledAlready = false;
+			Response response = null;
 
-			var scheduler = TaskScheduler.FromCurrentSynchronizationContext ();
-			var response = await Client.ProcessAsync (request).ContinueWith<Response>(r => {
-				if (r.IsFaulted && r.Exception.InnerException.InnerException is InvalidSessionException) 
-				{
-					Debug.WriteLine("loadaccounts: process returned: " + r.Exception);
-					return null;
-				} 
-				else if (r.IsFaulted)
-				{
-					Debug.WriteLine(r.Exception.Flatten().InnerException);
-					ShowGeneralNetworkError();
-					handledAlready = true;
-					return null;
-				}
-				return r.Result;
-			}, scheduler);
+			try {
+				response = await Client.ProcessAsync (request);
+			} catch (InvalidSessionException ex) {
+				Debug.WriteLine ("loadaccounts: process returned: " + ex);
+			} catch (AggregateException ex) {
+				Debug.WriteLine(ex.Flatten().InnerException);
+				ShowGeneralNetworkError();
+				handledAlready = true;
+			}
 
 			if (handledAlready)
 			{
@@ -186,7 +152,6 @@ namespace SalesforceSample.iOS
 			if (response == null)
 			{
 				Debug.WriteLine("loadaccounts: re-initializing salesforce.");
-
 				InitializeSalesforce (); //StartAuthorization ();
 				return;
 			}
@@ -199,18 +164,19 @@ namespace SalesforceSample.iOS
 
 			var results = jsonValue["records"];
 
+			// Marshal our data into account objects
 			DataSource.Objects = results.OfType<JsonObject>().Select (j => new SObject(j).As<AccountObject> ()).ToList();
 			SetLoadingState (false);
 		}
 
 		static void ShowGeneralNetworkError ()
 		{
-			var message = "Looks like you aren't connected to the Internet.";
+			const string message = "Looks like you aren't connected to the Internet.";
 			var alertView = new UIAlertView ("Oops!", message, null, "Dismiss", null);
 			alertView.Show ();
 		}
 
-		internal void SetLoadingState(bool loading)
+		internal static void SetLoadingState(bool loading)
 		{
 			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = loading;
 		}

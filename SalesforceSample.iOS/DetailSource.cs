@@ -40,14 +40,15 @@ namespace SalesforceSample.iOS
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
 			tableView.DeselectRow (indexPath, true);
-			if (indexPath.Section == 1) {
-				Data.Name = textBoxes["Name"].Text;
-				Data.Industry = textBoxes["Industry"].Text;
-				Data.Phone = textBoxes["Phone"].Text;
-				Data.Website = textBoxes["Website"].Text;
-				Data.AccountNumber = textBoxes["Account"].Text;
-				controller.SendUpdate ();
-			}
+			if (indexPath.Section != 1)
+				return;
+
+			Data.Name = textBoxes["Name"].Text;
+			Data.Industry = textBoxes["Industry"].Text;
+			Data.Phone = textBoxes["Phone"].Text;
+			Data.Website = textBoxes["Website"].Text;
+			Data.AccountNumber = textBoxes["Account"].Text;
+			controller.SendUpdate ();
 		}
 
 		bool OnShouldReturn (UITextField textField)
@@ -74,9 +75,7 @@ namespace SalesforceSample.iOS
 				AdjustsFontSizeToFitWidth = true,
 				TextColor = cell.DetailTextLabel.TextColor,
 				TextAlignment = UITextAlignment.Left,
-				Tag = 0,
 				ClearButtonMode = UITextFieldViewMode.Never,
-				Enabled = true,
 				BackgroundColor = UIColor.Clear,
 				AutocorrectionType = UITextAutocorrectionType.No,
 				AutocapitalizationType = UITextAutocapitalizationType.None,

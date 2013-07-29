@@ -6,29 +6,27 @@ using System.Net;
 using System.Threading.Tasks;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Salesforce;
 
 namespace SalesforceSample.iOS
 {
 	public class AddViewController : DetailViewController
 	{
-		public AddViewController (SalesforceClient client) : base (client)
+		public AddViewController ()
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("New Account", "New Account");
+			SetDetailItem (new AccountObject ());
 		}
 	}
 	public class DetailViewController : UITableViewController
 	{
 		AccountObject detailItem;
 		DetailSource source;
-		SalesforceClient client;
 
 		public event EventHandler<AccountObject> ItemUpdated;
 
-		public DetailViewController (SalesforceClient client) : base (UITableViewStyle.Grouped)
+		public DetailViewController () : base (UITableViewStyle.Grouped)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Account Details", "Account Details");
-			this.client = client;
 		}
 
 		public void SendUpdate ()
@@ -39,12 +37,10 @@ namespace SalesforceSample.iOS
 
 		public void SetDetailItem (AccountObject newDetailItem)
 		{
-			if (detailItem != newDetailItem) {
-				detailItem = newDetailItem;
-				
-				// Update the view
-				ConfigureView (detailItem);
-			}
+			if (detailItem == newDetailItem)
+				return;
+			detailItem = newDetailItem;
+			ConfigureView (detailItem);
 		}
 
 		void ConfigureView (AccountObject target)
