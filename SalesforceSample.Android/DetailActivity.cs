@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using System.Json;
 using Salesforce;
+using Debug = System.Diagnostics.Debug;
 
 namespace SalesforceSample.Droid
 {
@@ -40,9 +41,10 @@ namespace SalesforceSample.Droid
 			var selectedObject = new SObject (data as JsonObject);
 
 			// Delete the row from the data source.
-//			var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
-//
-//			await RootActivity.Client.ProcessAsync (request);
+			var request = new DeleteRequest (selectedObject) { Resource = selectedObject } ;
+
+			await RootActivity.Client.ProcessAsync (request);
+			Debug.WriteLine("delete finished.");
 		}
 
 		/// <summary>shortcut back to the main screen</summary>
