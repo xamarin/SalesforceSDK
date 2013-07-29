@@ -10,6 +10,41 @@ using System.Diagnostics;
 
 namespace SalesforceSample.iOS
 {
+	public class AccountObject : SObject
+	{
+		public override string ResourceName { get { return "Account"; } set { } }
+
+		public string Name
+		{
+			get { return GetOption ("Name"); }
+			set { SetOption ("Name", value); }
+		}
+
+		public string Phone
+		{
+			get { return GetOption ("Phone"); }
+			set { SetOption ("Phone", value); }
+		}
+
+		public string Industry
+		{
+			get { return GetOption ("Industry"); }
+			set { SetOption ("Industry", value); }
+		}
+
+		public string Website
+		{
+			get { return GetOption ("Website"); }
+			set { SetOption ("Website", value); }
+		}
+
+		public string AccountNumber
+		{
+			get { return GetOption ("AccountNumber"); }
+			set { SetOption ("AccountNumber", value); }
+		}
+	}
+
 	public sealed partial class RootViewController : UITableViewController
 	{
 		public DataSource DataSource { get; private set; }
@@ -26,27 +61,14 @@ namespace SalesforceSample.iOS
 		void AddNewItem ()
 		{
 			AddAccountController = new AddViewController (Client);
-			var jsonObject = new JsonObject {
-				{"Name", ""},
-				{"Phone", ""},
-				{"Industry", ""},
-				{"Website", ""},
-				{"AccountNumber", ""},
-			};
 
-			AddAccountController.SetDetailItem (jsonObject);
+			AddAccountController.SetDetailItem (new AccountObject ());
 			AddAccountController.ItemUpdated += OnItemAdded;
 			PresentViewController (AddAccountController, true, null);
 		}
 
-		async void OnItemAdded (object sender, JsonValue value)
+		async void OnItemAdded (object sender, AccountObject account)
 		{
-			var account = new SObject {ResourceName = "Account"};
-			account.Options["Name"] = value["Name"];
-			account.Options["Phone"] = value["Phone"];
-			account.Options["Industry"] = value["Industry"];
-			account.Options["Website"] = value["Website"];
-			account.Options["AccountNumber"] = value["AccountNumber"];
 			var createRequest = new CreateRequest (account);
 			var result = await Client.ProcessAsync (createRequest).ConfigureAwait (true);
 			var json = result.GetResponseText ();
@@ -60,7 +82,7 @@ namespace SalesforceSample.iOS
 			AddAccountController.DismissViewController(true, async ()=>{
 				var readRequest = new ReadRequest { Resource = account};
 				var readResult = await Client.ProcessAsync<ReadRequest>(readRequest).ConfigureAwait(true);
-				var jsonval = JsonValue.Parse(readResult.GetResponseText());
+				var jsonval = SObject.Parse (readResult.GetResponseText()).As<AccountObject> ();
 				AddAccountController.Dispose();
 				AddAccountController = null;
 				DataSource.Objects.Add(jsonval);
@@ -91,14 +113,8 @@ namespace SalesforceSample.iOS
 
 			DetailViewController = new DetailViewController(Client);
 			DetailViewController.ItemUpdated += async (sender, args) => {
-				var account = new SObject { Id = args["Id"], ResourceName = "Account" };
-				account.Options.Add("Name", args["Name"]);
-				account.Options.Add("Industry", args["Industry"]);
-				account.Options.Add("Phone", args["Phone"]);
-				account.Options.Add("Website", args["Website"]);
-				account.Options.Add("AccountNumber", args["AccountNumber"]);
 				var request = new UpdateRequest {
-					Resource = account
+					Resource = args
 				};
 
 				var response = await Client.ProcessAsync (request);
@@ -183,7 +199,7 @@ namespace SalesforceSample.iOS
 
 			var results = jsonValue["records"];
 
-			DataSource.Objects = results.OfType<JsonValue>().ToList();
+			DataSource.Objects = results.OfType<JsonObject>().Select (j => new SObject(j).As<AccountObject> ()).ToList();
 			SetLoadingState (false);
 		}
 

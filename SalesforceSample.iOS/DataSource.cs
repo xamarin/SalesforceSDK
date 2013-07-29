@@ -11,7 +11,7 @@ namespace SalesforceSample.iOS
 	public class DataSource : UITableViewSource
 	{
 		static readonly NSString CellIdentifier = new NSString ("DataSourceCell");
-		List<JsonValue> objects = new List<JsonValue> ();
+		List<AccountObject> objects = new List<AccountObject> ();
 		readonly RootViewController controller;
 
 		public DataSource (RootViewController controller)
@@ -19,7 +19,7 @@ namespace SalesforceSample.iOS
 			this.controller = controller;
 		}
 
-		public List<JsonValue> Objects
+		public List<AccountObject> Objects
 		{
 			get { return objects; }
 			set
@@ -47,9 +47,9 @@ namespace SalesforceSample.iOS
 					Accessory = UITableViewCellAccessory.DisclosureIndicator
 				};
 			}
-			var o = (JsonObject) objects[indexPath.Row];
-			cell.TextLabel.Text = o["Name"];
-			cell.DetailTextLabel.Text = o["AccountNumber"];
+			var o = objects[indexPath.Row];
+			cell.TextLabel.Text = o.Name;
+			cell.DetailTextLabel.Text = o.AccountNumber;
 			return cell;
 		}
 
@@ -61,19 +61,18 @@ namespace SalesforceSample.iOS
 		public async override void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle,	NSIndexPath indexPath)
 		{
 			if (editingStyle == UITableViewCellEditingStyle.Delete) {
-				var selected = controller.DataSource.Objects.ElementAtOrDefault (indexPath.Row) as JsonValue;
-				var selectedObject = new SObject (selected as JsonObject);
+				var selectedObject = controller.DataSource.Objects.ElementAtOrDefault (indexPath.Row);
 
 				// Delete the row from the data source.
 				var request = new DeleteRequest (selectedObject) {Resource = selectedObject};
 
-				var rootController = controller as RootViewController;
+				var rootController = controller;
 				try 
 				{
 					rootController.SetLoadingState(true);
 					var response = await controller.Client.ProcessAsync<DeleteRequest> (request);
 					if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-						objects.Remove (selected);
+						objects.Remove (selectedObject);
 				}
 				catch (InsufficientRightsException) 
 				{

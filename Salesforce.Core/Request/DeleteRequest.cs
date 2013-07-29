@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Json;
 using Xamarin.Auth;
 
 namespace Salesforce
@@ -14,7 +15,7 @@ namespace Salesforce
 
 		public String Method { get { return HttpMethod.Delete; } }
 
-		public IDictionary<string, string> Options { get; private set; }
+		public IDictionary<string, JsonValue> Options { get; private set; }
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
@@ -34,7 +35,7 @@ namespace Salesforce
 			if (resource == null)
 				return;
 
-			Options = resource.Options ?? new Dictionary<string,string> ();
+			Options = resource.Options ?? new Dictionary<string,JsonValue> ();
 		}
 
 		public override string ToString () 
