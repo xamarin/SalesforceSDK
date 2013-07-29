@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+name: Salesforce SDK
+id: SalesforceSDK
+version: "1.0"
+publisher: Salesforce
+publisher-url: http://developer.force.com
+icons: 
+  - component/icons/SalesforceSDK_128x128.png
+  - component/icons/SalesforceSDK_512x512.png
+libraries: 
+  ios: ../../Salesforce.iOS/bin/Release/Salesforce.dll
+  android: ../../Salesforce.Android/bin/Release/Salesforce.dll
+summary: Integrate Salesforce into your mobile apps.
+details: component/Details.md
+getting-started: component/GettingStarted.md
+license: component/License.md
+samples: 
+  iOS Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
+  Android Sample: ../../SalesforceSample.Android/SalesforceSample.Android.sln
+...
