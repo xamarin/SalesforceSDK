@@ -8,7 +8,7 @@
     <ProjectGuid>{BE81BAE8-5A4F-4D7F-AB03-C9AF5D1710FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Salesforce</RootNamespace>
-    <AssemblyName>Salesforce.Core</AssemblyName>
+    <AssemblyName>Salesforce</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>

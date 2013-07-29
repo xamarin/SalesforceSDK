@@ -150,7 +150,7 @@ Global
 		{36F843DB-3E1F-4F3D-AD98-4E466EBFD841} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SalesforceSample.Android\SalesforceSample.Android.csproj
+		StartupItem = SalesforceSample.iOS\SalesforceSample.iOS.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

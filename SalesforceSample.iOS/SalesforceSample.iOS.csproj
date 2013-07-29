@@ -114,14 +114,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
+    <BundleResource Include="Resources\Icon.png" />
+    <BundleResource Include="Resources\Icon%402x.png" />
+    <BundleResource Include="Resources\Icon-72.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Salesforce.iOS\Salesforce.iOS.csproj">
       <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
       <Name>Salesforce.iOS</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon.png" />
-    <BundleResource Include="Resources\Icon%402x.png" />
-    <BundleResource Include="Resources\Icon-72.png" />
   </ItemGroup>
 </Project>

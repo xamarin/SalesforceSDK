@@ -1,21 +1,19 @@
 %YAML 1.2
 ---
 name: SalesforceSDK
-id: SalesforceSDK-1.0
+id: SalesforceSDK
 publisher: Salesforce
 license: License.md
 icons: 
-  - icons/SalesforceSDK-1.0_128x128.png
-  - icons/SalesforceSDK-1.0_512x512.png
+  - icons/SalesforceSDK_128x128.png
+  - icons/SalesforceSDK_512x512.png
 publisher-url: http://developer.force.com
 libraries: 
-  ios: ../lib/ios/Awesome.dll
+  ios: ../lib/ios/Salesforce.dll
 summary: Integrate your mobile apps with your Salesforce organization.
 details: Details.md
-screenshots: 
-  - screenshots/screenshot1.png
 getting-started: GettingStarted.md
-version: "1"
+version: "1.0"
 samples: 
-  iOS Sample: ../samples/AwesomeSample/AwesomeSample.sln
+  iOS Sample: ../../../SalesforceSample.iOS/SalesforceSample.iOS.sln
 ...
