@@ -7,6 +7,7 @@ using System.Linq;
 using System.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Net;
 
 namespace SalesforceSample.iOS
 {
@@ -135,11 +136,21 @@ namespace SalesforceSample.iOS
 
 			try {
 				response = await Client.ProcessAsync (request);
-			} catch (InvalidSessionException ex) {
-				Debug.WriteLine ("loadaccounts: process returned: " + ex);
 			} catch (AggregateException ex) {
-				Debug.WriteLine(ex.Flatten().InnerException);
-				ShowGeneralNetworkError();
+
+				// Since we're using process async, we're going to
+				// get an aggregate exception that we need to unwrap
+				// before we decide how to handle it.
+				var e = ex.Flatten ().InnerException;
+				Debug.WriteLine ("loadaccounts: process returned: " + e);
+
+				if (e is InvalidSessionException)
+					InitializeSalesforce ();
+				else if (e is WebException)
+					ShowGeneralNetworkError ();
+				else
+					throw e;
+
 				handledAlready = true;
 			}
 

@@ -112,12 +112,14 @@ Global
 		{F15665F3-A8F8-42D7-ABD9-28A2DDB8C3BE}.Release|iPhone.Build.0 = Release|iPhone
 		{F15665F3-A8F8-42D7-ABD9-28A2DDB8C3BE}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{F15665F3-A8F8-42D7-ABD9-28A2DDB8C3BE}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
-		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
-		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
-		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhone.Build.0 = Debug|Any CPU
-		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
 		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
@@ -148,7 +150,7 @@ Global
 		{36F843DB-3E1F-4F3D-AD98-4E466EBFD841} = {4AA4108E-1598-44BD-AC9D-A181E30D87D8}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SalesforceSample.Android\SalesforceSample.Android.csproj
+		StartupItem = SalesforceSample.iOS\SalesforceSample.iOS.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
