@@ -90,6 +90,8 @@ namespace Salesforce
 				Options = restObject.Where (o => o.Key != "attributes").ToDictionary(k => k.Key, v => v.Value != null ? (string)v.Value : String.Empty);
 				ResourceName = restObject["attributes"]["type"];
 				Id = restObject["Id"];
+				if (Options.ContainsKey ("Id"))
+					Options.Remove ("Id");
 			}
 		}
 
