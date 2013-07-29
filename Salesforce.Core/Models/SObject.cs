@@ -9,6 +9,21 @@ namespace Salesforce
 	public class SObject : ISalesforceResource
 	{
 		private static readonly string Format = "{0}/";
+		string id;
+		IDictionary<string, string> options;
+		string resourceName;
+		bool constructedFromJson;
+		SObject innerObject;
+
+		public static SObject Parse (string jsonText)
+		{
+			try {
+				var jsonValue = JsonObject.Parse (jsonText);
+				return new SObject ((JsonObject) jsonValue);
+			} catch {
+				throw new ArgumentException ("Could not parse passed input text into JsonObject");
+			}
+		}
 
 		#region ISalesforceResource implementation
 
@@ -18,14 +33,22 @@ namespace Salesforce
 			}
 		}
 
-		public string Id {
-			get ;
-			set;
+		public string Id
+		{
+			get { return innerObject == null ? id : innerObject.Id; }
+			set
+			{
+				if (innerObject == null)
+					id = value;
+				else
+					innerObject.Id = value;
+			}
 		}
 
-		public IDictionary<string, string> Options {
-			get ;
-			protected set ;
+		public IDictionary<string, string> Options
+		{
+			get { return innerObject == null ? options : innerObject.Options; }
+			protected set { options = value; }
 		}
 
 		#endregion
@@ -40,13 +63,19 @@ namespace Salesforce
 
 		#region IRestResource implementation
 
-		public string ResourceName { get ; set; }
-
-		public Uri AbsoluteUri {
-			get {
-				return new Uri (ToUriString (), UriKind.RelativeOrAbsolute);
+		public string ResourceName
+		{
+			get { return innerObject == null ? resourceName : innerObject.ResourceName; }
+			set
+			{
+				if (innerObject == null)
+					resourceName = value;
+				else
+					innerObject.ResourceName = value;
 			}
 		}
+
+		public Uri AbsoluteUri { get { return new Uri (ToUriString (), UriKind.RelativeOrAbsolute); } }
 
 		#endregion
 
@@ -54,19 +83,49 @@ namespace Salesforce
 
 		public SObject(JsonObject restObject)
 		{
-			if (restObject == null)
-			{
-				this.Options = new Dictionary<string, string> ();
-			}
-			else
-			{
-				this.Options = restObject.Where (o => o.Key != "attributes").ToDictionary(k => k.Key, v => v.Value != null ? v.Value.ToString() : String.Empty);
-				this.ResourceName = restObject["attributes"]["type"];
-				this.Id = restObject["Id"];
+			if (restObject == null) {
+				Options = new Dictionary<string, string> ();
+			} else {
+				constructedFromJson = true;
+				Options = restObject.Where (o => o.Key != "attributes").ToDictionary(k => k.Key, v => v.Value != null ? (string)v.Value : String.Empty);
+				ResourceName = restObject["attributes"]["type"];
+				Id = restObject["Id"];
 			}
 		}
 
-		protected virtual string ToUriString()
+		protected T GetOption<T> (string key, T @default, Func<string, T> convertFunc)
+		{
+			if (!Options.ContainsKey (key)) {
+				return @default;
+			}
+			var obj = Options[key];
+			return convertFunc (obj);
+		}
+
+		protected string GetOption (string key, string @default = null)
+		{
+			if (!Options.ContainsKey (key)) {
+				return @default;
+			}
+			return Options[key];
+		}
+
+		protected void SetOption<T> (string key, T value, Func<T, string> convertFunc = null)
+		{
+			if (convertFunc == null)
+				Options[key] = value.ToString ();
+			else
+				Options[key] = convertFunc (value);
+		}
+
+		void SetInner (SObject inner)
+		{
+			if (constructedFromJson)
+				throw new InvalidOperationException ("Can't proxy objects constructed from json directly");
+			innerObject = inner;
+		}
+
+		string ToUriString()
 		{
 			var self = (ISalesforceResource)this;
 			var str = new StringBuilder ();
@@ -91,6 +150,15 @@ namespace Salesforce
 		public override string ToString ()
 		{
 			return ToUriString ();
+		}
+
+		public T As<T> ()
+			where T : SObject, new()
+		{
+			var result = new T ();
+			result.SetInner (this);
+
+			return result;
 		}
 	}
 }

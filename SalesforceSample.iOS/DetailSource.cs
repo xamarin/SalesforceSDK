@@ -9,16 +9,14 @@ namespace SalesforceSample.iOS
 {
 	public class DetailSource : UITableViewSource
 	{
-		JsonValue data;
+		AccountObject data;
 		readonly DetailViewController controller;
 
-		public JsonValue Data
+		public AccountObject Data
 		{
 			get { return data; }
 			set
 			{
-				if (data == value)
-					return;
 				data = value;
 				controller.TableView.ReloadData ();
 			}
@@ -43,11 +41,11 @@ namespace SalesforceSample.iOS
 		{
 			tableView.DeselectRow (indexPath, true);
 			if (indexPath.Section == 1) {
-				Data["Name"] = textBoxes["Name"].Text;
-				Data["Industry"] = textBoxes["Industry"].Text;
-				Data["Phone"] = textBoxes["Phone"].Text;
-				Data["Website"] = textBoxes["Website"].Text;
-				Data["AccountNumber"] = textBoxes["Account"].Text;
+				Data.Name = textBoxes["Name"].Text;
+				Data.Industry = textBoxes["Industry"].Text;
+				Data.Phone = textBoxes["Phone"].Text;
+				Data.Website = textBoxes["Website"].Text;
+				Data.AccountNumber = textBoxes["Account"].Text;
 				controller.SendUpdate ();
 			}
 		}
@@ -88,23 +86,23 @@ namespace SalesforceSample.iOS
 			switch (indexPath.Row) {
 			case 0:
 				cell.TextLabel.Text = "Name";
-				textField.Text = Data["Name"];
+				textField.Text = Data.Name;
 				break;
 			case 1:
 				cell.TextLabel.Text = "Industry";
-				textField.Text = Data["Industry"];
+				textField.Text = Data.Industry;
 				break;
 			case 2:
 				cell.TextLabel.Text = "Phone";
-				textField.Text = Data["Phone"];
+				textField.Text = Data.Phone;
 				break;
 			case 3:
 				cell.TextLabel.Text = "Website";
-				textField.Text = Data["Website"];
+				textField.Text = Data.Website;
 				break;
 			case 4:
 				cell.TextLabel.Text = "Account";
-				textField.Text = Data["AccountNumber"];
+				textField.Text = Data.AccountNumber;
 				break;
 			}
 
