@@ -16,64 +16,56 @@ namespace SalesforceSample.iOS
 		public SalesforceClient Client { get; private set; }
 		public DetailViewController DetailViewController { get; set; }
 
-		AddAccountController AddAccountController { get; set; }
+		AddViewController AddAccountController { get; set; }
 
 		public RootViewController () : base ("RootViewController", null)
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Accounts", "Accounts");
 		}
 
-		Task AddAccountAsync (Action callback)
+		void AddNewItem ()
 		{
-			var action = new Action (()=>{
-				AddAccountController = new AddAccountController {Finished = callback};
-				PresentViewController (AddAccountController, true, null);
-			});
+			AddAccountController = new AddViewController (Client);
+			var jsonObject = new JsonObject {
+				{"Name", ""},
+				{"Phone", ""},
+				{"Industry", ""},
+				{"Website", ""},
+				{"AccountNumber", ""},
+			};
 
-			var newAccountTask = new Task (action);
-			newAccountTask.Start (TaskScheduler.FromCurrentSynchronizationContext ());
-			return newAccountTask;
+			AddAccountController.SetDetailItem (jsonObject);
+			AddAccountController.ItemUpdated += OnItemAdded;
+			PresentViewController (AddAccountController, true, null);
 		}
 
-		async void AddNewItem (object sender, EventArgs args)
+		async void OnItemAdded (object sender, JsonValue value)
 		{
-			try {
-				Action callback = async () => {
-					var account = new SObject();
-					account.ResourceName = "Account";
-					if (AddAccountController.Name != null)
-						account.Options["Name"] = AddAccountController.Name;
-					if (AddAccountController.Phone != null)
-						account.Options["Phone"] = AddAccountController.Phone;
-					if (AddAccountController.Industry != null)
-						account.Options["Industry"] = AddAccountController.Industry;
-					if (AddAccountController.Website != null)
-						account.Options["Website"] = AddAccountController.Website;
-					if (AddAccountController.AccountNumber != null)
-						account.Options["AccountNumber"] = AddAccountController.AccountNumber;
-					var createRequest = new CreateRequest(account);
-					var result = await Client.ProcessAsync (createRequest).ConfigureAwait(true);
-					var json = result.GetResponseText();
-					account.Id = JsonValue.Parse(json)["id"];
-					FinishAddAccount(account);
-				};
-				await AddAccountAsync (callback);
-			} catch (Exception ex) {
-				Debug.WriteLine (ex.Message);
-			}
+			var account = new SObject {ResourceName = "Account"};
+			account.Options["Name"] = value["Name"];
+			account.Options["Phone"] = value["Phone"];
+			account.Options["Industry"] = value["Industry"];
+			account.Options["Website"] = value["Website"];
+			account.Options["AccountNumber"] = value["AccountNumber"];
+			var createRequest = new CreateRequest (account);
+			var result = await Client.ProcessAsync (createRequest).ConfigureAwait (true);
+			var json = result.GetResponseText ();
+			account.Id = JsonValue.Parse (json)["id"];
+			FinishAddAccount (account);
 		}
 
 		void FinishAddAccount (SObject account)
 		{
 			// Reset the form for the next use.
-			AddAccountController.DismissViewController(true, new NSAction(async ()=>{
+			AddAccountController.DismissViewController(true, async ()=>{
 				var readRequest = new ReadRequest { Resource = account};
 				var readResult = await Client.ProcessAsync<ReadRequest>(readRequest).ConfigureAwait(true);
 				var jsonval = JsonValue.Parse(readResult.GetResponseText());
 				AddAccountController.Dispose();
+				AddAccountController = null;
 				DataSource.Objects.Add(jsonval);
 				TableView.ReloadData();
-			}));
+			});
 		}
 
 		public override void ViewDidLoad ()
@@ -81,7 +73,7 @@ namespace SalesforceSample.iOS
 			base.ViewDidLoad ();
 
 			NavigationItem.RightBarButtonItem = EditButtonItem;
-			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, AddNewItem);
+			NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Add, (o, e) => AddNewItem ());
 
 			TableView.Source = DataSource = new DataSource (this);
 
@@ -98,7 +90,21 @@ namespace SalesforceSample.iOS
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			DetailViewController = new DetailViewController(Client);
-			DetailViewController.ItemUpdated += (sender, args) => LoadAccounts ();
+			DetailViewController.ItemUpdated += async (sender, args) => {
+				var account = new SObject { Id = args["Id"], ResourceName = "Account" };
+				account.Options.Add("Name", args["Name"]);
+				account.Options.Add("Industry", args["Industry"]);
+				account.Options.Add("Phone", args["Phone"]);
+				account.Options.Add("Website", args["Website"]);
+				account.Options.Add("AccountNumber", args["AccountNumber"]);
+				var request = new UpdateRequest {
+					Resource = account
+				};
+
+				var response = await Client.ProcessAsync (request);
+				LoadAccounts ();
+				NavigationController.PopViewControllerAnimated (true);
+			};
 
 			var users = Client.LoadUsers ();
 			if (!users.Any ()) {

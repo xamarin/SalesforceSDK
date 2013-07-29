@@ -59,7 +59,7 @@ namespace SalesforceSample.iOS
 			return true;
 		}
 
-		Dictionary<string, UITextField> textBoxes = new Dictionary<string, UITextField> (); 
+		readonly Dictionary<string, UITextField> textBoxes = new Dictionary<string, UITextField> (); 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
 			if (indexPath.Section == 1) {
@@ -80,6 +80,8 @@ namespace SalesforceSample.iOS
 				ClearButtonMode = UITextFieldViewMode.Never,
 				Enabled = true,
 				BackgroundColor = UIColor.Clear,
+				AutocorrectionType = UITextAutocorrectionType.No,
+				AutocapitalizationType = UITextAutocapitalizationType.None,
 				ShouldReturn = OnShouldReturn
 			};
 

@@ -10,13 +10,20 @@ using Salesforce;
 
 namespace SalesforceSample.iOS
 {
+	public class AddViewController : DetailViewController
+	{
+		public AddViewController (SalesforceClient client) : base (client)
+		{
+			Title = NSBundle.MainBundle.LocalizedString ("New Account", "New Account");
+		}
+	}
 	public class DetailViewController : UITableViewController
 	{
 		JsonValue detailItem;
 		DetailSource source;
 		SalesforceClient client;
 
-		public event EventHandler ItemUpdated;
+		public event EventHandler<JsonValue> ItemUpdated;
 
 		public DetailViewController (SalesforceClient client) : base (UITableViewStyle.Grouped)
 		{
@@ -24,24 +31,10 @@ namespace SalesforceSample.iOS
 			this.client = client;
 		}
 
-		public async Task<bool> SendUpdate ()
+		public void SendUpdate ()
 		{
-			var account = new SObject { Id = detailItem["Id"], ResourceName = "Account" };
-			account.Options.Add("Name", detailItem["Name"]);
-			account.Options.Add("Industry", detailItem["Industry"]);
-			account.Options.Add("Phone", detailItem["Phone"]);
-			account.Options.Add("Website", detailItem["Website"]);
-			account.Options.Add("AccountNumber", detailItem["AccountNumber"]);
-			var request = new UpdateRequest {
-				Resource = account
-			};
-
-			var response = await client.ProcessAsync (request);
-
 			if (ItemUpdated != null)
-				ItemUpdated (this, EventArgs.Empty);
-			NavigationController.PopViewControllerAnimated (true);
-			return response.StatusCode == HttpStatusCode.NoContent;
+				ItemUpdated (this, detailItem);
 		}
 
 		public void SetDetailItem (JsonValue newDetailItem)

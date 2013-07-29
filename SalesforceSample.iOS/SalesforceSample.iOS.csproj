@@ -91,9 +91,7 @@
     <Reference Include="monotouch" />
     <Reference Include="System.Json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Info.plist" />
   </ItemGroup>
@@ -107,21 +105,11 @@
       <DependentUpon>RootViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="DetailViewController.cs" />
-    <Compile Include="LoadingViewController.cs" />
-    <Compile Include="LoadingViewController.designer.cs">
-      <DependentUpon>LoadingViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AddAccountController.cs" />
     <Compile Include="ContactSource.cs" />
     <Compile Include="ContactRowCell.cs" />
-    <Compile Include="AddAccountController.designer.cs">
-      <DependentUpon>AddAccountController.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="RootViewController.xib" />
-    <InterfaceDefinition Include="LoadingViewController.xib" />
-    <InterfaceDefinition Include="AddAccountController.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
