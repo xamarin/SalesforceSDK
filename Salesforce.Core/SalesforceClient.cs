@@ -108,7 +108,7 @@ namespace Salesforce
 			// Delete the row from the data source.
 			var request = new DeleteRequest (@object);
 			var response = await self.ProcessAsync (request);
-			return response.StatusCode != System.Net.HttpStatusCode.NoContent;
+			return response.StatusCode == System.Net.HttpStatusCode.NoContent;
 		}
 
 		public static bool Delete (this SalesforceClient self, SObject @object)
