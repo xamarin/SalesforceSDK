@@ -29,6 +29,10 @@ namespace SalesforceSample.iOS
 		{
 			AddAccountController = new AddViewController ();
 			AddAccountController.ItemUpdated += OnItemAdded;
+			AddAccountController.Canceled += (sender, args) => AddAccountController.DismissViewController (true, () => {
+				AddAccountController.Dispose();
+				AddAccountController = null;
+			});
 			PresentViewController (AddAccountController, true, null);
 		}
 
@@ -65,6 +69,7 @@ namespace SalesforceSample.iOS
 
 			DetailViewController = new DetailViewController();
 			DetailViewController.ItemUpdated += OnItemUpdated;
+			DetailViewController.Canceled += (sender, args) => NavigationController.PopViewControllerAnimated (true);
 		}
 
 		async void OnItemUpdated (object sender, AccountObject args)

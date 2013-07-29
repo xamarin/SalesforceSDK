@@ -23,6 +23,7 @@ namespace SalesforceSample.iOS
 		DetailSource source;
 
 		public event EventHandler<AccountObject> ItemUpdated;
+		public event EventHandler Canceled;
 
 		public DetailViewController () : base (UITableViewStyle.Grouped)
 		{
@@ -33,6 +34,12 @@ namespace SalesforceSample.iOS
 		{
 			if (ItemUpdated != null)
 				ItemUpdated (this, detailItem);
+		}
+
+		public void SendCanceled ()
+		{
+			if (Canceled != null)
+				Canceled (this, EventArgs.Empty);
 		}
 
 		public void SetDetailItem (AccountObject newDetailItem)

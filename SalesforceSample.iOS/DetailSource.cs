@@ -34,7 +34,7 @@ namespace SalesforceSample.iOS
 
 		public override int RowsInSection (UITableView tableview, int section)
 		{
-			return section == 0 ? 5 : 1;
+			return section == 0 ? 5 : 2;
 		}
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
@@ -43,12 +43,16 @@ namespace SalesforceSample.iOS
 			if (indexPath.Section != 1)
 				return;
 
-			Data.Name = textBoxes["Name"].Text;
-			Data.Industry = textBoxes["Industry"].Text;
-			Data.Phone = textBoxes["Phone"].Text;
-			Data.Website = textBoxes["Website"].Text;
-			Data.AccountNumber = textBoxes["Account"].Text;
-			controller.SendUpdate ();
+			if (indexPath.Row == 0) {
+				Data.Name = textBoxes["Name"].Text;
+				Data.Industry = textBoxes["Industry"].Text;
+				Data.Phone = textBoxes["Phone"].Text;
+				Data.Website = textBoxes["Website"].Text;
+				Data.AccountNumber = textBoxes["Account"].Text;
+				controller.SendUpdate ();
+			} else {
+				controller.SendCanceled ();
+			}
 		}
 
 		bool OnShouldReturn (UITextField textField)
@@ -64,7 +68,7 @@ namespace SalesforceSample.iOS
 			if (indexPath.Section == 1) {
 				var buttonCell = new UITableViewCell (UITableViewCellStyle.Default, null);
 				buttonCell.TextLabel.TextAlignment = UITextAlignment.Center;
-				buttonCell.TextLabel.Text = "Submit Changes";
+				buttonCell.TextLabel.Text = indexPath.Row == 0 ? "Submit Changes" : "Cancel";
 				return buttonCell;
 			}
 			var cell = new UITableViewCell (UITableViewCellStyle.Value1, null) {
