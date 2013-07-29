@@ -18,7 +18,11 @@ namespace Salesforce
 		internal const string RestApiPath = "/services/data/";
 #endif
 
-		static int defaultNetworkTimeout = 90;
+		volatile static int defaultNetworkTimeout = 90;
+		/// <summary>
+		/// The default network timeout.
+		/// </summary>
+		/// <value>The default network timeout.</value>
 		public static int DefaultNetworkTimeout 
 		{
 			get 
@@ -411,6 +415,8 @@ namespace Salesforce
 
 				return response.Result;
 			}, TaskScheduler.Default);
+
+			// Don't need to await here, b/c we're already inside of a task.
 			refreshTask.Wait (TimeSpan.FromSeconds (DefaultNetworkTimeout));
 			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];
 			return CurrentUser;
