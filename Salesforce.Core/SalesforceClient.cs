@@ -331,6 +331,13 @@ namespace Salesforce
 					throw new MissingResourceException (message);
 				}
 
+				// Handles: [{"message":"The Id field should not be specified in the sobject data.","errorCode":"INVALID_FIELD"}]
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_FIELD"))
+				{
+					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
+					throw new InvalidFieldException (message);
+				}
 
 				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + response.Exception);
 
