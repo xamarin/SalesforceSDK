@@ -97,6 +97,9 @@ namespace Salesforce
 
 		protected T GetOption<T> (string key, T @default, Func<JsonValue, T> convertFunc)
 		{
+			if (convertFunc == null)
+				throw new ArgumentNullException("convertFunc");
+
 			if (!Options.ContainsKey (key)) {
 				return @default;
 			}
