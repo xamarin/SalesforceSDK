@@ -58,10 +58,4 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\Salesforce.Android\Salesforce.Android.csproj">
-      <Project>{F349CE06-5CF5-42CA-8EDA-6BDDA1B3D936}</Project>
-      <Name>Salesforce.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

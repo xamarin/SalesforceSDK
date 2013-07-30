@@ -1,19 +1,16 @@
 using System;
 using Android.App;
 using Android.Content;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 using Salesforce;
 using Xamarin.Auth;
-using System.Json;
 using System.Linq;
 
 namespace SalesforceSample.Droid
 {
-	[Activity (Label = "Xamarin.Salesforce", MainLauncher = true), IntentFilter(new String[]{"com.sample.salesforce"})]
+	[Activity (Label = "Accounts", MainLauncher = true), IntentFilter(new String[]{"com.sample.salesforce"})]
 	public class RootActivity : ListActivity
 	{
 		public static SalesforceClient Client { get; private set; }

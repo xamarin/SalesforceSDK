@@ -42,12 +42,11 @@ namespace SalesforceSample.Droid
 		}
 		public override Tuple<string,string> this[int position]
 		{
-			get { 
-				return new Tuple<string,string> ("",""); }
+			get { return new Tuple<string,string> ("",""); }
 		}
 		public override int Count
 		{
-			get { return data.Count; }
+			get { return 5; } // Hardcoding, since our JsonObject has some private values.
 		}
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{

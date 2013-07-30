@@ -23,7 +23,7 @@
         android:paddingLeft="10dip"
         android:text="Value"
         android:layout_marginRight="00.0dp"
-        android:inputType="text"
+        android:inputType="textNoSuggestions"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="50.0dp"
         android:layout_below="@id/Text1"
