@@ -23,4 +23,4 @@ admin to control it:
 8. Contact Email: Your email
 9. Callback URL: com.sample.salesforce:/oauth2Callback
 
-You will need to hand the resulting Consumer Key and Callback URL to the Salesforce client when you initialize it.# Getting Started with SalesforceSDK-1.0
+You will need to hand the resulting Consumer Key and Callback URL to the Salesforce client when you initialize it.

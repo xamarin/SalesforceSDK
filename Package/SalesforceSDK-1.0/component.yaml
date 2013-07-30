@@ -16,11 +16,12 @@ details: component/Details.md
 getting-started: component/GettingStarted.md
 license: component/License.md
 screenshots:
-  - component/screenshots/Accounts_List.png
-  - component/screenshots/Salesforce_Account_Detail.png
-  - component/screenshots/Salesforce_Auth.png
-  - component/screenshots/Salesforce_Delete.png
-  - component/screenshots/Salesforce_Login.png
+  - component/screenshots/b_Salesforce_Login.png
+  - component/screenshots/d_Salesforce_List.png
+  - component/screenshots/e_Salesforce_Account_Detail.png
+  - component/screenshots/h_Android_Login.png
+  - component/screenshots/i_Android_List.png
+  - component/screenshots/j_Android_Details.png
 samples: 
   iOS Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
   Android Sample: ../../SalesforceSample.Android/SalesforceSample.Android.sln
