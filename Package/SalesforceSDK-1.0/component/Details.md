@@ -12,7 +12,7 @@ Do it all using C#.
 * Run queries written in [SOQL](http://www.salesforce.com/us/developer/docs/soql_sosl/index_Left.htm#CSHID=sforce_api_calls_soql.htm|StartTopic=Content%2Fsforce_api_calls_soql.htm|SkinName=webhelp).
 * Full-text searching via [SOSL](http://www.salesforce.com/us/developer/docs/soql_sosl/index_Left.htm#CSHID=sforce_api_calls_sosl.htm|StartTopic=Content%2Fsforce_api_calls_sosl.htm|SkinName=webhelp).
 * Use the same C# API for iOS and Android.
-* Leverage async/await for keeping your UI responsive, and your code simplied.
+* Leverage async/await for keeping your UI responsive, and your code simple.
 * Simple, compact API.
 * Easily create your own strongly-typed domain model classes.
 
