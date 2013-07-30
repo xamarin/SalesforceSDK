@@ -17,9 +17,9 @@ namespace SalesforceSample.Droid
 
 		ISalesforceUser Account { get; set; }
 
-		const string Key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-		const string Secret = "5754078534436456018";
-		readonly Uri redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback");
+		const string Key = "[Your Client ID]";
+		const string Secret = "[Your Client Secret]";
+		readonly Uri redirectUrl = new Uri ("com.sample.salesforce:/oauth2Callback"); // Replace with your custom callback.
 
 		protected override void OnCreate (Bundle bundle)
 		{

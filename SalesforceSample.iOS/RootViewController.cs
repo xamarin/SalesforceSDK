@@ -81,9 +81,9 @@ namespace SalesforceSample.iOS
 
 		void InitializeSalesforce ()
 		{
-			const string clientId = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
-			const string clientSecret = "5754078534436456018";
-			var redirectUrl = new Uri ("com.sample.salesforce:/oauth2Callback");
+			const string clientId = "[Your Client ID]";
+			const string clientSecret = "[Your Client Secret]";
+			var redirectUrl = new Uri ("com.sample.salesforce:/oauth2Callback"); // Replace with your custom callback.
 
 			// Creates our connection to salesforce.
 			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
