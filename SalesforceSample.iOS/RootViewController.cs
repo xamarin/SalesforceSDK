@@ -125,7 +125,7 @@ namespace SalesforceSample.iOS
 			IEnumerable<SObject> response;
 
 			try {
-				response = await Client.ReadAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
+				response = await Client.QueryAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
 			} catch (InvalidSessionException) {
 				InitializeSalesforce ();
 				SetLoadingState (false);

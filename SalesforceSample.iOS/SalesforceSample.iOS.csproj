@@ -89,9 +89,6 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="System.Json" />
-    <Reference Include="Salesforce">
-      <HintPath>..\Salesforce.iOS\bin\Release\Salesforce.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -119,5 +116,11 @@
     <BundleResource Include="Resources\Icon.png" />
     <BundleResource Include="Resources\Icon%402x.png" />
     <BundleResource Include="Resources\Icon-72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Salesforce.iOS\Salesforce.iOS.csproj">
+      <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
+      <Name>Salesforce.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

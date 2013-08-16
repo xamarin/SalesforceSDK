@@ -179,6 +179,9 @@
     <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
+      <Link>SalesforceClientExtensions.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

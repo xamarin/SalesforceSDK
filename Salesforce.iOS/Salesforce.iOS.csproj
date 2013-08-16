@@ -174,5 +174,6 @@
     <Compile Include="..\Salesforce.Core\Exceptions\InvalidFieldException.cs">
       <Link>Exceptions\InvalidFieldException.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs" />
   </ItemGroup>
 </Project>

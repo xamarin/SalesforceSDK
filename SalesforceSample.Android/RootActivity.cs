@@ -66,7 +66,7 @@ namespace SalesforceSample.Droid
 
 		async void LoadAccounts ()
 		{
-			var results = await Client.ReadAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
+			var results = await Client.QueryAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
 			var resultRecords = results.Select (s => s.As<AccountObject> ()).ToList ();
 
 			System.Diagnostics.Debug.WriteLine ("records: {0}", resultRecords.Count);

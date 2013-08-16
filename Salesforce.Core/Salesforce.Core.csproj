@@ -117,6 +117,7 @@
     <Compile Include="Request\DeleteRequest.cs" />
     <Compile Include="Exceptions\MissingResourceException.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
+    <Compile Include="SalesforceClientExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
