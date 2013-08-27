@@ -269,6 +269,13 @@ namespace Salesforce
 
 				//TODO: Needs refactoring. This method is too long.
 
+				if (errorDetails.Any (e => e.ContainsKey("error") && e["error"] == "invalid_client_id"))
+				{
+					var message = errorDetails [0] ["error_description"];
+					Debug.WriteLine("reason: " + message);
+					throw new InvalidClientIdException (String.Format("{0}. The value passed to the SalesforceClient constructor was does not match the value set in your Salesforce application's configuration.", message), ClientId);
+				}
+
 				if (errorDetails.Any (e => e.ContainsKey("error") && e["error"] == "invalid_grant"))
 				{
 					ForceUserReauthorization(true);
@@ -276,6 +283,14 @@ namespace Salesforce
 					var message = errorDetails [0] ["error_description"];
 					Debug.WriteLine("reason: " + message);
 					throw new InvalidSessionException (message);
+				}
+
+				// Handles: [{"message":"Cannot deserialize instance of datetime from VALUE_STRING value \"2013-08-12T15:20:00+0000\" at [line:1, column:179]","errorCode":"JSON_PARSER_ERROR"}]
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "JSON_PARSER_ERROR"))
+				{
+					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
+					throw new JsonParseException (message);
 				}
 
 				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_SESSION_ID"))
@@ -339,9 +354,19 @@ namespace Salesforce
 					throw new InvalidFieldException (message);
 				}
 
-				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + response.Exception);
+				// Handles: [{"fields": ["LastModifiedDate"], "message": "Unable to create/update fields: LastModifiedDate. Please check the security settings of this field and verify that it is read/write for your profile or permission set.", "errorCode": "INVALID_FIELD_FOR_INSERT_UPDATE"}]
+				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_FIELD_FOR_INSERT_UPDATE"))
+				{
+					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
+					var fields = errorDetails[0]["fields"] as JsonArray;
+					throw new InvalidFieldException (message, fields.Cast<String>());
+				}
 
-				return response.Result;
+				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + response.Exception);
+				throw innerEx;
+
+				//return response.Result;
 			});
 
 			return task;

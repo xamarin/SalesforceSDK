@@ -25,6 +25,11 @@ namespace Salesforce
 			}
 		}
 
+		/// <summary>
+		/// Allow pre-processing before an UpdateRequest is sent.
+		/// </summary>
+		public event EventHandler<EventArgs> PreparingUpdateRequest;
+
 		#region ISalesforceResource implementation
 
 		string ISalesforceResource.ResourceType {
@@ -95,6 +100,13 @@ namespace Salesforce
 			}
 		}
 
+		internal void OnPreparingUpdateRequest()
+		{
+			var evt = PreparingUpdateRequest;
+			if (evt != null)
+				evt (this, new EventArgs ());
+		}
+
 		protected T GetOption<T> (string key, T @default, Func<JsonValue, T> convertFunc)
 		{
 			if (convertFunc == null)
@@ -121,7 +133,9 @@ namespace Salesforce
 
 		protected void SetOption<T> (string key, T value, Func<T, JsonValue> convertFunc = null)
 		{
-			if (convertFunc == null)
+			if (value == null)
+				Options.Remove (key);
+			else if (convertFunc == null)
 				Options[key] = value.ToString ();
 			else
 				Options[key] = convertFunc (value);

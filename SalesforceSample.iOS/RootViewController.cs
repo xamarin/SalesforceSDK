@@ -40,6 +40,7 @@ namespace SalesforceSample.iOS
 		{
 			// Create salesforce creation request from generated account object
 			string newId = await Client.CreateAsync (account);
+			account.Id = newId;
 			FinishAddAccount (account);
 		}
 
@@ -81,12 +82,12 @@ namespace SalesforceSample.iOS
 
 		void InitializeSalesforce ()
 		{
-			const string clientId = "[Your Client ID]";
-			const string clientSecret = "[Your Client Secret]";
-			var redirectUrl = new Uri ("com.sample.salesforce:/oauth2Callback"); // Replace with your custom callback.
+			const string consumerKey = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";//"[Your Client ID]";
+			const string consumerSecret = "5754078534436456018";//"[Your Client Secret]";
+			var callbackUrl = new Uri ("com.sample.salesforce:/oauth2Callback"); // Replace with your custom callback.
 
 			// Creates our connection to salesforce.
-			Client = new SalesforceClient (clientId, clientSecret, redirectUrl);
+			Client = new SalesforceClient (consumerKey, consumerSecret, callbackUrl);
 			Client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
 			// Get authenticated users from the local keystore
@@ -125,7 +126,7 @@ namespace SalesforceSample.iOS
 			IEnumerable<SObject> response;
 
 			try {
-				response = await Client.QueryAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry FROM Account");
+				response = await Client.QueryAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry, LastModifiedDate, Assigned__c FROM Account");
 			} catch (InvalidSessionException) {
 				InitializeSalesforce ();
 				SetLoadingState (false);

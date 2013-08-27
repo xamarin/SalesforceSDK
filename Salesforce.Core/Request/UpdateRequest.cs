@@ -20,11 +20,16 @@ namespace Salesforce
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
+			if (!(Resource is SObject))
+				throw new InvalidOperationException ();
+
 			var path = user.Properties ["instance_url"] + SalesforceClient.RestApiPath;
 			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 
-			var oauthRequest = new OAuth2Request (Method, uri, Resource.Options.Where (kvp => kvp.Value.JsonType == JsonType.String).ToDictionary (k => k.Key, v => (string) v.Value), user);
+			var r = Resource as SObject;
+			r.OnPreparingUpdateRequest ();
+			var oauthRequest = new OAuth2Request (Method, uri, r.Options.ToDictionary (k => k.Key, v => (String)v.Value), user);
 
 			return oauthRequest;
 		}
