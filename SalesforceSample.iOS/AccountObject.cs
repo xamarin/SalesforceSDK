@@ -9,7 +9,6 @@ namespace SalesforceSample.iOS
 	{
 		public AccountObject()
 		{
-			this.FieldsWithNullValues = new System.Collections.Hashtable ();
 			this.PreparingUpdateRequest += PrepareForUpdate;
 		}
 
