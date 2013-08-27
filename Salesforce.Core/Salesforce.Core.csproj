@@ -118,6 +118,9 @@
     <Compile Include="Exceptions\MissingResourceException.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
     <Compile Include="SalesforceClientExtensions.cs" />
+    <Compile Include="Exceptions\InvalidClientIdException.cs" />
+    <Compile Include="Exceptions\JsonParseException.cs" />
+    <Compile Include="Request\UpdateRequestEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

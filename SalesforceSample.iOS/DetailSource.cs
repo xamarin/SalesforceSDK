@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Json;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using System.Globalization;
 
 namespace SalesforceSample.iOS
 {
@@ -22,6 +23,7 @@ namespace SalesforceSample.iOS
 			}
 		}
 
+
 		public DetailSource (DetailViewController controller)
 		{
 			this.controller = controller;
@@ -34,7 +36,7 @@ namespace SalesforceSample.iOS
 
 		public override int RowsInSection (UITableView tableview, int section)
 		{
-			return section == 0 ? 5 : 2;
+			return section == 0 ? 7 : 2;
 		}
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
@@ -49,6 +51,12 @@ namespace SalesforceSample.iOS
 				Data.Phone = textBoxes["Phone"].Text;
 				Data.Website = textBoxes["Website"].Text;
 				Data.AccountNumber = textBoxes["Account"].Text;
+				var assignedText = textBoxes ["SLA Expiry"].Text;
+				if (!String.IsNullOrWhiteSpace (assignedText))
+					Data.SLAExpiration = DateTime.Parse (assignedText, CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal);
+				else
+					Data.SLAExpiration = null;
+
 				controller.SendUpdate ();
 			} else {
 				controller.SendCanceled ();
@@ -106,6 +114,18 @@ namespace SalesforceSample.iOS
 			case 4:
 				cell.TextLabel.Text = "Account";
 				textField.Text = Data.AccountNumber;
+				break;
+			case 5:
+				cell.TextLabel.Text = "SLA Expiry";
+				textField.Text = Data.SLAExpiration.HasValue 
+					? Data.SLAExpiration.Value.ToLocalTime().ToShortDateString() 
+					: null;
+				break;
+			case 6:
+				cell.TextLabel.Text = "Modified";
+				textField.Text = Data.LastModified.HasValue 
+					? Data.LastModified.Value.ToLocalTime().ToString() 
+					: null;
 				break;
 			}
 
