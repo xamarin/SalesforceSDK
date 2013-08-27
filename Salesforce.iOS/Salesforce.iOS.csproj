@@ -175,5 +175,14 @@
       <Link>Exceptions\InvalidFieldException.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs" />
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
+      <Link>Exceptions\InvalidClientIdException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
+      <Link>Exceptions\JsonParseException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
+      <Link>Request\UpdateRequestEventArgs.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

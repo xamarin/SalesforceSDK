@@ -89,6 +89,7 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="System.Json" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

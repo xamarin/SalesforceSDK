@@ -25,6 +25,11 @@ namespace Salesforce
 			}
 		}
 
+		/// <summary>
+		/// Allow pre-processing before an UpdateRequest is sent.
+		/// </summary>
+		public event EventHandler<UpdateRequestEventArgs> PreparingUpdateRequest;
+
 		#region ISalesforceResource implementation
 
 		string ISalesforceResource.ResourceType {
@@ -95,33 +100,47 @@ namespace Salesforce
 			}
 		}
 
-		protected T GetOption<T> (string key, T @default, Func<JsonValue, T> convertFunc)
+		internal IDictionary<string,string> OnPreparingUpdateRequest()
+		{
+			var evt = PreparingUpdateRequest;
+			IDictionary<string,string> opts = null;
+			if (evt != null)
+			{
+				opts = Options.ToDictionary (k => k.Key, v => (String)v.Value);
+				evt (this, new UpdateRequestEventArgs (opts));
+			}
+			return opts;
+		}
+
+		protected T GetOption<T> (string key, T defaultValue, Func<JsonValue, T> convertFunc)
 		{
 			if (convertFunc == null)
 				throw new ArgumentNullException("convertFunc");
 
 			if (!Options.ContainsKey (key)) {
-				return @default;
+				return defaultValue;
 			}
 			var obj = Options[key];
 			return convertFunc (obj);
 		}
 
-		protected string GetOption (string key, string @default = "")
+		protected string GetOption (string key, string defaultValue = "")
 		{
 			if (!Options.ContainsKey (key)) {
-				return @default;
+				return defaultValue;
 			}
 
 			var result = Options[key];
 			if (result != null && result.JsonType == JsonType.String)
 				return result;
-			return @default;
+			return defaultValue;
 		}
 
 		protected void SetOption<T> (string key, T value, Func<T, JsonValue> convertFunc = null)
 		{
-			if (convertFunc == null)
+			if (value == null)
+				Options.Remove (key);
+			else if (convertFunc == null)
 				Options[key] = value.ToString ();
 			else
 				Options[key] = convertFunc (value);
