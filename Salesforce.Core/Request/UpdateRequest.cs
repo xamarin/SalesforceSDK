@@ -20,16 +20,18 @@ namespace Salesforce
 
 		public OAuth2Request ToOAuth2Request (ISalesforceUser user)
 		{
+			// We can't update a query or a search object,
+			// so neither of these are appropriate here.
 			if (!(Resource is SObject))
-				throw new InvalidOperationException ();
+				throw new InvalidOperationException ("Only SObjects can be updated. Searches and Queries are read-only.");
 
 			var path = user.Properties ["instance_url"] + SalesforceClient.RestApiPath;
 			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 
 			var r = Resource as SObject;
-			r.OnPreparingUpdateRequest ();
-			var oauthRequest = new OAuth2Request (Method, uri, r.Options.ToDictionary (k => k.Key, v => (String)v.Value), user);
+			var options = r.OnPreparingUpdateRequest ();
+			var oauthRequest = new OAuth2Request (Method, uri, options, user);
 
 			return oauthRequest;
 		}

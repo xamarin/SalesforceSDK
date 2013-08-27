@@ -55,24 +55,30 @@ namespace SalesforceSample.iOS
 			}
 		}
 
-		public DateTime? AssignedOn
+		public DateTime? SLAExpiration
 		{
 			get { 
-				var val = GetOption ("Assigned__c");
-				return !String.IsNullOrWhiteSpace(val) ? DateTime.Parse(val) : default(DateTime?) ; 
+				var val = GetOption ("SLAExpirationDate__c");
+				return !String.IsNullOrWhiteSpace(val) 
+					? DateTime.Parse(
+							val, 
+							System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat, 
+							System.Globalization.DateTimeStyles.AssumeLocal
+						) 
+					: default(DateTime?) ; 
 			}
 			set {
 				if (value.HasValue) {
-					SetOption ("Assigned__c", value.Value.ToString ("o"));
+					SetOption ("SLAExpirationDate__c", value.Value.ToString("yyyy-MM-dd"));
 				} else
-					SetOption ("Assigned__c", String.Empty); // Effectively resets the field to blank.
+					SetOption ("SLAExpirationDate__c", String.Empty); // Effectively resets the field to blank.
 
 			}
 		}
 
-		public void PrepareForUpdate(object sender, EventArgs args)
+		public void PrepareForUpdate(object sender, UpdateRequestEventArgs args)
 		{
-			Options.Remove ("LastModifiedDate"); // Prevents attempting to update a read-only field.
+			args.UpdateData.Remove ("LastModifiedDate"); // Prevents attempt to update a read-only field.
 		}
 	}
 }

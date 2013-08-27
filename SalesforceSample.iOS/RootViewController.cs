@@ -82,8 +82,8 @@ namespace SalesforceSample.iOS
 
 		void InitializeSalesforce ()
 		{
-			const string consumerKey = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";//"[Your Client ID]";
-			const string consumerSecret = "5754078534436456018";//"[Your Client Secret]";
+			const string consumerKey = "[Your Client ID]";
+			const string consumerSecret = "[Your Client Secret]";
 			var callbackUrl = new Uri ("com.sample.salesforce:/oauth2Callback"); // Replace with your custom callback.
 
 			// Creates our connection to salesforce.
@@ -126,7 +126,7 @@ namespace SalesforceSample.iOS
 			IEnumerable<SObject> response;
 
 			try {
-				response = await Client.QueryAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry, LastModifiedDate, Assigned__c FROM Account");
+				response = await Client.QueryAsync ("SELECT Id, Name, AccountNumber, Phone, Website, Industry, LastModifiedDate, SLAExpirationDate__c FROM Account");
 			} catch (InvalidSessionException) {
 				InitializeSalesforce ();
 				SetLoadingState (false);
