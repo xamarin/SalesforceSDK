@@ -6,7 +6,7 @@ using Xamarin.Auth;
 
 namespace Salesforce
 {
-	public class ReadRequest : IAuthenticatedRequest
+	public class DescribeRequest : IAuthenticatedRequest
 	{
 		public ISalesforceResource Resource {	get ; set ; }
 
@@ -25,7 +25,7 @@ namespace Salesforce
 			return oauthRequest;
 		}
 
-		public ReadRequest ()
+		public DescribeRequest ()
 		{
 			Options = new Dictionary<string,JsonValue> ();
 			Headers = new Dictionary<string,string> ();

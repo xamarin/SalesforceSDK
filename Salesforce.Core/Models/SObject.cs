@@ -18,7 +18,7 @@ namespace Salesforce
 		public static SObject Parse (string jsonText)
 		{
 			try {
-				var jsonValue = JsonObject.Parse (jsonText);
+				var jsonValue = JsonValue.Parse (jsonText);
 				return new SObject ((JsonObject) jsonValue);
 			} catch {
 				throw new ArgumentException ("Could not parse passed input text into JsonObject");

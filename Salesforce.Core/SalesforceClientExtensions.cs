@@ -66,20 +66,42 @@ namespace Salesforce
 				return; // TODO : Error handling/reporting
 		}
 
-		public static IEnumerable<SObject> Search (this SalesforceClient self, string search)
+		public static IEnumerable<SearchResult> Search (this SalesforceClient self, string search)
 		{
 			var result = self.SearchAsync (search);
 			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout))) {
 				Debug.WriteLine ("Request timed out");
-				return Enumerable.Empty<SObject> ();
+				return null;
 			}
 
 			return result.Result;
 		}
 
-		public static Task<IEnumerable<SObject>> SearchAsync (this SalesforceClient self, string search)
+		public async static Task<IEnumerable<SearchResult>> SearchAsync (this SalesforceClient self, string search)
 		{
-			return self.ReadAsync (new ReadRequest {Resource = new Search {QueryText = search}});
+			var request = new ReadRequest {Resource = new Search {QueryText = search}};
+
+			Response response;
+
+			try {
+				response = await self.ProcessAsync (request);
+			} catch (AggregateException ex) {
+				throw ex.Flatten ().InnerException;
+			}
+
+			if (response == null) {
+				return null;
+			}
+
+			var result = response.GetResponseText ();
+			var jsonValue = (JsonArray)JsonValue.Parse (result);
+
+			if (jsonValue == null)
+				throw new Exception ("Could not parse Json data");
+
+			var returnVal = jsonValue.Select(jv => new SearchResult(jv)).ToArray();
+			return returnVal;
+
 		}
 
 		public static Task<IEnumerable<SObject>> QueryAsync (this SalesforceClient self, string query)
@@ -150,6 +172,35 @@ namespace Salesforce
 			}
 			return result.Result;
 		}
+
+		public static async Task<JsonObject> DescribeAsync (this SalesforceClient self, string type)
+		{
+			var request = new ReadRequest { Resource = new SObject { Id = "describe", ResourceName = type } };
+
+			Response response;
+
+			try {
+				response = await self.ProcessAsync (request);
+			} catch (AggregateException ex) {
+				throw ex.Flatten ().InnerException;
+			}
+
+			var result = response.GetResponseText ();
+			var jsonValue = JsonValue.Parse (result);
+
+			if (jsonValue == null)
+				throw new Exception ("Could not parse Json data");
+
+			return (JsonObject)jsonValue;
+		}
+
+		public static JsonObject Describe (this SalesforceClient self, string type)
+		{
+			var result = self.DescribeAsync (type);
+			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
+				return null; // TODO : Error handling/reporting
+			return result.Result;
+		}
+
 	}
-	
 }

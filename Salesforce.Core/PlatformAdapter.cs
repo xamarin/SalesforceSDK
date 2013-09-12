@@ -21,7 +21,22 @@ namespace Salesforce
 
 	public struct PlatformStrings
 	{
-		public static readonly String Salesforce = "Salesforce";
+		static String salesforce = "Salesforce";
+
+		/// <summary>
+		/// Identifies our credentials in the credential store.
+		/// </summary>
+		/// <value>The salesforce.</value>
+		/// <remarks>
+		/// If you are going to change this value,
+		/// be sure to do it before constructing
+		/// a new <see cref="SalesforceClient"/>.
+		/// </remarks>
+		public static String Salesforce
+		{
+			get { return salesforce; } 
+			set { salesforce = value; }
+		}
 	}
 
 #if PLATFORM_ANDROID

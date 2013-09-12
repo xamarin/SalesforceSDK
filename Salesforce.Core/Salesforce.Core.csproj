@@ -121,6 +121,8 @@
     <Compile Include="Exceptions\InvalidClientIdException.cs" />
     <Compile Include="Exceptions\JsonParseException.cs" />
     <Compile Include="Request\UpdateRequestEventArgs.cs" />
+    <Compile Include="Request\DescribeRequest.cs" />
+    <Compile Include="Models\SearchResult.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

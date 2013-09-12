@@ -8,8 +8,6 @@ namespace Salesforce
 {
 	public class UpdateRequest : IAuthenticatedRequest
 	{
-		public String RequestType { get; set; }
-
 		public ISalesforceResource Resource {	get ; set ; }
 
 		public IDictionary<string, string> Headers { get ; set ; }

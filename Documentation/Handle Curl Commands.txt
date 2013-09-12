@@ -1,5 +1,6 @@
-curl https://na15.salesforce.com/services/data/v28.0/sobjects/Account -H 'Authorization: OAuth 00Di0000000bhOg!ARYAQBe5A8YSKAJhtkXqdnycCfUj7cj7h6_HtRefWefgE7GvfU6sfNzuSN_VgVw8aYswTsgSSZQ0Yvy0QXhpJtEMrok0ij03' -H "X-PrettyPrint:1"
+curl https://na15.salesforce.com/services/data/v28.0/sobjects/Account -H 'Authorization: OAuth 00Di0000000bhOg%21ARYAQMUkF0xUvvxYmgMzUXDGctZJU_V43gRbMCJq56D4EkazkenZydQYThXQy8iHntpIzCIq_.ckdJO_.fTWilmSHlV6Hr3W' -H "X-PrettyPrint:1"
 
+curl https://na15.salesforce.com/services/data/v28.0/sobjects/Opportunity/describe/layouts/ -H 'Authorization: OAuth 00Di0000000bhO!ARYAQKQ_zNyDCIP80WZhgklOXGMxSmCaGamaob7I2_aMnxhZf6sbg1yNST1sfXBmlV.9NxPkPDtQcBU2HhSQNW.WCULZLb8p' -H "X-PrettyPrint:1"
 
 curl https://na15.salesforce.com/services/data/v28.0/sobjects/Account/001i000000JEw0WAAT/ -H 'Authorization: OAuth 00Di0000000bhOg!ARYAQKof851qbLGZS_.9zJu7nYtZI.m7_vVLW3vZbJeL1c8MwpQgOSQAe75qy4WP0O6wEmAx9S_13n5nQ8p5cRuSYk_pIfq6' -H "X-PrettyPrint:1" -X DELETE
 
@@ -14,3 +15,7 @@ curl https://login.salesforce.com/services/oauth2/token -d 'grant_type=password&
    secret=REMOTE_ACCESS_CLIENT_SECRET&username=user@example.com&password=********' -H "X-PrettyPrint: 1"
 
 curl 'https://login.salesforce.com/services/oauth2/authorize?response_type=api&client_id=3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab&redirect_uri=com.sample.salesforce%3a%2foauth2Callback'
+
+
+
+00Di0000000bhOg%21ARYAQMUkF0xUvvxYmgMzUXDGctZJU_V43gRbMCJq56D4EkazkenZydQYThXQy8iHntpIzCIq_.ckdJO_.fTWilmSHlV6Hr3W

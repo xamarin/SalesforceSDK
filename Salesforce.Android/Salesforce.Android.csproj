@@ -191,6 +191,9 @@
     <Compile Include="..\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
       <Link>Request\UpdateRequestEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
+      <Link>Models\SearchResult.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

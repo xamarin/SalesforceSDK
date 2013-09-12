@@ -5,55 +5,89 @@ using Salesforce;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework.Constraints;
+using Xamarin.Auth;
+using System.Linq;
+using System.Collections.Generic;
+using System.Json;
 
 namespace Tests.iOS
 {
 	[TestFixture]
 	public class SalesforceClientTests
 	{
-		[Test]
-		public void Pass ()
+		SalesforceClient Client {
+			get;
+			set;
+		}
+
+		[SetUp]
+		public void Setup ()
 		{
-			var passed = false;
-
 			var key = "3MVG9A2kN3Bn17hueOTBLV6amupuqyVHycNQ43Q4pIHuDhYcP0gUA0zxwtLPCcnDlOKy0gopxQ4dA6BcNWLab";
+
+			var redirectUrl = new Uri("com.sample.salesforce:/oauth2Callback"); // TODO: Move oauth redirect to constant or config
 			var secret = "5754078534436456018";
-			var callback = new Uri ("sfdc://success");
 
-			var authMan = new SalesforceClient (key, secret, callback);
+			Client = new SalesforceClient (key, secret, redirectUrl);
 
-			authMan.AuthenticationComplete += (sender, e) => {
-				if (e.IsAuthenticated){
-					// Invoke completion handler.
-					Debug.WriteLine("Auth success: " + e.Account.Username);
-					passed = true;
-				}
-			};
 
-			try 
+			var users = Client.LoadUsers ();
+			ISalesforceUser user;
+
+			if (users.SingleOrDefault() == null)
 			{
-				var obj = authMan.GetLoginInterface();
-				Assert.NotNull(obj);
-			} catch (Exception ex) {
-				Debug.WriteLine (ex.Message);
+				user = new SalesforceUser {
+					Username = "zack@xamarin.form",					
+				};
+				user.Properties ["instance_url"] = @"https://na15.salesforce.com/";
+				user.Properties ["refresh_token"] = @"5Aep861z80Xevi74eVVu3JCJRUeNrRZAcxky4UcHL1MvM2ALL0djQp.rF2CFYJCWPzjzhYmMv2Ks.RZJGfYsCf3";
+				user.Properties ["access_token"] = @"00Di0000000bhO!ARYAQC.1PSh5ZNZGKjtB5H5kMY3QPPiBrEMroBRWJfr3fHlObU7GrYsDshCqpp6Mtt13LD0NP2N00CZ_xP29RYZcSprRF1Rt";
+
+				Client.Save (user);
+			}
+			else
+			{
+				user = users.FirstOrDefault ();
 			}
 
-			Debug.WriteLine (passed);
-			Assert.That (() => passed, new DelayedConstraint(new PredicateConstraint<bool>((o) => passed), 10000));
-
+			Client.CurrentUser = user;
 		}
 
 		[Test]
-		public void Fail ()
+		public void QueryTest ()
 		{
-			Assert.False (true);
+			var query = "SELECT Id, Name, AccountNumber, Phone, Website, Industry, LastModifiedDate, SLAExpirationDate__c FROM Account";
+			var task = Task.Run (()=> Client.Query (query));
+
+			Assert.That (task, Has.Property ("Status").EqualTo (TaskStatus.RanToCompletion).After (5000, 100).And.Property ("Result").Matches(new Predicate<IEnumerable<SObject>>(o => o.ToArray().Length == 11)));
+		}
+		
+		[Test]
+		public void SearchTest ()
+		{
+			var query = "FIND {John*} IN ALL FIELDS RETURNING Account (Id, Name), Contact, Opportunity, Lead";
+
+			Task<IEnumerable<SearchResult>> task = Task.Run (() => Client.Search (query));
+
+			Assert.That (task, Has.Property ("Status").EqualTo (TaskStatus.RanToCompletion).After (10000, 100).And.Property ("Result").Matches (new Predicate<IEnumerable<SearchResult>> (o => {
+				var countIsElevent = o.Count() == 11;
+				return countIsElevent;
+			})));
 		}
 
 		[Test]
-		[Ignore ("another time")]
-		public void Ignore ()
+		public void DescribeTest ()
 		{
-			Assert.True (false);
+			var type = "Opportunity";
+
+			Task<JsonObject> task = Task.Run (() => {return Client.Describe(type);});
+
+			Assert.That (task, Has.Property ("Status").EqualTo (TaskStatus.RanToCompletion).After (10000, 100).And.Property ("Result").Matches (new Predicate<JsonObject> (o => {
+
+				return o != null
+					&& o["name"] == "Opportunity"
+						&& o["fields"].Count == 39;
+			})));
 		}
 	}
 }
