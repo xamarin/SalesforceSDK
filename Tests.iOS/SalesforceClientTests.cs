@@ -83,7 +83,24 @@ namespace Tests.iOS
 			Task<JsonObject> task = Task.Run (() => {return Client.Describe(type);});
 
 			Assert.That (task, Has.Property ("Status").EqualTo (TaskStatus.RanToCompletion).After (10000, 100).And.Property ("Result").Matches (new Predicate<JsonObject> (o => {
+				return o != null
+					&& o["name"] == "Opportunity"
+						&& o["fields"].Count == 39;
+			})));
+		}
+		
+		[Test]
+		public void DescribeAsyncTest ()
+		{
+			var type = "Opportunity";
 
+			Task<JsonObject> task = Task.Run (() => {
+				var t = Client.DescribeAsync (type);
+				t.Wait(SalesforceClient.DefaultNetworkTimeout);
+				return t.Result;
+			});
+
+			Assert.That (task, Has.Property ("Status").EqualTo (TaskStatus.RanToCompletion).After (10000, 100).And.Property ("Result").Matches (new Predicate<JsonObject> (o => {
 				return o != null
 					&& o["name"] == "Opportunity"
 						&& o["fields"].Count == 39;
