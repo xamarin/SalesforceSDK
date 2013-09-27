@@ -32,7 +32,7 @@ namespace Salesforce
 		/// be sure to do it before constructing
 		/// a new <see cref="SalesforceClient"/>.
 		/// </remarks>
-		public static String Salesforce
+		public static String CredentialStoreServiceName
 		{
 			get { return salesforce; } 
 			set { salesforce = value; }
@@ -60,7 +60,7 @@ namespace Salesforce
 
 		public void SaveAccount (ISalesforceUser account)
 		{
-			AccountStore.Create (CurrentPlatformContext as Context ?? global::Android.App.Application.Context).Save (account, PlatformStrings.Salesforce);
+			AccountStore.Create (CurrentPlatformContext as Context ?? global::Android.App.Application.Context).Save (account, PlatformStrings.CredentialStoreServiceName);
 		}
 
 		#endregion
@@ -76,7 +76,7 @@ namespace Salesforce
 
 		public IEnumerable<ISalesforceUser> LoadAccounts()
 		{
-			return AccountStore.Create (CurrentPlatformContext as Context).FindAccountsForService (PlatformStrings.Salesforce);
+			return AccountStore.Create (CurrentPlatformContext as Context).FindAccountsForService (PlatformStrings.CredentialStoreServiceName);
 		}
 
 }
@@ -104,12 +104,12 @@ namespace Salesforce
 
 		public void SaveAccount (ISalesforceUser account)
 		{
-			AccountStore.Create ().Save (account, PlatformStrings.Salesforce);
+			AccountStore.Create ().Save (account, PlatformStrings.CredentialStoreServiceName);
 		}
 
 		public IEnumerable<ISalesforceUser> LoadAccounts()
 		{
-			return AccountStore.Create ().FindAccountsForService (PlatformStrings.Salesforce);
+			return AccountStore.Create ().FindAccountsForService (PlatformStrings.CredentialStoreServiceName);
 		}
 
 		#endregion

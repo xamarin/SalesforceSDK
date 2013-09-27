@@ -124,7 +124,7 @@ namespace Salesforce
 			return convertFunc (obj);
 		}
 
-		protected string GetOption (string key, string defaultValue = "")
+		protected JsonValue GetOption (string key, string defaultValue = "")
 		{
 			if (!Options.ContainsKey (key)) {
 				return defaultValue;
@@ -133,7 +133,9 @@ namespace Salesforce
 			var result = Options[key];
 			if (result != null && result.JsonType == JsonType.String)
 				return result;
-			return defaultValue;
+			else if (result == null)
+				return defaultValue;
+			return result;
 		}
 
 		protected void SetOption<T> (string key, T value, Func<T, JsonValue> convertFunc = null)

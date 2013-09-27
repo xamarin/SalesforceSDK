@@ -246,6 +246,12 @@ namespace Salesforce
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public Task<Response> ProcessAsync<T>(T request) where T: class, IAuthenticatedRequest
 		{
+			if ((CurrentUser = Adapter.LoadAccounts().FirstOrDefault()) == null)
+			{
+				var message = String.Format ("No user available in credential store for service {0}.", PlatformStrings.CredentialStoreServiceName);
+				throw new InvalidSessionException(message);
+			}
+
 			var oauthRequest = request.ToOAuth2Request(CurrentUser);
 
 			Debug.WriteLine (oauthRequest.Url);
@@ -466,10 +472,11 @@ namespace Salesforce
 				return;
 			}
 
+			CurrentUser = args.Account;
+
 			var ev = AuthenticationComplete;
 			if ( ev != null)
 			{
-				CurrentUser = args.Account;
 				ForceUserReauthorization (false);
 				ev (sender, args);
 			}
