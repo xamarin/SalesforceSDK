@@ -26,28 +26,28 @@ namespace Tests.Android
 		
 		public static void UpdateIdValues()
 		{
-			Xamarin.Android.NUnitLite.Resource.Id.OptionHostName = Tests.Android.Resource.Id.OptionHostName;
-			Xamarin.Android.NUnitLite.Resource.Id.OptionPort = Tests.Android.Resource.Id.OptionPort;
-			Xamarin.Android.NUnitLite.Resource.Id.OptionRemoteServer = Tests.Android.Resource.Id.OptionRemoteServer;
-			Xamarin.Android.NUnitLite.Resource.Id.OptionsButton = Tests.Android.Resource.Id.OptionsButton;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultFullName = Tests.Android.Resource.Id.ResultFullName;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultMessage = Tests.Android.Resource.Id.ResultMessage;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultResultState = Tests.Android.Resource.Id.ResultResultState;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultStackTrace = Tests.Android.Resource.Id.ResultStackTrace;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsFailed = Tests.Android.Resource.Id.ResultsFailed;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsId = Tests.Android.Resource.Id.ResultsId;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsIgnored = Tests.Android.Resource.Id.ResultsIgnored;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsInconclusive = Tests.Android.Resource.Id.ResultsInconclusive;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsMessage = Tests.Android.Resource.Id.ResultsMessage;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsPassed = Tests.Android.Resource.Id.ResultsPassed;
-			Xamarin.Android.NUnitLite.Resource.Id.ResultsResult = Tests.Android.Resource.Id.ResultsResult;
-			Xamarin.Android.NUnitLite.Resource.Id.RunTestsButton = Tests.Android.Resource.Id.RunTestsButton;
-			Xamarin.Android.NUnitLite.Resource.Id.TestSuiteListView = Tests.Android.Resource.Id.TestSuiteListView;
-			Xamarin.Android.NUnitLite.Resource.Layout.options = Tests.Android.Resource.Layout.options;
-			Xamarin.Android.NUnitLite.Resource.Layout.results = Tests.Android.Resource.Layout.results;
-			Xamarin.Android.NUnitLite.Resource.Layout.test_result = Tests.Android.Resource.Layout.test_result;
-			Xamarin.Android.NUnitLite.Resource.Layout.test_suite = Tests.Android.Resource.Layout.test_suite;
-			Salesforce.Resource.String.library_name = Tests.Android.Resource.String.library_name;
+			global::Xamarin.Android.NUnitLite.Resource.Id.OptionHostName = global::Tests.Android.Resource.Id.OptionHostName;
+			global::Xamarin.Android.NUnitLite.Resource.Id.OptionPort = global::Tests.Android.Resource.Id.OptionPort;
+			global::Xamarin.Android.NUnitLite.Resource.Id.OptionRemoteServer = global::Tests.Android.Resource.Id.OptionRemoteServer;
+			global::Xamarin.Android.NUnitLite.Resource.Id.OptionsButton = global::Tests.Android.Resource.Id.OptionsButton;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultFullName = global::Tests.Android.Resource.Id.ResultFullName;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultMessage = global::Tests.Android.Resource.Id.ResultMessage;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultResultState = global::Tests.Android.Resource.Id.ResultResultState;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultStackTrace = global::Tests.Android.Resource.Id.ResultStackTrace;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsFailed = global::Tests.Android.Resource.Id.ResultsFailed;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsId = global::Tests.Android.Resource.Id.ResultsId;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsIgnored = global::Tests.Android.Resource.Id.ResultsIgnored;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsInconclusive = global::Tests.Android.Resource.Id.ResultsInconclusive;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsMessage = global::Tests.Android.Resource.Id.ResultsMessage;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsPassed = global::Tests.Android.Resource.Id.ResultsPassed;
+			global::Xamarin.Android.NUnitLite.Resource.Id.ResultsResult = global::Tests.Android.Resource.Id.ResultsResult;
+			global::Xamarin.Android.NUnitLite.Resource.Id.RunTestsButton = global::Tests.Android.Resource.Id.RunTestsButton;
+			global::Xamarin.Android.NUnitLite.Resource.Id.TestSuiteListView = global::Tests.Android.Resource.Id.TestSuiteListView;
+			global::Xamarin.Android.NUnitLite.Resource.Layout.options = global::Tests.Android.Resource.Layout.options;
+			global::Xamarin.Android.NUnitLite.Resource.Layout.results = global::Tests.Android.Resource.Layout.results;
+			global::Xamarin.Android.NUnitLite.Resource.Layout.test_result = global::Tests.Android.Resource.Layout.test_result;
+			global::Xamarin.Android.NUnitLite.Resource.Layout.test_suite = global::Tests.Android.Resource.Layout.test_suite;
+			global::Salesforce.Resource.String.library_name = global::Tests.Android.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
