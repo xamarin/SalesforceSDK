@@ -91,8 +91,8 @@ namespace Tests.Android
 			// aapt resource value: 0x7f050000
 			public const int OptionRemoteServer = 2131034112;
 			
-			// aapt resource value: 0x7f050010
-			public const int OptionsButton = 2131034128;
+			// aapt resource value: 0x7f05000f
+			public const int OptionsButton = 2131034127;
 			
 			// aapt resource value: 0x7f05000a
 			public const int ResultFullName = 2131034122;
@@ -127,11 +127,11 @@ namespace Tests.Android
 			// aapt resource value: 0x7f050004
 			public const int ResultsResult = 2131034116;
 			
-			// aapt resource value: 0x7f05000f
-			public const int RunTestsButton = 2131034127;
-			
 			// aapt resource value: 0x7f05000e
-			public const int TestSuiteListView = 2131034126;
+			public const int RunTestsButton = 2131034126;
+			
+			// aapt resource value: 0x7f050010
+			public const int TestSuiteListView = 2131034128;
 			
 			static Id()
 			{

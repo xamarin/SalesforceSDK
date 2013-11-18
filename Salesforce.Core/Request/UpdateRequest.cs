@@ -27,7 +27,7 @@ namespace Salesforce
 			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 
-			var r = Resource as SObject;
+            var r = (SObject)Resource;
 			var options = r.OnPreparingUpdateRequest ();
 			var oauthRequest = new OAuth2Request (Method, uri, options, user);
 

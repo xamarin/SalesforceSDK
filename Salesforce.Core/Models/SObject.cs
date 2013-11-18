@@ -61,7 +61,7 @@ namespace Salesforce
 		#region IVersionableRestResource implementation
 
 		public string Version {
-			get { return "v28.0"; }
+            get { return "v29.0"; }
 		}
 
 		#endregion
@@ -140,7 +140,7 @@ namespace Salesforce
 
 		protected void SetOption<T> (string key, T value, Func<T, JsonValue> convertFunc = null)
 		{
-			if (value == null)
+            if (value == null) // TODO: Compare to default(T) instead.
 				Options.Remove (key);
 			else if (convertFunc == null)
 				Options[key] = value.ToString ();

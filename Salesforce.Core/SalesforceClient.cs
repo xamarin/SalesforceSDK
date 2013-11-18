@@ -299,6 +299,14 @@ namespace Salesforce
 					throw new JsonParseException (message);
 				}
 
+                // Handles EXCEEDED_ID_LIMIT
+                if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "EXCEEDED_ID_LIMIT"))
+                {
+                    var message = errorDetails [0] ["message"];
+                    Debug.WriteLine("reason: " + message);
+                    throw new ExceededChangesLimitException (message);
+                }
+
 				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_SESSION_ID"))
 				{
 					// Refresh the OAuth2 session token.

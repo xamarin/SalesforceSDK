@@ -1,6 +1,6 @@
 curl https://na15.salesforce.com/services/data/v28.0/sobjects/Account -H 'Authorization: OAuth 00Di0000000bhOg%21ARYAQMUkF0xUvvxYmgMzUXDGctZJU_V43gRbMCJq56D4EkazkenZydQYThXQy8iHntpIzCIq_.ckdJO_.fTWilmSHlV6Hr3W' -H "X-PrettyPrint:1"
 
-curl https://na15.salesforce.com/services/data/v28.0/sobjects/Opportunity/describe/layouts/ -H 'Authorization: OAuth 00Di0000000bhO!ARYAQC.1PSh5ZNZGKjtB5H5kMY3QPPiBrEMroBRWJfr3fHlObU7GrYsDshCqpp6Mtt13LD0NP2N00CZ_xP29RYZcSprRF1Rt' -H "X-PrettyPrint:1"
+curl https://na15.salesforce.com/services/data/v28.0/sobjects/Opportunity/describe/ -H 'Authorization: OAuth 00Di0000000bhOg!ARYAQPpDuZ5y65ff9FT6dl9XLw9f9KuhRIIdwE6cSu.50ZbaqFdoD2TnN2Mcgiqyj0WO3dsCdXOQMnxCz8ljcJgUDHLULJOa' -H "X-PrettyPrint:1"
 
 curl https://na15.salesforce.com/services/data/v28.0/sobjects/Global/describe/layouts/ -H 'Authorization: OAuth 00Di0000000bhO!ARYAQC.1PSh5ZNZGKjtB5H5kMY3QPPiBrEMroBRWJfr3fHlObU7GrYsDshCqpp6Mtt13LD0NP2N00CZ_xP29RYZcSprRF1Rt' -H "X-PrettyPrint:1"
 

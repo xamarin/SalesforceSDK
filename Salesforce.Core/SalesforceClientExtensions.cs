@@ -173,6 +173,14 @@ namespace Salesforce
 			return result.Result;
 		}
 
+        public static JsonObject Describe (this SalesforceClient self, string type)
+        {
+            var result = self.DescribeAsync (type);
+            if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
+                return null; // TODO : Error handling/reporting
+            return result.Result;
+        }
+
 		public static async Task<JsonObject> DescribeAsync (this SalesforceClient self, string type)
 		{
 			var request = new ReadRequest { Resource = new SObject { Id = "describe", ResourceName = type } };
@@ -194,13 +202,109 @@ namespace Salesforce
 			return (JsonObject)jsonValue;
 		}
 
-		public static JsonObject Describe (this SalesforceClient self, string type)
+        public static JsonObject Changes (this SalesforceClient self, string type, ChangeTypes kind, DateTime from, DateTime until)
 		{
-			var result = self.DescribeAsync (type);
+            var request = new ChangesRequest {
+                Resource = new SObject { Id = kind.ToString().ToLowerInvariant(), ResourceName = type},
+                Since = from,
+                Until = until
+            };
+
+            var result = self.ChangesAsync (request);
 			if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
 				return null; // TODO : Error handling/reporting
 			return result.Result;
 		}
 
+        public static JsonObject Changes (this SalesforceClient self, string type, ChangeTypes kind, DateTime from)
+        {
+            var request = new ChangesRequest {
+                Resource = new SObject { Id = kind.ToString().ToLowerInvariant(), ResourceName = type},
+                Since = from
+            };
+
+            var result = self.ChangesAsync (request);
+            if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
+                return null; // TODO : Error handling/reporting
+            return result.Result;
+        }
+
+        public static JsonObject Changes (this SalesforceClient self, string type, ChangeTypes kind)
+        {
+            var request = new ChangesRequest {
+                Resource = new SObject { Id = kind.ToString().ToLowerInvariant(), ResourceName = type}
+            };
+
+            var result = self.ChangesAsync (request);
+            if (!result.Wait (TimeSpan.FromSeconds (SalesforceClient.DefaultNetworkTimeout)))
+                return null; // TODO : Error handling/reporting
+            return result.Result;
+        }
+
+        public static async Task<JsonObject> ChangesAsync (this SalesforceClient self, string type, ChangeTypes kind, DateTime from, DateTime until)
+        {
+            var request = new ChangesRequest {
+                Resource = new SObject { Id = kind.ToString().ToLowerInvariant(), ResourceName = type},
+                Since = from,
+                Until = until
+            };
+
+            return await self.ChangesAsync (request);
+        }
+
+        public static async Task<JsonObject> ChangesAsync (this SalesforceClient self, string type, ChangeTypes kind, DateTime from)
+        {
+            var request = new ChangesRequest {
+                Resource = new SObject { Id = kind.ToString().ToLowerInvariant(), ResourceName = type},
+                Since = from
+            };
+
+            return await self.ChangesAsync (request);
+        }
+
+        public static async Task<JsonObject> ChangesAsync (this SalesforceClient self, string type, ChangeTypes kind)
+        {
+            var request = new ChangesRequest {
+                Resource = new SObject { Id = kind.ToString().ToLowerInvariant(), ResourceName = type},
+            };
+
+            return await self.ChangesAsync (request);
+        }
+
+        /// <summary>
+        /// Requests changes to all SObjects of the specified type in the given time frame.
+        /// </summary>
+        /// <remarks>
+        /// Returns updates if passed ChangeTypes.Default.
+        /// 
+        /// Start date must not exceed 30 days prior.
+        /// 
+        /// Salesforce limits the result set size to 200,000 id's.
+        /// If your request matches more than that, the service will
+        /// return an EXCEEDED_ID_LIMIT error. To resolve this, either narrow
+        /// down your time interval or sub-divide the internal into
+        /// multiple requests.
+        /// </remarks>
+        /// <returns>The async.</returns>
+        /// <param name="self">Self.</param>
+        /// <param name = "request"></param>
+        public static async Task<JsonObject> ChangesAsync (this SalesforceClient self, IAuthenticatedRequest request)
+        {
+            Response response;
+
+            try {
+                response = await self.ProcessAsync (request);
+            } catch (AggregateException ex) {
+                throw ex.Flatten ().InnerException;
+            }
+
+            var result = response.GetResponseText ();
+            var jsonValue = JsonValue.Parse (result);
+
+            if (jsonValue == null)
+                throw new Exception ("Could not parse Json data");
+
+            return (JsonObject)jsonValue;
+        }
 	}
 }
