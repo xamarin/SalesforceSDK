@@ -59,7 +59,7 @@ namespace Xamarin.Auth
 		/// Indicates the user need to reauthenticate themselves.
 		/// </summary>
 		/// <value><c>true</c> if requires reauthentication; otherwise, <c>false</c>.</value>
-		public virtual bool RequiresReauthentication { get; internal set; }
+		public virtual bool RequiresReauthentication { get; set; }
 
 		/// <summary>
 		/// Initializes a new blank <see cref="Xamarin.Auth.SalesforceUser"/>.

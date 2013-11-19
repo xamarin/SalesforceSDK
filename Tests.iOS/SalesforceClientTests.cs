@@ -47,24 +47,25 @@ namespace Tests.iOS
             var responseTask = await tokenClient.PostAsync("https://login.salesforce.com/services/oauth2/token", content);
 //            responseTask.RunSynchronously(TaskScheduler.Default);
 //            responseTask.Wait();
-            var responseReadTask = responseTask.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+            responseTask.EnsureSuccessStatusCode();
+            var responseReadTask = await responseTask.Content.ReadAsStringAsync();
 //            var rawResult = await response.Content.ReadAsStringAsync();
-            responseReadTask.RunSynchronously();
-            responseReadTask.Wait();
+//            responseReadTask.RunSynchronously();
+//            responseReadTask.Wait();
 //            var result = JsonValue.Parse(rawResult);
-            var result = JsonValue.Parse(responseReadTask.Result);
+            var result = JsonValue.Parse(responseReadTask);
             var users = Client.LoadUsers ();
 			ISalesforceUser user;
 
-			if (users.SingleOrDefault() == null)
+            if (users.FirstOrDefault() == null)
 			{
 				user = new SalesforceUser {
 					Username = "zack@xamarin.form",					
 				};
-				user.Properties ["instance_url"] = @"https://na15.salesforce.com/";
-                //user.Properties ["refresh_token"] = @"5Aep861z80Xevi74eVVu3JCJRUeNrRZAcxky4UcHL1MvM2ALL3Wj_phoRIBXVC2ZcbP_BblUk39RfBF6cwu.lx3";
+				user.Properties ["instance_url"] = @"https://na15.salesforce.com";
+                user.Properties ["refresh_token"] = @"5Aep861z80Xevi74eVVu3JCJRUeNrRZAcxky4UcHL1MvM2ALL3Wj_phoRIBXVC2ZcbP_BblUk39RfBF6cwu.lx3";
                 user.Properties ["access_token"] = result["access_token"]; //@"00Di0000000bhOg!ARYAQN2uT2p0I.g1t03eAfogW8ZostVE61ZTMkkrOb1eiWADj9vEABhGUqqO05PQNdUA4pq60a3JTPTwyN6Z7blXpZXJbyHX";
-
+                user.Properties ["requires_reauthentication"] = "false";
 				Client.Save (user);
 			}
 			else
@@ -72,7 +73,7 @@ namespace Tests.iOS
 				user = users.FirstOrDefault ();
 			}
 
-			Client.CurrentUser = user;
+    			Client.CurrentUser = user;
 		}
 
 		[Test]

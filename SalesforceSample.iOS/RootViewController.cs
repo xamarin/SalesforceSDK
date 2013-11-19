@@ -82,8 +82,8 @@ namespace SalesforceSample.iOS
 
 		void InitializeSalesforce ()
 		{
-			const string consumerKey = "[Your Client ID]";
-			const string consumerSecret = "[Your Client Secret]";
+            const string consumerKey = "[Your Client ID]";
+            const string consumerSecret = "[Your Client Secret]";
 			var callbackUrl = new Uri ("com.sample.salesforce:/oauth2Callback"); // Replace with your custom callback.
 
 			// Creates our connection to salesforce.
@@ -104,7 +104,7 @@ namespace SalesforceSample.iOS
 		void StartAuthorization ()
 		{
 			var loginController = Client.GetLoginInterface () as UIViewController;
-			PresentViewController (loginController, true, null);
+            PresentViewController (new UINavigationController(loginController), true, null);
 		}
 
 		void OnAuthenticationCompleted (AuthenticatorCompletedEventArgs e)

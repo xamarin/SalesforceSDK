@@ -212,9 +212,6 @@ namespace Xamarin.Auth
 				webView.UserInteractionEnabled = true;
 
 				var url = new Uri (webView.Request.Url.AbsoluteString);
-				var lastUrlString = lastUrl != null 
-					? lastUrl.OriginalString 
-					: String.Empty;
 
 				if (!url.Equals(lastUrl)) { // Prevent loading the same URL multiple times
 					lastUrl = url;

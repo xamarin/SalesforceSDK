@@ -318,7 +318,7 @@ namespace Xamarin.Auth
 					url += head;
 					url += Uri.EscapeDataString (p.Key);
 					url += "=";
-					url += Uri.EscapeDataString (p.Value);
+                    url += p.Value == null ? String.Empty : Uri.EscapeDataString (p.Value);
 					head = "&";
 				}
 			}

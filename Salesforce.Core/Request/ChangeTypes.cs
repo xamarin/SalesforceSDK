@@ -9,7 +9,7 @@ namespace Salesforce
     public enum ChangeTypes
 	{
         Updated,
-        Deletes
+        Deleted
 	}
 }
 
