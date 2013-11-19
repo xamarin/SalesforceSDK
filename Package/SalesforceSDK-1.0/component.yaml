@@ -2,7 +2,7 @@
 ---
 name: Salesforce SDK
 id: SalesforceSDK
-version: "1.4.2"
+version: "1.4.3"
 publisher: Salesforce
 publisher-url: http://developer.force.com
 icons: 
