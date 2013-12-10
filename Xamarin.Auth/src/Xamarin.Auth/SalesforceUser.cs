@@ -27,7 +27,7 @@ namespace Xamarin.Auth
 		string Username { get; set; }
 		Dictionary<string, string> Properties { get; }
 		CookieContainer Cookies { get; }
-		bool RequiresReauthentication { get; }
+        bool RequiresReauthentication { get; set; }
 		string Serialize ();
 	}
 

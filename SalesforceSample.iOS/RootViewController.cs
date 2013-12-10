@@ -111,6 +111,7 @@ namespace SalesforceSample.iOS
 		{
 			if (!e.IsAuthenticated) {
 				// TODO: Handle failed login scenario by re-presenting login form with error
+                Client.CurrentUser.RequiresReauthentication = true;
 				throw new Exception ("Login failed and we don't handle that.");
 			}
 
