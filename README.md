@@ -29,20 +29,19 @@ var users = client.LoadUsers ();
 
 if (!users.Any ())
 {
-	client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
+        client.AuthenticationComplete += (sender, e) => OnAuthenticationCompleted (e);
 
-    // Starts the Salesforce login process.
-	var loginUI = client.GetLoginInterface (); 
-	DisplayThe(loginUI);
+        // Starts the Salesforce login process.
+        var loginUI = client.GetLoginInterface (); 
+        DisplayThe(loginUI);
 } 
 else 
 {
-    // We're ready to fetch some data!
-	// Let's grab some sales accounts to display.
-	IEnumerable<SObject> results = 
-		await client.ReadAsync ("SELECT Name, AccountNumber FROM Account");
+        // We're ready to fetch some data!
+        // Let's grab some sales accounts to display.
+        IEnumerable<SObject> results =  await client.ReadAsync ("SELECT Name, AccountNumber FROM Account");
 
-	DoSomethingAmazingWith(results);
+        DoSomethingAmazingWith(results);
 }
 ```
 For more details, see [Getting Started](https://github.com/xamarin/SalesforceSDK/blob/master/Package/SalesforceSDK-1.0/component/GettingStarted.md).
