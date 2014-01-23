@@ -53,13 +53,13 @@ For more details, see [Getting Started](https://github.com/xamarin/SalesforceSDK
 ### Project Organization ###
 
 **Core Libraries**
- * Salesforce.Core - Xamarin.Android sample app using the lib.
- * Salesforce.Android - Xamarin.Android sample app using the lib.
- * Salesforce.iOS - Xamarin.iOS sample app using the lib.
+ * Salesforce.Core - Plain old .NET 4.5 library. No dependencies on Xamarin stuffs.
+ * Salesforce.Android - Xamarin.Android project. Source linked from Core, but defines `PLATFORM_ANDROID` and `MOBILE`.
+ * Salesforce.iOS - Xamarin.iOS project. Source linked from Core, but defines `PLATFORM_IOS` and `MOBILE`.
 
 **Sample Apps**
- * SalesforceSample.Android - Xamarin.Android sample app using the lib.
- * SalesforceSample.iOS - Xamarin.iOS sample app using the lib.
+ * SalesforceSample.Android - Xamarin.Android sample app using `Salesforce.Android`.
+ * SalesforceSample.iOS - Xamarin.iOS sample app using `Salesforce.iOS`.
 
 **Tests**
  * Tests.Android - Xamarin.Android unit test project (NUnit Lite).
@@ -71,6 +71,7 @@ For more details, see [Getting Started](https://github.com/xamarin/SalesforceSDK
 **Misc**
  * Documentation - Incorrectly named folder of artwork files, SFDC reference material, and notes.
  * Xamarin.Auth - Custom fork of [Xamarin.Auth](https://github.com/xamarin/Xamarin.Auth) used to implement the SFDC OAuth2 workflow.
+
 
 ### Release Notes ###
 
