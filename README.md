@@ -1,7 +1,10 @@
 SalesforceSDK
 =============
 
-Salesforce SDK component
+This is a C# implementation of an SDK to access Salesforce services, it is
+designed to be cross platform and in particular works on Android and iOS.
+
+A ready-to-use package is available on components.xamarin.com
 
 License
 =======
