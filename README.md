@@ -54,8 +54,8 @@ For more details, see [Getting Started](https://github.com/xamarin/SalesforceSDK
 
 **Core Libraries**
  * Salesforce.Core - Plain old .NET 4.5 library. No dependencies on Xamarin stuffs.
- * Salesforce.Android - Xamarin.Android project. Source linked from Core, but defines `PLATFORM_ANDROID` and `MOBILE`.
- * Salesforce.iOS - Xamarin.iOS project. Source linked from Core, but defines `PLATFORM_IOS` and `MOBILE`.
+ * Salesforce.Android - Xamarin.Android project. Source linked from Core, but defines `PLATFORM_ANDROID` and `MOBILE`. Includes platform-specific `IPlatformAdapter` implementation, `AndroidPlatformAdapter`.
+ * Salesforce.iOS - Xamarin.iOS project. Source linked from Core, but defines `PLATFORM_IOS` and `MOBILE`. Includes platform-specific `IPlatformAdapter` implementation, `UIKitPlatformAdapter`.
 
 **Sample Apps**
  * SalesforceSample.Android - Xamarin.Android sample app using `Salesforce.Android`.
