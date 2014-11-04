@@ -3,10 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</ProjectGuid>
-    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{060BBB8D-BF5D-40EF-80A4-1A1C60A9383B}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Salesforce</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
@@ -17,10 +15,13 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
+    <DefineConstants>DEBUG;PLATFORM_IOS;NET_4_5;MOBILE;__UNIFIED__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <OutputPath>bin\unified\AnyCPU\Debug</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\AnyCPU\Debug</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -31,12 +32,15 @@
     <ConsolePause>false</ConsolePause>
     <DefineConstants>PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\unified\AnyCPU\Release</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\AnyCPU\Release</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
+    <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
@@ -44,7 +48,7 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Properties\" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\ACAccountWrapper.cs">
       <Link>Auth\ACAccountWrapper.cs</Link>

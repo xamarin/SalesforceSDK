@@ -3,10 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F15665F3-A8F8-42D7-ABD9-28A2DDB8C3BE}</ProjectGuid>
-    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{10638463-2F0E-4662-9934-CE6D539815DB}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>SalesforceSample.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
@@ -17,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;__UNIFIED__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -29,6 +27,9 @@
     <MtouchSdkVersion>5.0</MtouchSdkVersion>
     <MtouchUseSGen>True</MtouchUseSGen>
     <MtouchOptimizePNGs>True</MtouchOptimizePNGs>
+    <OutputPath>bin\unified\iPhoneSimulator\Debug</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhoneSimulator\Debug</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>full</DebugType>
@@ -38,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
+    <OutputPath>bin\unified\iPhoneSimulator\Release</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhoneSimulator\Release</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,6 +60,9 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
+    <OutputPath>bin\unified\iPhone\Debug</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhone\Debug</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -65,6 +72,9 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <OutputPath>bin\unified\iPhone\Release</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhone\Release</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>full</DebugType>
@@ -75,6 +85,9 @@
     <BuildIpa>true</BuildIpa>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <OutputPath>bin\unified\Ad-Hoc\</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\Ad-Hoc\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>full</DebugType>
@@ -85,12 +98,25 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <ConsolePause>false</ConsolePause>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <OutputPath>bin\unified\AppStore\</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\AppStore\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
+    <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Json" />
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
@@ -115,7 +141,7 @@
   <ItemGroup>
     <InterfaceDefinition Include="RootViewController.xib" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <BundleResource Include="Resources\Icon.png" />
     <BundleResource Include="Resources\Icon%402x.png" />
@@ -123,7 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Salesforce.iOS\Salesforce.iOS.csproj">
-      <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
+      <Project>{060BBB8D-BF5D-40EF-80A4-1A1C60A9383B}</Project>
       <Name>Salesforce.iOS</Name>
     </ProjectReference>
   </ItemGroup>

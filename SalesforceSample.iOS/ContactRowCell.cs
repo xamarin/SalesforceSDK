@@ -1,6 +1,11 @@
 using System;
+#if __UNIFIED__
+using Foundation;
+using UIKit;
+#else
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+#endif
 using Salesforce;
 using Xamarin.Auth;
 using System.Linq;

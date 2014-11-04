@@ -1,5 +1,9 @@
 using System;
+#if __UNIFIED__
+using UIKit;
+#else
 using MonoTouch.UIKit;
+#endif
 using System.Drawing;
 
 namespace Xamarin.Controls
@@ -25,7 +29,11 @@ namespace Xamarin.Controls
 				TextColor = UIColor.White,
 				Font = UIFont.BoldSystemFontOfSize (20),
 				BackgroundColor = UIColor.Clear,
+				#if __UNIFIED__
+				Frame = new RectangleF (25, 0, (float) Frame.Width - 25, 44),
+				#else
 				Frame = new RectangleF (25, 0, Frame.Width - 25, 44),
+				#endif
 			};
 			AddSubview (label);
 			

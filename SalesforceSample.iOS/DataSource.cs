@@ -1,7 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+#if __UNIFIED__
+using Foundation;
+using UIKit;
+#else
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+#endif
 using Salesforce;
 
 namespace SalesforceSample.iOS
@@ -27,6 +32,17 @@ namespace SalesforceSample.iOS
 			}
 		}
 
+		#if __UNIFIED__
+		public override System.nint NumberOfSections (UITableView tableView)
+		{
+			return 1;
+		}
+
+		public override System.nint RowsInSection (UITableView tableview, System.nint section)
+		{
+			return objects.Count;
+		}
+		#else
 		public override int NumberOfSections (UITableView tableView)
 		{
 			return 1;
@@ -36,7 +52,7 @@ namespace SalesforceSample.iOS
 		{
 			return objects.Count;
 		}
-
+		#endif
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
 			var cell = tableView.DequeueReusableCell (CellIdentifier);

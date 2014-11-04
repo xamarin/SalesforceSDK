@@ -1,6 +1,11 @@
 using System;
+#if __UNIFIED__
+using Foundation;
+using UIKit;
+#else
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+#endif
 using Salesforce;
 using Xamarin.Auth;
 using System.Linq;
@@ -49,6 +54,17 @@ namespace SalesforceSample.iOS
 			return cell;
 		}
 
+		#if __UNIFIED__
+		public override nint NumberOfSections (UITableView tableView)
+		{
+			return 1;
+		}
+
+		public override nint RowsInSection (UITableView tableView, nint section)
+		{
+			return 5;
+		}
+		#else
 		public override int NumberOfSections (UITableView tableView)
 		{
 			return 1;
@@ -58,6 +74,7 @@ namespace SalesforceSample.iOS
 		{
 			return 5;
 		}
+		#endif
 	}
 
 }

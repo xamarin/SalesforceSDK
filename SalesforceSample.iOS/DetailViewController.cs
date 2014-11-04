@@ -4,8 +4,13 @@ using System.Collections.Generic;
 using System.Json;
 using System.Net;
 using System.Threading.Tasks;
+#if __UNIFIED__
+using Foundation;
+using UIKit;
+#else
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+#endif
 
 namespace SalesforceSample.iOS
 {

@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Json;
+#if __UNIFIED__
+using Foundation;
+using UIKit;
+#else
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+#endif
 using System.Globalization;
 
 namespace SalesforceSample.iOS
@@ -29,6 +34,17 @@ namespace SalesforceSample.iOS
 			this.controller = controller;
 		}
 
+		#if __UNIFIED__
+		public override nint NumberOfSections (UITableView tableView)
+		{
+			return 2;
+		}
+
+		public override nint RowsInSection (UITableView tableview, nint section)
+		{
+			return section == 0 ? 7 : 2;
+		}
+		#else
 		public override int NumberOfSections (UITableView tableView)
 		{
 			return 2;
@@ -38,6 +54,7 @@ namespace SalesforceSample.iOS
 		{
 			return section == 0 ? 7 : 2;
 		}
+		#endif
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
