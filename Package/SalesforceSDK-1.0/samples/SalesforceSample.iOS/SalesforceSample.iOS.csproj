@@ -121,6 +121,9 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Json" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Salesforce">
+      <HintPath>..\..\lib\ios-unified\Salesforce.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -148,11 +151,5 @@
     <BundleResource Include="Resources\Icon.png" />
     <BundleResource Include="Resources\Icon%402x.png" />
     <BundleResource Include="Resources\Icon-72.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Salesforce.iOS\Salesforce.iOS.csproj">
-      <Project>{060BBB8D-BF5D-40EF-80A4-1A1C60A9383B}</Project>
-      <Name>Salesforce.iOS</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>
