@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{10638463-2F0E-4662-9934-CE6D539815DB}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SalesforceSample.iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>SalesforceSampleiOS</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;__UNIFIED__;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchSdkVersion>5.0</MtouchSdkVersion>
+    <MtouchUseSGen>True</MtouchUseSGen>
+    <MtouchOptimizePNGs>True</MtouchOptimizePNGs>
+    <OutputPath>bin\unified\iPhoneSimulator\Debug</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhoneSimulator\Debug</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <OutputPath>bin\unified\iPhoneSimulator\Release</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhoneSimulator\Release</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchLink>None</MtouchLink>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <OutputPath>bin\unified\iPhone\Debug</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhone\Debug</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <OutputPath>bin\unified\iPhone\Release</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\iPhone\Release</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <BuildIpa>true</BuildIpa>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <OutputPath>bin\unified\Ad-Hoc\</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\Ad-Hoc\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <OutputPath>bin\unified\AppStore\</OutputPath>
+    <BaseIntermediateOutputPath>obj\unified\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\unified\AppStore\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.Json" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Salesforce">
+      <HintPath>..\..\lib\ios-unified\Salesforce.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountObject.cs" />
+    <Compile Include="DataSource.cs" />
+    <Compile Include="DetailSource.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="RootViewController.cs" />
+    <Compile Include="RootViewController.designer.cs">
+      <DependentUpon>RootViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetailViewController.cs" />
+    <Compile Include="ContactSource.cs" />
+    <Compile Include="ContactRowCell.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="RootViewController.xib" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon.png" />
+    <BundleResource Include="Resources\Icon%402x.png" />
+    <BundleResource Include="Resources\Icon-72.png" />
+  </ItemGroup>
+</Project>

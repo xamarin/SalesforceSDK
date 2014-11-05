@@ -2,19 +2,17 @@
 ---
 name: Salesforce SDK
 id: SalesforceSDK
-version: "1.4.3.1"
+version: "1.4.3.2"
 publisher: Salesforce
 publisher-url: http://developer.force.com
-icons: 
-  - component/icons/SalesforceSDK_128x128.png
-  - component/icons/SalesforceSDK_512x512.png
-libraries: 
-  ios: ../../Salesforce.iOS/bin/Release/Salesforce.dll
-  android: ../../Salesforce.Android/bin/Release/Salesforce.dll
 summary: Integrate Salesforce into your mobile apps.
 details: component/Details.md
 getting-started: component/GettingStarted.md
 license: component/License.md
+no_build: true
+icons: 
+  - component/icons/SalesforceSDK_128x128.png
+  - component/icons/SalesforceSDK_512x512.png
 screenshots:
   - component/screenshots/b_Salesforce_Login.png
   - component/screenshots/d_Salesforce_List.png
@@ -22,7 +20,18 @@ screenshots:
   - component/screenshots/h_Android_Login.png
   - component/screenshots/i_Android_List.png
   - component/screenshots/j_Android_Details.png
+libraries: 
+#  ios: ../..Salesforce.iOS/bin/classic/AnyCPU/Release/Salesforce.dll
+#  ios-unified: ../../Salesforce.iOS/bin/unified/AnyCPU/Release/Salesforce.dll
+#  android: ../../Salesforce.Android/bin/Release/Salesforce.dll
+  ios: ./lib/ios/Salesforce.dll
+  ios-unified: ./lib/ios-unified/Salesforce.dll
+  android: ./lib/android/Salesforce.dll
 samples: 
-  iOS Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
-  Android Sample: ../../SalesforceSample.Android/SalesforceSample.Android.sln
+#  iOS Classic Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
+#  iOS Unified Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS-Classic.sln
+#  Android Sample: ../../SalesforceSample.Android/SalesforceSample.Android.sln
+  iOS Classic Sample: ./samples/SalesforceSample.iOS/SalesforceSample.iOS.sln
+  iOS Unified Sample: ./samples/SalesforceSample.iOS/SalesforceSample.iOS-Classic.sln
+  Android Sample: ./samples/SalesforceSample.Android/SalesforceSample.Android.sln
 ...

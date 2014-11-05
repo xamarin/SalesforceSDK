@@ -14,7 +14,11 @@
 //    limitations under the License.
 //
 using System;
+#if __UNIFIED__
+using Accounts;
+#else
 using MonoTouch.Accounts;
+#endif
 
 namespace Xamarin.Auth
 {

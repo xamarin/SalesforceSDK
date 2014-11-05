@@ -15,8 +15,13 @@
 //
 using System;
 using System.Threading.Tasks;
+#if __UNIFIED__
+using UIKit;
+using Foundation;
+#else
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+#endif
 using Xamarin.Utilities.iOS;
 using Xamarin.Controls;
 

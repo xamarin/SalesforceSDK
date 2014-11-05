@@ -19,8 +19,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+#if __UNIFIED__
+using UIKit;
+using Foundation;
+#else
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+#endif
 using Xamarin.Controls;
 using Xamarin.Utilities.iOS;
 
@@ -134,9 +139,13 @@ namespace Xamarin.Auth
 				var cellSize = Frame.Size;
 
 				TextField = new UITextField (new RectangleF (
+					#if __UNIFIED__
+					fieldXPosition, (float)(cellSize.Height - h)/2, 
+					(float) cellSize.Width - fieldXPosition - 12, (float)h)) {
+					#else
 					fieldXPosition, (cellSize.Height - h)/2, 
 					cellSize.Width - fieldXPosition - 12, h)) {
-
+					#endif
 					Font = FieldFont,
 					Placeholder = field.Placeholder,
 					Text = field.Value,
@@ -177,6 +186,22 @@ namespace Xamarin.Auth
 				this.controller = controller;
 			}
 
+			#if __UNIFIED__
+			public override nint NumberOfSections (UITableView tableView)
+			{
+				return 2 + (controller.authenticator.CreateAccountLink != null ? 1 : 0);
+			}
+
+			public override nint RowsInSection (UITableView tableView, nint section)
+			{
+				if (section == 0) {
+					return controller.authenticator.Fields.Count;
+				}
+				else {
+					return 1;
+				}
+			}
+			#else
 			public override int NumberOfSections (UITableView tableView)
 			{
 				return 2 + (controller.authenticator.CreateAccountLink != null ? 1 : 0);
@@ -191,6 +216,8 @@ namespace Xamarin.Auth
 					return 1;
 				}
 			}
+			#endif
+
 
 			FieldCell[] fieldCells = null;
 
@@ -232,7 +259,11 @@ namespace Xamarin.Auth
 						fieldCells = controller
 							.authenticator
 							.Fields
+							#if __UNIFIED__
+							.Select (f => new FieldCell (f, (float)fieldXPosition, SelectNext))
+							#else
 							.Select (f => new FieldCell (f, fieldXPosition, SelectNext))
+							#endif
 							.ToArray ();
 					}
 
