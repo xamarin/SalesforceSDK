@@ -103,11 +103,10 @@ namespace Salesforce
 		internal IDictionary<string,string> OnPreparingUpdateRequest()
 		{
 			var evt = PreparingUpdateRequest;
-			IDictionary<string,string> opts = null;
+			IDictionary<string,string> opts = Options.ToDictionary(k => k.Key, v => (String)v.Value);
 			if (evt != null)
 			{
-				opts = Options.ToDictionary (k => k.Key, v => (String)v.Value);
-				evt (this, new UpdateRequestEventArgs (opts));
+				evt (this, new UpdateRequestEventArgs(opts));
 			}
 			return opts;
 		}
