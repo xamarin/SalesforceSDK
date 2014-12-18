@@ -29,5 +29,7 @@
 	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Accounts</string>
+	<key>MinimumOSVersion</key>
+	<string>7.0</string>
 </dict>
 </plist>

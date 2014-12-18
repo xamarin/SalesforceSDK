@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using MonoTouch.Foundation; using Foundation;
+using MonoTouch.UIKit; using UIKit;
 
 namespace SalesforceSample.iOS
 {
@@ -17,3 +17,10 @@ namespace SalesforceSample.iOS
 		}
 	}
 }
+
+
+
+namespace MonoTouch.Foundation {}
+namespace Foundation {}
+namespace MonoTouch.UIKit {}
+namespace UIKit {}

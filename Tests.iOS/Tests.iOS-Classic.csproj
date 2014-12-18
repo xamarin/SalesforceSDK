@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FDD16A97-903A-4CDE-A556-3FE3B6C71DE5}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
@@ -99,9 +97,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Salesforce.iOS\Salesforce.iOS.csproj">
+    <ProjectReference Include="..\Salesforce.iOS\Salesforce.iOS-Classic.csproj">
       <Project>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</Project>
-      <Name>Salesforce.iOS</Name>
+      <Name>Salesforce.iOS-Classic</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

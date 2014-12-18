@@ -19,7 +19,13 @@ using System.Threading.Tasks;
 using System.Threading;
 
 #if PLATFORM_IOS
+
+#if __UNIFIED__
+using AuthenticateUIType = UIKit.UIViewController;
+#else
 using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
+#endif
+
 #elif PLATFORM_ANDROID
 using AuthenticateUIType = Android.Content.Intent;
 using UIContext = Android.Content.Context;
@@ -83,8 +89,14 @@ namespace Xamarin.Auth
 		public static void ClearCookies()
 		{
 #if PLATFORM_IOS
+
+#if __UNIFIED__
+			var store = Foundation.NSHttpCookieStorage.SharedStorage;
+#else
 			var store = MonoTouch.Foundation.NSHttpCookieStorage.SharedStorage;
+#endif
 			var cookies = store.Cookies;
+
 			foreach (var c in cookies) {
 				store.DeleteCookie (c);
 			}

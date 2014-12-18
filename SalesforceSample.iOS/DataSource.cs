@@ -1,8 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using MonoTouch.Foundation; using Foundation;
+using MonoTouch.UIKit; using UIKit;
 using Salesforce;
+
+#if !__UNIFIED__
+using nint = global::System.Int32;
+#endif
 
 namespace SalesforceSample.iOS
 {
@@ -27,12 +32,12 @@ namespace SalesforceSample.iOS
 			}
 		}
 
-		public override int NumberOfSections (UITableView tableView)
+		public override nint NumberOfSections (UITableView tableView)
 		{
 			return 1;
 		}
 
-		public override int RowsInSection (UITableView tableview, int section)
+		public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			return objects.Count;
 		}

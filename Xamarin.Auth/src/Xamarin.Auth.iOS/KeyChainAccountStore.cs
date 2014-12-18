@@ -14,10 +14,10 @@
 //    limitations under the License.
 //
 using System;
-using MonoTouch.Security;
+using MonoTouch.Security; using Security;
 using System.Collections.Generic;
 using System.Linq;
-using MonoTouch.Foundation;
+using MonoTouch.Foundation; using Foundation;
 
 namespace Xamarin.Auth
 {
