@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Json;
 using System.Net;
 using System.Threading.Tasks;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using MonoTouch.Foundation; using Foundation;
+using MonoTouch.UIKit; using UIKit;
 
 namespace SalesforceSample.iOS
 {

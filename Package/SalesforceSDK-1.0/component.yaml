@@ -2,14 +2,15 @@
 ---
 name: Salesforce SDK
 id: SalesforceSDK
-version: "1.4.3.1"
+version: "1.4.3.3"
 publisher: Salesforce
 publisher-url: http://developer.force.com
 icons: 
   - component/icons/SalesforceSDK_128x128.png
   - component/icons/SalesforceSDK_512x512.png
 libraries: 
-  ios: ../../Salesforce.iOS/bin/Release/Salesforce.dll
+  ios: ../../Salesforce.iOS/bin/classic/Release/Salesforce.dll
+  ios-unified: ../../Salesforce.iOS/bin/unified/Release/Salesforce.dll
   android: ../../Salesforce.Android/bin/Release/Salesforce.dll
 summary: Integrate Salesforce into your mobile apps.
 details: component/Details.md
@@ -23,6 +24,7 @@ screenshots:
   - component/screenshots/i_Android_List.png
   - component/screenshots/j_Android_Details.png
 samples: 
-  iOS Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
+  iOS Unified Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
+  iOS Classic Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS-Classic.sln
   Android Sample: ../../SalesforceSample.Android/SalesforceSample.Android.sln
 ...

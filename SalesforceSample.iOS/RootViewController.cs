@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using MonoTouch.UIKit; using UIKit;
+using MonoTouch.Foundation; using Foundation;
 using Salesforce;
 using Xamarin.Auth;
 using System.Linq;
@@ -70,14 +70,22 @@ namespace SalesforceSample.iOS
 
 			DetailViewController = new DetailViewController();
 			DetailViewController.ItemUpdated += OnItemUpdated;
+#if __UNIFIED__
+			DetailViewController.Canceled += (sender, args) => NavigationController.PopViewController (true);
+#else
 			DetailViewController.Canceled += (sender, args) => NavigationController.PopViewControllerAnimated (true);
+#endif
 		}
 
 		async void OnItemUpdated (object sender, AccountObject args)
 		{
 			await Client.UpdateAsync (args);
 			LoadAccounts ();
+#if __UNIFIED__
+			NavigationController.PopViewController (true);
+#else
 			NavigationController.PopViewControllerAnimated (true);
+#endif
 		}
 
 		void InitializeSalesforce ()

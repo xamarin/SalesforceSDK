@@ -15,8 +15,8 @@
 //
 using System;
 using System.Threading.Tasks;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using MonoTouch.UIKit; using UIKit;
+using MonoTouch.Foundation; using Foundation;
 using Xamarin.Utilities.iOS;
 using Xamarin.Controls;
 

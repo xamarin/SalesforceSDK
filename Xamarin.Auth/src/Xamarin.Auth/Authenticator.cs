@@ -20,7 +20,13 @@ using System.Threading;
 using Xamarin.Utilities;
 
 #if PLATFORM_IOS
+
+#if __UNIFIED__
+using AuthenticateUIType = UIKit.UIViewController;
+#else
 using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
+#endif
+
 #elif PLATFORM_ANDROID
 using AuthenticateUIType = Android.Content.Intent;
 using UIContext = Android.Content.Context;
@@ -172,8 +178,14 @@ namespace Xamarin.Auth
 		void BeginInvokeOnUIThread (Action action)
 		{
 #if PLATFORM_IOS
+
+#if __UNIFIED__
+			UIKit.UIApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
+				action ();
+#else
 			MonoTouch.UIKit.UIApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
 				action ();
+#endif
 			});
 #elif PLATFORM_ANDROID
 			var a = context as Android.App.Activity;

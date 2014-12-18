@@ -1,58 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D1F9D33-D146-4DDC-973E-160B8763FD1C}</ProjectGuid>
-    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{BF8CE0D9-4555-4567-8084-8B35233FF6B2}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Salesforce</RootNamespace>
-    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
-    <AndroidResgenClass>Resource</AndroidResgenClass>
-    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
-    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Salesforce</AssemblyName>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;PLATFORM_ANDROID;NET_4_0;NET_4_5;MOBILE;</DefineConstants>
+    <OutputPath>bin\classic\Debug</OutputPath>
+    <IntermediateOutputPath>obj\classic\Debug</IntermediateOutputPath>
+    <DefineConstants>DEBUG;PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin\classic\Release</OutputPath>
+    <IntermediateOutputPath>obj\classic\Release</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <ConsolePause>false</ConsolePause>
-    <DefineConstants>PLATFORM_ANDROID;NET_4_0;NET_4_5;MOBILE;</DefineConstants>
+    <DefineConstants>PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
+    <Reference Include="monotouch" />
     <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Resources\Resource.designer.cs" />
+    <Folder Include="Resources\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\ACAccountWrapper.cs">
+      <Link>Auth\ACAccountWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\FormAuthenticatorController.cs">
+      <Link>Auth\FormAuthenticatorController.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\KeyChainAccountStore.cs">
+      <Link>Auth\KeyChainAccountStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\ProgressLabel.cs">
+      <Link>Auth\ProgressLabel.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\UIViewControllerEx.cs">
+      <Link>Auth\UIViewControllerEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.iOS\WebAuthenticatorController.cs">
+      <Link>Auth\WebAuthenticatorController.cs</Link>
+    </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
       <Link>Auth\AccountStore.cs</Link>
     </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
-      <Link>Auth\Authenticator.cs</Link>
-    </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
       <Link>Auth\AuthException.cs</Link>
+    </Compile>
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
+      <Link>Auth\Authenticator.cs</Link>
     </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
       <Link>Auth\ExceptionEx.cs</Link>
@@ -81,9 +100,6 @@
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
       <Link>Auth\Response.cs</Link>
     </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
-      <Link>Auth\SalesforceUser.cs</Link>
-    </Compile>
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
       <Link>Auth\WebAuthenticator.cs</Link>
     </Compile>
@@ -96,80 +112,22 @@
     <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
       <Link>Auth\WebUtilities.cs</Link>
     </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.Android\ActivityEx.cs">
-      <Link>Auth\ActivityEx.cs</Link>
-    </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.Android\ActivityStateRepository.cs">
-      <Link>Auth\ActivityStateRepository.cs</Link>
-    </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.Android\AndroidAccountStore.cs">
-      <Link>Auth\AndroidAccountStore.cs</Link>
-    </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.Android\FormAuthenticatorActivity.cs">
-      <Link>Auth\FormAuthenticatorActivity.cs</Link>
-    </Compile>
-    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth.Android\WebAuthenticatorActivity.cs">
-      <Link>Auth\WebAuthenticatorActivity.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\HttpMethod.cs">
-      <Link>HttpMethod.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
-      <Link>IAuthenticatedRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\IRestRequest.cs">
-      <Link>IRestRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\IRestResource.cs">
-      <Link>IRestResource.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\ISalesforceResource.cs">
-      <Link>ISalesforceResource.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\IVersionableRestResource.cs">
-      <Link>IVersionableRestResource.cs</Link>
+    <Compile Include="..\Salesforce.Core\SalesforceClient.cs">
+      <Link>SalesforceClient.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\PlatformAdapter.cs">
       <Link>PlatformAdapter.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\SalesforceClient.cs">
-      <Link>SalesforceClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
-      <Link>Exceptions\DeleteFailedException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
-      <Link>Exceptions\InsufficientRightsException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\InvalidFieldException.cs">
-      <Link>Exceptions\InvalidFieldException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\InvalidSessionException.cs">
-      <Link>Exceptions\InvalidSessionException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
-      <Link>Exceptions\MissingResourceException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
-      <Link>Models\ObjectQuery.cs</Link>
+    <Compile Include="..\Salesforce.Core\IRestRequest.cs" />
+    <Compile Include="..\Salesforce.Core\HttpMethod.cs" />
+    <Compile Include="..\Salesforce.Core\IRestResource.cs" />
+    <Compile Include="..\Salesforce.Core\IVersionableRestResource.cs" />
+    <Compile Include="..\Salesforce.Core\ISalesforceResource.cs" />
+    <Compile Include="..\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Models\SObject.cs">
       <Link>Models\SObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Models\Search.cs">
-      <Link>Models\Search.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
-      <Link>Request\CreateRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Request\DeleteRequest.cs">
-      <Link>Request\DeleteRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
-      <Link>Request\ReadRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Request\UpdateRequest.cs">
-      <Link>Request\UpdateRequest.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
       <Link>System.Web\HttpEncoder.cs</Link>
@@ -177,12 +135,46 @@
     <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
       <Link>System.Web\HttpUtility.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Models\Search.cs">
+      <Link>Models\Search.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
+      <Link>Models\ObjectQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
+      <Link>IAuthenticatedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
+      <Link>Exceptions\DeleteFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidSessionException.cs">
+      <Link>Exceptions\InvalidSessionException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
+      <Link>Exceptions\InsufficientRightsException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
+      <Link>Request\CreateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\DeleteRequest.cs">
+      <Link>Request\DeleteRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\UpdateRequest.cs">
+      <Link>Request\UpdateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
+      <Link>Exceptions\MissingResourceException.cs</Link>
+    </Compile>
     <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
-      <Link>SalesforceClientExtensions.cs</Link>
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidFieldException.cs">
+      <Link>Exceptions\InvalidFieldException.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs" />
     <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
       <Link>Exceptions\InvalidClientIdException.cs</Link>
     </Compile>
@@ -195,25 +187,14 @@
     <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
       <Link>Models\SearchResult.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
-      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Request\ChangesRequest.cs">
       <Link>Request\ChangesRequest.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Auth\" />
-    <Folder Include="Properties\" />
+    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

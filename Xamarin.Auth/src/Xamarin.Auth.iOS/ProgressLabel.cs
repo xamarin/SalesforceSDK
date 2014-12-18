@@ -1,6 +1,12 @@
 using System;
-using MonoTouch.UIKit;
+using MonoTouch.UIKit; using UIKit;
 using System.Drawing;
+
+#if __UNIFIED__
+using CoreGraphics;
+#else
+using CGRect = global::System.Drawing.RectangleF;
+#endif
 
 namespace Xamarin.Controls
 {
@@ -25,12 +31,12 @@ namespace Xamarin.Controls
 				TextColor = UIColor.White,
 				Font = UIFont.BoldSystemFontOfSize (20),
 				BackgroundColor = UIColor.Clear,
-				Frame = new RectangleF (25, 0, Frame.Width - 25, 44),
+				Frame = new CGRect (25, 0, Frame.Width - 25, 44),
 			};
 			AddSubview (label);
 			
 			var f = Frame;
-			f.Width = label.Frame.X + label.StringSize (label.Text, label.Font).Width;
+			f.Width = label.Frame.X + label.Text.StringSize (label.Font).Width;
 			Frame = f;
 		}
 		

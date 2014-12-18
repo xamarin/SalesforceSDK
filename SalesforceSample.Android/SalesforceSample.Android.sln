@@ -3,18 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesforceSample.Android", "SalesforceSample.Android.csproj", "{36F843DB-3E1F-4F3D-AD98-4E466EBFD841}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.Android", "..\Salesforce.Android\Salesforce.Android.csproj", "{0D1F9D33-D146-4DDC-973E-160B8763FD1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D1F9D33-D146-4DDC-973E-160B8763FD1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D1F9D33-D146-4DDC-973E-160B8763FD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D1F9D33-D146-4DDC-973E-160B8763FD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D1F9D33-D146-4DDC-973E-160B8763FD1C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36F843DB-3E1F-4F3D-AD98-4E466EBFD841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36F843DB-3E1F-4F3D-AD98-4E466EBFD841}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36F843DB-3E1F-4F3D-AD98-4E466EBFD841}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36F843DB-3E1F-4F3D-AD98-4E466EBFD841}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SalesforceSample.Android.csproj
 	EndGlobalSection
 EndGlobal

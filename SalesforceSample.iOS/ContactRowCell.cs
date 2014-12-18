@@ -1,6 +1,6 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using MonoTouch.UIKit; using UIKit;
+using MonoTouch.Foundation; using Foundation;
 using Salesforce;
 using Xamarin.Auth;
 using System.Linq;

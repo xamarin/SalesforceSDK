@@ -14,8 +14,8 @@
 //    limitations under the License.
 //
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using MonoTouch.Foundation; using Foundation;
+using MonoTouch.UIKit; using UIKit;
 
 namespace Xamarin.Utilities.iOS
 {
