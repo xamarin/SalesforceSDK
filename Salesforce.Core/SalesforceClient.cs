@@ -139,6 +139,14 @@ namespace Salesforce
 				}
 			}
 
+			//
+			// mark.tap@xamarin.com 2015.01.08
+			//
+			// Note that here the original authors used the OAuth2Authenticator constructor intended for the Web-Server Flow;
+			// however, they then set AccessTokenUrl to null to force the authenticator to run the User-Agent Flow.
+			// I think they did this to load the ClientSecret into the authenticator for use with refresh (the ClientSecret
+			// isn't needed for the User-Agent Flow).
+			//
 			Authenticator = new OAuth2Authenticator (
 				clientId: clientId,
 				clientSecret: ClientSecret,
@@ -164,7 +172,7 @@ namespace Salesforce
 
 			Adapter.Authenticator = Authenticator;
 
-			Authenticator.Completed += OnCompleted;
+			Authenticator.Completed += OnAuthenticationCompleted;
 		}
 
 		/// <summary>
@@ -430,25 +438,58 @@ namespace Salesforce
 			Save (CurrentUser);
 		}
 
-		/// <summary>
-		/// Requests a new session token.
-		/// </summary>
-		/// <returns>The Salesforce user with the updated session token.</returns>
-		private ISalesforceUser RefreshSessionToken()
+		ISalesforceUser RefreshSessionToken() // Request a new access_token and return the user with the updated token
 		{
-			var refreshToken = CurrentUser.Properties ["refresh_token"];
-			var refreshTask = Authenticator.RequestAccessTokenAsync(new Dictionary<string, string> 
-			                                                        {
-				{ "grant_type", "refresh_token" },
-				{ "client_id", ClientId },
-				{ "client_secret", ClientSecret },
-				{ "refresh_token", refreshToken }
-			}).ContinueWith(response => {
-				if (!response.IsFaulted)
+			//
+			// mark.tap@xamarin.com 2015.01.08
+			//
+			// RefreshSessionToken was failing if the user had logged in during the current session. This is because
+			// the SalesforceClient constructor sets AccessTokenUrl to null when a login is needed in order to force
+			// the OAuth2Authenticator to use the implicit flow rather than the web server flow. Since AccessTokenUrl
+			// is null in the Authenticator, the WebRequest.Create() call in the Authenticator throws an exception
+			// when this refresh code executes.
+			//
+			// Refresh did work if the user logged in, saved the user to disk, closed the app, and restarted it since
+			// then the SalesforceClient constructor did not set AccessTokenUrl to null in the Authenticator.
+			//
+			// The added lines of code below reload the AccessTokenUrl into the Authenticator if needed.
+			// We then reset to null to preserve all other behavior in SalesforceClient that might rely on
+			// AccessTokenUrl being null (e.g. if the app asks the user to login again, the AccessTokenUrl
+			// must be null for the OAuth2Authenticator to choose the User-Agent Flow...if it's not null
+			// the authenticator will perform the Web-Server Flow).
+			//
+			// This code is not ideal but it fixes a bug. Perhaps two OAuth2Authenticators should be used by SalesforceClient,
+			// one for login and one for refresh. Using a single Authenticator for both is confusing and error prone as
+			// demonstrated by the need for this patch. Using two would also allow the login Authenticator to use
+			// the constructor intended for the User-Agent Flow...right now they use the constructor that should
+			// perform the Web-Server Flow and then set AccessTokenUrl to null to change the behavior.
+			// 
+			bool updateAccessTokenUrl = false;                     // mark.tap@xamarin.com 2015.01.08
+			if (Authenticator.AccessTokenUrl == null)              // mark.tap@xamarin.com 2015.01.08
+			{
+				updateAccessTokenUrl = true;                       // mark.tap@xamarin.com 2015.01.08
+				Authenticator.AccessTokenUrl = new Uri(TokenPath); // mark.tap@xamarin.com 2015.01.08
+			}
+
+			var queryOptions = new Dictionary<string, string>
+			{
+				{ "grant_type",   "refresh_token"                          },
+				{ "client_id",     ClientId                                },
+				{ "client_secret", ClientSecret                            },
+				{ "refresh_token", CurrentUser.Properties["refresh_token"] }
+			};
+
+			var refreshTask = Authenticator.RequestAccessTokenAsync(queryOptions).ContinueWith(response =>
 				{
-					ForceUserReauthorization(false);
-					return response.Result;
-				}
+					if (updateAccessTokenUrl)                // mark.tap@xamarin.com 2015.01.08
+						Authenticator.AccessTokenUrl = null; // mark.tap@xamarin.com 2015.01.08
+
+					if (!response.IsFaulted)
+					{
+						ForceUserReauthorization(false);
+
+						return response.Result;
+					}
 
 				ForceUserReauthorization(true);
 
@@ -468,30 +509,25 @@ namespace Salesforce
 			return CurrentUser;
 		}
 
-		/// <summary>
-		/// Internal event handler for authentication compelete events.
-		/// </summary>
-		/// <param name="sender">Sender.</param>
-		/// <param name="args">Arguments.</param>
-		private void OnCompleted (object sender, AuthenticatorCompletedEventArgs args)
+		void OnAuthenticationCompleted(object sender, AuthenticatorCompletedEventArgs args)
 		{
-			if (!args.IsAuthenticated) {
-				ForceUserReauthorization (true);
-				return;
-			}
-
-			CurrentUser = args.Account;
-
-			var ev = AuthenticationComplete;
-			if ( ev != null)
+			if (args.IsAuthenticated)
 			{
-				ForceUserReauthorization (false);
-				ev (sender, args);
+				CurrentUser = args.Account;      // load newly-authenticated user as CurrentUser
+				ForceUserReauthorization(false); // applies to new user, necessary because the default is 'true' in SaleforceUser
 			}
 			else
-				Debug.WriteLine("No activation completion handler.");
+			{
+				ForceUserReauthorization(true);  // applies to previous user
+			}
+
+			Invoke(AuthenticationComplete, this, args);
 		}
 
+		void Invoke<A>(EventHandler<A> ev, object sender, A args)
+		{
+			if (ev != null)
+				ev.Invoke(sender, args);
+		}
 	}
 }
-
