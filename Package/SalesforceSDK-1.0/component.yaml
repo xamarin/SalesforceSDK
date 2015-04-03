@@ -3,8 +3,8 @@
 name: Salesforce SDK
 id: SalesforceSDK
 version: "1.4.3.4"
-publisher: Salesforce
-publisher-url: http://developer.force.com
+publisher: Xamarin Inc.
+publisher-url: http://xamarin.com
 icons: 
   - component/icons/SalesforceSDK_128x128.png
   - component/icons/SalesforceSDK_512x512.png
