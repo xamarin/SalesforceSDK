@@ -34,12 +34,32 @@ namespace Salesforce
 		/// <summary>
 		/// The Salesforce OAuth authorization endpoint.
 		/// </summary>
-		protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+		//protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+		//----------------------------------------------------------------------------------------
+		// moljac# 2015-09-15
+		// auth and token endpoint were hardcoded, to use it for development sandboxes
+		// hardcoded strings are changed to properties for testing sandboxes
+		public static string AuthPath
+		{
+			get;
+			set;
+		}
+		//----------------------------------------------------------------------------------------
 
 		/// <summary>
 		/// The Salesforce OAuth token endpoint.
 		/// </summary>
-		protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
+		//protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
+		//----------------------------------------------------------------------------------------
+		// moljac# 2015-09-15
+		// auth and token endpoint were hardcoded, to use it for development sandboxes
+		// hardcoded strings are changed to properties for testing sandboxes
+		public static string TokenPath
+		{
+			get;
+			set;
+		}
+		//----------------------------------------------------------------------------------------
 
 		/// <summary>
 		/// Handles the actual OAuth handshake.
@@ -116,6 +136,14 @@ namespace Salesforce
 		/// <param name="callbackUri">Callback URI.</param>
 		public SalesforceClient (String clientId, String clientSecret, Uri redirectUrl)
 		{
+			//----------------------------------------------------------------------------------------
+			// moljac# 2015-09-15
+			// auth and token endpoint were hardcoded, to use it for development sandboxes
+			// hardcoded strings are changed to properties for testing sandboxes
+			SalesforceClient.AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";;
+			SalesforceClient.TokenPath = @"https://login.salesforce.com/services/oauth2/token";
+			//----------------------------------------------------------------------------------------
+
 			ClientId = clientId;
 			ClientSecret = clientSecret;
 			MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
