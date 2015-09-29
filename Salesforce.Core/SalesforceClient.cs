@@ -34,12 +34,78 @@ namespace Salesforce
 		/// <summary>
 		/// The Salesforce OAuth authorization endpoint.
 		/// </summary>
-		protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+		//protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+		//----------------------------------------------------------------------------------------
+		// moljac# 2015-09-15
+		// auth and token endpoint were hardcoded, to use it for development sandboxes
+		// hardcoded strings are changed to properties for testing sandboxes
+		public static string AuthPath
+		{
+			get
+			{
+				return auth_path;
+			} // AuthPath.get
+			set
+			{
+				if (auth_path != value)
+				{
+					{
+						// Set the property value
+						auth_path = value;
+						// raise/trigger Event if somebody has subscribed to the event
+						if (null != AuthPathChanged)
+						{
+							// raise/trigger Event
+							AuthPathChanged(null, new EventArgs());
+						}
+					}
+				}
+
+				return;
+			} // AuthPath.set
+		} // AuthPath
+
+		private static string auth_path;
+		public static event EventHandler AuthPathChanged;
+		//-------------------------------------------------------------------------	        
 
 		/// <summary>
 		/// The Salesforce OAuth token endpoint.
 		/// </summary>
-		protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
+		//protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
+		//----------------------------------------------------------------------------------------
+		// moljac# 2015-09-15
+		// auth and token endpoint were hardcoded, to use it for development sandboxes
+		// hardcoded strings are changed to properties for testing sandboxes
+		public static string TokenPath
+		{
+			get
+			{
+				return token_path;
+			} // AuthPath.get
+			set
+			{
+				if (token_path != value)
+				{
+					{
+						// Set the property value
+						token_path = value;
+						// raise/trigger Event if somebody has subscribed to the event
+						if (null != TokenPathChanged)
+						{
+							// raise/trigger Event
+							TokenPathChanged(null, new EventArgs());
+						}
+					}
+				}
+
+				return;
+			} // AuthPath.set
+		} // AuthPath
+
+		private static string token_path;
+		public static event EventHandler TokenPathChanged;
+		//----------------------------------------------------------------------------------------
 
 		/// <summary>
 		/// Handles the actual OAuth handshake.
@@ -108,6 +174,19 @@ namespace Salesforce
 		/// Your Salesforce application's Customer Secret.
 		/// </summary>
 		private readonly string ClientSecret;
+
+		static  SalesforceClient()
+		{
+			//----------------------------------------------------------------------------------------
+			// moljac# 2015-09-15
+			// auth and token endpoint were hardcoded, to use it for development sandboxes
+			// hardcoded strings are changed to properties for testing sandboxes
+			SalesforceClient.AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+			SalesforceClient.TokenPath = @"https://login.salesforce.com/services/oauth2/token";
+			//----------------------------------------------------------------------------------------
+
+			return;
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
