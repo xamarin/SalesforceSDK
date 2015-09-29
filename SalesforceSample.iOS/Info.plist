@@ -31,21 +31,10 @@
 	<string>Accounts</string>
 	<key>MinimumOSVersion</key>
 	<string>7.0</string>
-
-	<!--
-	===========================================================================
-		moljac# mc++
-		iOS 9 ATS restrictions - making less restrictive
-	-->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<!--
-		moljac# mc++
-		iOS 9 ATS restrictions - making less restrictive
-	===========================================================================
-	-->
 </dict>
 </plist>
