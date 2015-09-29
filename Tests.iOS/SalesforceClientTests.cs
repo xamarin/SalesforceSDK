@@ -14,7 +14,7 @@ using System.Net.Http;
 namespace Tests.iOS
 {
 	[TestFixture]
-	public class SalesforceClientTests
+	public partial class SalesforceClientTests
 	{
 		SalesforceClient Client {
 			get;
@@ -142,5 +142,6 @@ namespace Tests.iOS
                     && o["ids"] != null;
             })));
         }
+
 	}
 }

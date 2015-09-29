@@ -41,10 +41,33 @@ namespace Salesforce
 		// hardcoded strings are changed to properties for testing sandboxes
 		public static string AuthPath
 		{
-			get;
-			set;
-		}
-		//----------------------------------------------------------------------------------------
+			get
+			{
+				return auth_path;
+			} // AuthPath.get
+			set
+			{
+				if (auth_path != value)
+				{
+					{
+						// Set the property value
+						auth_path = value;
+						// raise/trigger Event if somebody has subscribed to the event
+						if (null != AuthPathChanged)
+						{
+							// raise/trigger Event
+							AuthPathChanged(null, new EventArgs());
+						}
+					}
+				}
+
+				return;
+			} // AuthPath.set
+		} // AuthPath
+
+		private static string auth_path;
+		public static event EventHandler AuthPathChanged;
+		//-------------------------------------------------------------------------	        
 
 		/// <summary>
 		/// The Salesforce OAuth token endpoint.
@@ -56,9 +79,32 @@ namespace Salesforce
 		// hardcoded strings are changed to properties for testing sandboxes
 		public static string TokenPath
 		{
-			get;
-			set;
-		}
+			get
+			{
+				return token_path;
+			} // AuthPath.get
+			set
+			{
+				if (token_path != value)
+				{
+					{
+						// Set the property value
+						token_path = value;
+						// raise/trigger Event if somebody has subscribed to the event
+						if (null != TokenPathChanged)
+						{
+							// raise/trigger Event
+							TokenPathChanged(null, new EventArgs());
+						}
+					}
+				}
+
+				return;
+			} // AuthPath.set
+		} // AuthPath
+
+		private static string token_path;
+		public static event EventHandler TokenPathChanged;
 		//----------------------------------------------------------------------------------------
 
 		/// <summary>
@@ -129,6 +175,19 @@ namespace Salesforce
 		/// </summary>
 		private readonly string ClientSecret;
 
+		static  SalesforceClient()
+		{
+			//----------------------------------------------------------------------------------------
+			// moljac# 2015-09-15
+			// auth and token endpoint were hardcoded, to use it for development sandboxes
+			// hardcoded strings are changed to properties for testing sandboxes
+			SalesforceClient.AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+			SalesforceClient.TokenPath = @"https://login.salesforce.com/services/oauth2/token";
+			//----------------------------------------------------------------------------------------
+
+			return;
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
 		/// </summary>
@@ -136,14 +195,6 @@ namespace Salesforce
 		/// <param name="callbackUri">Callback URI.</param>
 		public SalesforceClient (String clientId, String clientSecret, Uri redirectUrl)
 		{
-			//----------------------------------------------------------------------------------------
-			// moljac# 2015-09-15
-			// auth and token endpoint were hardcoded, to use it for development sandboxes
-			// hardcoded strings are changed to properties for testing sandboxes
-			SalesforceClient.AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";;
-			SalesforceClient.TokenPath = @"https://login.salesforce.com/services/oauth2/token";
-			//----------------------------------------------------------------------------------------
-
 			ClientId = clientId;
 			ClientSecret = clientSecret;
 			MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext ();

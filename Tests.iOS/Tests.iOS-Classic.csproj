@@ -98,6 +98,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="UnitTestAppDelegate.cs" />
     <Compile Include="SalesforceClientTests.cs" />
+    <Compile Include="SalesforceClientTests.Porperties.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
