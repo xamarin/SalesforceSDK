@@ -94,21 +94,29 @@ namespace Xamarin.Auth
 			var entry = new KeyStore.SecretKeyEntry (secretKey);
 			ks.SetEntry (alias, entry, prot);
 
-			lock (fileLock) {
-				using (var s = context.OpenFileOutput (FileName, FileCreationMode.Private)) {
-					ks.Store (s, Password);
-				}
-			}
+			this.Save();
 		}
 
-		public override void Delete (ISalesforceUser account, string serviceId)
+	    public override void Delete (ISalesforceUser account, string serviceId)
 		{
 			var alias = MakeAlias (account, serviceId);
 
 			ks.DeleteEntry (alias);
-		}
+            this.Save();
+        }
 
-		static string MakeAlias (ISalesforceUser account, string serviceId)
+	    private void Save()
+	    {
+	        lock (AndroidAccountStore.fileLock)
+	        {
+	            using (var s = this.context.OpenFileOutput(AndroidAccountStore.FileName, FileCreationMode.Private))
+	            {
+	                this.ks.Store(s, AndroidAccountStore.Password);
+	            }
+	        }
+	    }
+
+        static string MakeAlias (ISalesforceUser account, string serviceId)
 		{
 			return account.Username + "-" + serviceId;
 		}
