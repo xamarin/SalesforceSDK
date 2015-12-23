@@ -1,0 +1,3 @@
+[submodule "external/Xamarin.Auth[]moljac-fork"]
+	path = external/Xamarin.Auth[]moljac-fork
+	url = https://github.com/moljac/Xamarin.Auth.git
