@@ -19,11 +19,11 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-namespace MonoTouch.Accounts {}
-namespace Accounts {}
-namespace MonoTouch.UIKit {}
-namespace UIKit {}
-namespace MonoTouch.Foundation {}
-namespace Foundation {}
-namespace MonoTouch.Security {}
-namespace Security {}
+//namespace MonoTouch.Accounts {}
+//namespace Accounts {}
+//namespace MonoTouch.UIKit {}
+//namespace UIKit {}
+//namespace MonoTouch.Foundation {}
+//namespace Foundation {}
+//namespace MonoTouch.Security {}
+//namespace Security {}
