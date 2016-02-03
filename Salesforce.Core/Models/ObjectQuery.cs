@@ -38,7 +38,7 @@ namespace Salesforce
 		#region IVersionableRestResource implementation
 
 		public string Version {
-			get { return "v28.0"; }
+			get { return "v35.0"; }
 		}
 
 		#endregion
@@ -105,5 +105,16 @@ namespace Salesforce
 			return str.ToString ();
 		}
 	}
+
+    public class ToolingQuery : Query, ISalesforceResource
+    {
+        string ISalesforceResource.ResourceType
+        {
+            get
+            {
+                return "tooling/query";
+            }
+        }
+    }
 }
 
