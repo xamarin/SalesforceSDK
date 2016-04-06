@@ -464,6 +464,15 @@ namespace Salesforce
 					throw new InvalidFieldException (message, fields.Cast<String>());
 				}
 
+                // Handles: [{"message":"<...> Object type '<...>' is not supported. If you are attempting to use a custom object, be sure to append the '__c' after the entity name. Please reference your WSDL or the describe call for the appropriate names.","errorCode":"INVALID_TYPE"}]
+                //This is returned, if a custom object is accessed from a managed package which license is expired and thus no longer usable
+                if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_TYPE"))
+				{
+					var message = errorDetails [0] ["message"];
+					Debug.WriteLine("reason: " + message);
+					throw new MissingResourceException(message);
+				}
+
 				Debug.WriteLine("reason: returning result b/c not sure how to handle this exception: " + response.Exception);
 				throw innerEx;
 
