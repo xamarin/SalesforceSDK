@@ -55,34 +55,37 @@ namespace Xamarin.Auth
 		/// multipart values if the request uses <see cref="Multiparts"/>.
 		/// </summary>
 		public IDictionary<string, string> Parameters { get; internal set; }
+		public IDictionary<string, string> Headers { get; internal set; }
 
 		/// <summary>
 		/// The account that will be used to authenticate this request.
 		/// </summary>
 		public virtual ISalesforceUser Account { get; set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Xamarin.Auth.Request"/> class.
-		/// </summary>
-		/// <param name='method'>
-		/// The HTTP method.
-		/// </param>
-		/// <param name='url'>
-		/// The URL.
-		/// </param>
-		/// <param name='parameters'>
-		/// Parameters that will pre-populate the <see cref="Parameters"/> property or null.
-		/// </param>
-		/// <param name='account'>
-		/// The account used to authenticate this request.
-		/// </param>
-		public Request (string method, Uri url, IDictionary<string, string> parameters = null, ISalesforceUser account = null)
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="Xamarin.Auth.Request"/> class.
+	    /// </summary>
+	    /// <param name='method'>
+	    ///     The HTTP method.
+	    /// </param>
+	    /// <param name='url'>
+	    ///     The URL.
+	    /// </param>
+	    /// <param name='parameters'>
+	    ///     Parameters that will pre-populate the <see cref="Parameters"/> property or null.
+	    /// </param>
+	    /// <param name="headers"></param>
+	    /// <param name='account'>
+	    ///     The account used to authenticate this request.
+	    /// </param>
+	    public Request (string method, Uri url, IDictionary<string, string> parameters = null, IDictionary<string, string> headers=null, ISalesforceUser account = null)
 		{
 			Method = method;
 			Url = url;
 			Parameters = parameters == null ? 
 				new Dictionary<string, string> () :
 				new Dictionary<string, string> (parameters);
+	        Headers = headers ?? new Dictionary<string, string>();
 			Account = account;
 		}
 
@@ -191,7 +194,29 @@ namespace Xamarin.Auth
 		public virtual Task<Response> GetResponseAsync (CancellationToken cancellationToken)
 		{
 			var request = GetPreparedWebRequest ();
-
+		    foreach (var Header in this.Headers)
+		    {
+		        switch (Header.Key.ToLower())
+		        {
+                    case "accept-encoding":
+		                if (Header.Value.ToLower().Contains("compress"))
+		                {
+		                    request.AutomaticDecompression |= DecompressionMethods.Deflate;
+		                }
+		                else if (Header.Value.ToLower().Contains("gzip"))
+		                {
+		                    request.AutomaticDecompression |= DecompressionMethods.GZip;
+		                }
+		                request.Headers.Add(Header.Key, Header.Value);
+		                break;
+                    case "if-modified-since":
+		                request.IfModifiedSince = DateTime.Parse(Header.Value);
+		                break;
+                    default:
+                        request.Headers.Add(Header.Key, Header.Value);
+		                break;
+		        }
+            }
 			//
 			// Disable 100-Continue: http://blogs.msdn.com/b/shitals/archive/2008/12/27/9254245.aspx
 			//
