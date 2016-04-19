@@ -333,7 +333,7 @@ namespace Salesforce
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public Task<Response> ProcessAsync<T>(T request) where T: class, IAuthenticatedRequest
 		{
-			if ((CurrentUser = Adapter.LoadAccounts().FirstOrDefault()) == null)
+			if ((CurrentUser = Adapter.LoadAccounts().FirstOrDefault(user => user.RequiresReauthentication==false)) == null)
 			{
 				var message = String.Format ("No user available in credential store for service {0}.", PlatformStrings.CredentialStoreServiceName);
 				throw new InvalidSessionException(message);

@@ -20,6 +20,7 @@ using Android.OS;
 using System.Threading.Tasks;
 using Xamarin.Utilities.Android;
 using System.Timers;
+using Android.Graphics;
 
 namespace Xamarin.Auth
 {
@@ -152,7 +153,7 @@ namespace Xamarin.Auth
 				return false;
 			}
 
-			public override void OnPageStarted (WebView view, string url, Android.Graphics.Bitmap favicon)
+			public override void OnPageStarted (WebView view, string url, Bitmap favicon)
 			{
 				var uri = new Uri (url);
 				activity.state.Authenticator.OnPageLoading (uri);

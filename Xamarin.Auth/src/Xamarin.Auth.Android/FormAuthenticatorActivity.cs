@@ -13,6 +13,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -24,6 +25,7 @@ using Android.OS;
 using Android.Widget;
 using Android.Util;
 using Xamarin.Utilities.Android;
+using Uri = Android.Net.Uri;
 
 namespace Xamarin.Auth
 {
@@ -225,7 +227,7 @@ namespace Xamarin.Auth
 
 		void HandleCreateAccount (object sender, EventArgs e)
 		{
-			var intent = new Intent (Intent.ActionView, Android.Net.Uri.Parse (state.Authenticator.CreateAccountLink.AbsoluteUri));
+			var intent = new Intent (Intent.ActionView, Uri.Parse (state.Authenticator.CreateAccountLink.AbsoluteUri));
 			StartActivity (intent);
 		}
 

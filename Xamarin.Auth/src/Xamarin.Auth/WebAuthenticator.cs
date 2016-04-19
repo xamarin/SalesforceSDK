@@ -17,7 +17,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-
+using Android.Accounts;
+using Android.App;
+using Android.Webkit;
 #if PLATFORM_IOS
 
 #if __UNIFIED__
@@ -74,7 +76,7 @@ namespace Xamarin.Auth
 
 		/// <summary>
 		/// Event handler called when a new page has been loaded in the web browser.
-		/// Implementations should call <see cref="Authenticator.OnSucceeded(Xamarin.Auth.Account)"/> if this page
+		/// Implementations should call <see cref="Authenticator.OnSucceeded(Account)"/> if this page
 		/// signifies a successful authentication.
 		/// </summary>
 		/// <param name='url'>
@@ -101,8 +103,8 @@ namespace Xamarin.Auth
 				store.DeleteCookie (c);
 			}
 #elif PLATFORM_ANDROID
-			Android.Webkit.CookieSyncManager.CreateInstance (Android.App.Application.Context);
-			Android.Webkit.CookieManager.Instance.RemoveAllCookie ();
+			CookieSyncManager.CreateInstance (Application.Context);
+			CookieManager.Instance.RemoveAllCookie ();
 #endif
 		}
 

@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using Android.App;
 using Xamarin.Utilities;
 
 #if PLATFORM_IOS
@@ -188,7 +189,7 @@ namespace Xamarin.Auth
 #endif
 			});
 #elif PLATFORM_ANDROID
-			var a = context as Android.App.Activity;
+			var a = context as Activity;
 			if (a != null) {
 				a.RunOnUiThread (action);
 			}
