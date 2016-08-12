@@ -188,80 +188,90 @@ namespace Salesforce
 			return;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
-		/// </summary>
-		/// <param name="appKey">App key.</param>
-		/// <param name="callbackUri">Callback URI.</param>
-		public SalesforceClient (String clientId, String clientSecret, Uri redirectUrl)
-		{
-			ClientId = clientId;
-			ClientSecret = clientSecret;
-			MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
-			Scheduler = TaskScheduler.Default;
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
+	    /// </summary>
+	    /// <param name="appKey">App key.</param>
+	    /// <param name="callbackUri">Callback URI.</param>
+	    public SalesforceClient(String clientId, String clientSecret, Uri redirectUrl)
+	        : this(clientId, clientSecret, new OAuth2Authenticator(
+	            clientId: clientId,
+	            clientSecret: clientSecret,
+	            scope: "api refresh_token",
+	            authorizeUrl: new Uri(AuthPath),
+	            redirectUrl: redirectUrl,
+	            accessTokenUrl: new Uri(TokenPath),
+	            getUsernameAsync: new GetUsernameAsyncFunc((dict) =>
+	            {
+	                var client = new WebClient();
+	                client.Headers["Authorization"] = "Bearer " + dict["access_token"];
 
-			#if PLATFORM_IOS
+	                var results = client.DownloadString(dict["id"]);
+	                var resultVals = JsonValue.Parse(results);
+
+	                return Task.Factory.StartNew(() => { return (String) resultVals["username"]; });
+	            })))
+	    {
+	    }
+
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
+	    /// </summary>
+	    /// <param name="appKey">App key.</param>
+	    /// <param name="callbackUri">Callback URI.</param>
+	    protected SalesforceClient(String clientId, String clientSecret, OAuth2Authenticator authenticator)
+	    {
+	        ClientId = clientId;
+	        ClientSecret = clientSecret;
+	        MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+	        Scheduler = TaskScheduler.Default;
+
+#if PLATFORM_IOS
 			Adapter = new UIKitPlatformAdapter();
 			#elif __ANDROID__
-			Adapter = new AndroidPlatformAdapter();
-			#endif
+	        Adapter = new AndroidPlatformAdapter();
+#endif
 
-			var users = LoadUsers ().Where(u => !u.RequiresReauthentication).ToArray();
+	        var users = LoadUsers().Where(u => !u.RequiresReauthentication).ToArray();
 
-			if (users.Count () > 0) {
-				CurrentUser = users.First ();
+	        if (users.Count() > 0)
+	        {
+	            CurrentUser = users.First();
 
-				Debug.WriteLine (CurrentUser);
+	            Debug.WriteLine(CurrentUser);
 
-				foreach (var p in CurrentUser.Properties) {
-					Debug.WriteLine ("{0}\t{1}", p.Key, p.Value);
-				}
-			}
+	            foreach (var p in CurrentUser.Properties)
+	            {
+	                Debug.WriteLine("{0}\t{1}", p.Key, p.Value);
+	            }
+	        }
 
-			//
-			// mark.tap@xamarin.com 2015.01.08
-			//
-			// Note that here the original authors used the OAuth2Authenticator constructor intended for the Web-Server Flow;
-			// however, they then set AccessTokenUrl to null to force the authenticator to run the User-Agent Flow.
-			// I think they did this to load the ClientSecret into the authenticator for use with refresh (the ClientSecret
-			// isn't needed for the User-Agent Flow).
-			//
-			Authenticator = new OAuth2Authenticator (
-				clientId: clientId,
-				clientSecret: ClientSecret,
-				scope: "api refresh_token",
-				authorizeUrl: new Uri(AuthPath),
-				redirectUrl: redirectUrl,
-				accessTokenUrl: new Uri(TokenPath),
-				getUsernameAsync: new GetUsernameAsyncFunc((dict)=>{
-					var client = new WebClient();
-					client.Headers["Authorization"] = "Bearer " + dict["access_token"];
+	        //
+	        // mark.tap@xamarin.com 2015.01.08
+	        //
+	        // Note that here the original authors used the OAuth2Authenticator constructor intended for the Web-Server Flow;
+	        // however, they then set AccessTokenUrl to null to force the authenticator to run the User-Agent Flow.
+	        // I think they did this to load the ClientSecret into the authenticator for use with refresh (the ClientSecret
+	        // isn't needed for the User-Agent Flow).
+	        //
+	        Authenticator = authenticator;
 
-					var results = client.DownloadString(dict["id"]);
-					var resultVals = JsonValue.Parse(results);
+	        if (CurrentUser == null || CurrentUser.RequiresReauthentication)
+	            Authenticator.AccessTokenUrl = null;
 
-					return Task.Factory.StartNew(()=> { 
-						return (String)resultVals["username"];
-					});
-				})
-			);
+	        Adapter.Authenticator = Authenticator;
 
-			if (CurrentUser == null || CurrentUser.RequiresReauthentication)
-				Authenticator.AccessTokenUrl = null;
+	        Authenticator.Completed += OnAuthenticationCompleted;
+	    }
 
-			Adapter.Authenticator = Authenticator;
-
-			Authenticator.Completed += OnAuthenticationCompleted;
-		}
-
-		/// <summary>
-		/// Sets the current UI context.
-		/// </summary>
-		/// <remarks>
-		/// On Android, the context defaults to the application context.
-		/// </remarks>
-		/// <param name="context">Context.</param>
-		public static void SetCurrentContext (object context)
+	    /// <summary>
+        /// Sets the current UI context.
+        /// </summary>
+        /// <remarks>
+        /// On Android, the context defaults to the application context.
+        /// </remarks>
+        /// <param name="context">Context.</param>
+        public static void SetCurrentContext (object context)
 		{
 #if PLATFORM_ANDROID
 			AndroidPlatformAdapter.CurrentPlatformContext = (global::Android.Content.Context)context;
@@ -397,8 +407,7 @@ namespace Salesforce
 				if (errorDetails.Any (e => e.ContainsKey("errorCode") && e["errorCode"] == "INVALID_SESSION_ID"))
 				{
 					// Refresh the OAuth2 session token.
-					CurrentUser = RefreshSessionToken ();
-					Save (CurrentUser);
+					RefreshSessionToken ();
 
 					Debug.WriteLine("reason: invalid session id.");
 
@@ -526,7 +535,7 @@ namespace Salesforce
 			Save (CurrentUser);
 		}
 
-		ISalesforceUser RefreshSessionToken() // Request a new access_token and return the user with the updated token
+		public void RefreshSessionToken() // Request a new access_token and update current user with that token
 		{
 			//
 			// mark.tap@xamarin.com 2015.01.08
@@ -594,7 +603,7 @@ namespace Salesforce
 			// Don't need to await here, b/c we're already inside of a task.
 			refreshTask.Wait (TimeSpan.FromSeconds (DefaultNetworkTimeout));
 			CurrentUser.Properties ["access_token"] = refreshTask.Result ["access_token"];
-			return CurrentUser;
+            Save(CurrentUser);
 		}
 
 		void OnAuthenticationCompleted(object sender, AuthenticatorCompletedEventArgs args)

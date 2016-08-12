@@ -12,7 +12,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AssemblyName>Salesforce</AssemblyName>
-    <TargetFrameworkVersion>v6.0.99</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
   </PropertyGroup>

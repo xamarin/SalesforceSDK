@@ -202,5 +202,15 @@ namespace Salesforce
             }
         }
     }
+
+    public class ConfigurationObject : SObject, ISalesforceResource
+    {
+        string ISalesforceResource.ResourceType => this.ResourceType;
+
+        public string ResourceType
+        {
+            get; set;
+        }
+    }
 }
 

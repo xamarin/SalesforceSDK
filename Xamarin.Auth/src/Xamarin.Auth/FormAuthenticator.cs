@@ -19,19 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 
-#if PLATFORM_IOS
+//#if PLATFORM_IOS
 
-#if __UNIFIED__
-using AuthenticateUIType = UIKit.UIViewController;
-#else
-using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
-#endif
+//#if __UNIFIED__
+//using AuthenticateUIType = UIKit.UIViewController;
+//#else
+//using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
+//#endif
 
-#elif PLATFORM_ANDROID
-using AuthenticateUIType = Android.Content.Intent;
-using UIContext = Android.Content.Context;
-#else
+//#elif PLATFORM_ANDROID
+//using AuthenticateUIType = Android.Content.Intent;
+//using UIContext = Android.Content.Context;
+//#else
 using AuthenticateUIType = System.Object;
+//#endif
+#if PLATFORM_ANDROID
+using UIContext = Android.Content.Context;
 #endif
 
 namespace Xamarin.Auth
