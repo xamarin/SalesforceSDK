@@ -11,6 +11,7 @@
     <UseMSBuildEngine>True</UseMSBuildEngine>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <AssemblyName>SalesforceSampleiOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -102,13 +103,13 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>SalesforceSample.iOS-Classic</AssemblyName>
+    <AssemblyName>SalesforceSampleiOSClassic</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>SalesforceSample.iOS-Classic</AssemblyName>
+    <AssemblyName>SalesforceSampleiOSClassic</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

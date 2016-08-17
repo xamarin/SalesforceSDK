@@ -28,23 +28,24 @@ namespace Xamarin.Auth
 	public class OAuth2Request : Request
 #endif
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Xamarin.Auth.OAuth2Request"/> class.
-		/// </summary>
-		/// <param name='method'>
-		/// The HTTP method.
-		/// </param>
-		/// <param name='url'>
-		/// The URL.
-		/// </param>
-		/// <param name='parameters'>
-		/// Parameters that will pre-populate the <see cref="Xamarin.Auth.Request.Parameters"/> property or <see langword="null"/>.
-		/// </param>
-		/// <param name='account'>
-		/// The account used to authenticate this request.
-		/// </param>
-		public OAuth2Request (string method, Uri url, IDictionary<string, string> parameters, ISalesforceUser account)
-			: base (method, url, parameters, account)
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="Xamarin.Auth.OAuth2Request"/> class.
+	    /// </summary>
+	    /// <param name='method'>
+	    ///     The HTTP method.
+	    /// </param>
+	    /// <param name='url'>
+	    ///     The URL.
+	    /// </param>
+	    /// <param name='parameters'>
+	    ///     Parameters that will pre-populate the <see cref="Xamarin.Auth.Request.Parameters"/> property or <see langword="null"/>.
+	    /// </param>
+	    /// <param name="headers"></param>
+	    /// <param name='account'>
+	    ///     The account used to authenticate this request.
+	    /// </param>
+	    public OAuth2Request (string method, Uri url, IDictionary<string, string> parameters, IDictionary<string, string> headers, ISalesforceUser account)
+			: base (method, url, parameters, headers, account)
 		{
 		}
 		

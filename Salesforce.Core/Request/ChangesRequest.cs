@@ -47,7 +47,7 @@ namespace Salesforce
             var until = Until.ToUniversalTime();
             var untilString = String.Format("{0}T{1}Z", until.ToString("yyyy-MM-dd"), until.ToString("HH:mm:ss"));
             uri.Query = String.Format("start={0}&end={1}", sinceString, untilString);
-            var oauthRequest = new OAuth2Request (Method, uri.Uri, Resource.Options.Where (kvp => kvp.Value.JsonType == JsonType.String).ToDictionary (k => k.Key, v => (string) v.Value), user);
+            var oauthRequest = new OAuth2Request (this.Method, uri.Uri, this.Resource.Options.Where (kvp => kvp.Value.JsonType == JsonType.String).ToDictionary (k => k.Key, v => (string) v.Value),Headers, user);
             return oauthRequest;
         }
 

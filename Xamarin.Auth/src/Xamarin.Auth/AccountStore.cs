@@ -15,6 +15,7 @@
 //
 using System;
 using System.Collections.Generic;
+using Android.Content;
 
 namespace Xamarin.Auth
 {
@@ -41,7 +42,7 @@ namespace Xamarin.Auth
 		/// <summary>
 		/// Create an account store.
 		/// </summary>
-		public static AccountStore Create (Android.Content.Context context)
+		public static AccountStore Create (Context context)
 		{
 			return new AndroidAccountStore (context);
 		}
