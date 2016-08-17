@@ -9,6 +9,7 @@
     <RootNamespace>Tests.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <UseMSBuildEngine>True</UseMSBuildEngine>
+    <AssemblyName>TestsiOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,13 +95,13 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>Tests.iOS-Classic</AssemblyName>
+    <AssemblyName>TestsiOSClassic</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>Tests.iOS-Classic</AssemblyName>
+    <AssemblyName>TestsiOSClassic</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -17,20 +17,25 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using Android.Accounts;
+using Android.App;
+using Android.Webkit;
+//#if PLATFORM_IOS
 
-#if PLATFORM_IOS
+//#if __UNIFIED__
+//using AuthenticateUIType = UIKit.UIViewController;
+//#else
+//using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
+//#endif
 
-#if __UNIFIED__
-using AuthenticateUIType = UIKit.UIViewController;
-#else
-using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
-#endif
-
-#elif PLATFORM_ANDROID
-using AuthenticateUIType = Android.Content.Intent;
-using UIContext = Android.Content.Context;
-#else
+//#elif PLATFORM_ANDROID
+//using AuthenticateUIType = Android.Content.Intent;
+//using UIContext = Android.Content.Context;
+//#else
 using AuthenticateUIType = System.Object;
+//#endif
+#if PLATFORM_ANDROID
+using UIContext = Android.Content.Context;
 #endif
 
 namespace Xamarin.Auth
@@ -74,7 +79,7 @@ namespace Xamarin.Auth
 
 		/// <summary>
 		/// Event handler called when a new page has been loaded in the web browser.
-		/// Implementations should call <see cref="Authenticator.OnSucceeded(Xamarin.Auth.Account)"/> if this page
+		/// Implementations should call <see cref="Authenticator.OnSucceeded(Account)"/> if this page
 		/// signifies a successful authentication.
 		/// </summary>
 		/// <param name='url'>
@@ -101,8 +106,8 @@ namespace Xamarin.Auth
 				store.DeleteCookie (c);
 			}
 #elif PLATFORM_ANDROID
-			Android.Webkit.CookieSyncManager.CreateInstance (Android.App.Application.Context);
-			Android.Webkit.CookieManager.Instance.RemoveAllCookie ();
+			CookieSyncManager.CreateInstance (Application.Context);
+			CookieManager.Instance.RemoveAllCookie ();
 #endif
 		}
 

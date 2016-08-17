@@ -17,21 +17,25 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using Android.App;
 using Xamarin.Utilities;
 
-#if PLATFORM_IOS
+//#if PLATFORM_IOS
 
-#if __UNIFIED__
-using AuthenticateUIType = UIKit.UIViewController;
-#else
-using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
-#endif
+//#if __UNIFIED__
+//using AuthenticateUIType = UIKit.UIViewController;
+//#else
+//using AuthenticateUIType = MonoTouch.UIKit.UIViewController;
+//#endif
 
-#elif PLATFORM_ANDROID
-using AuthenticateUIType = Android.Content.Intent;
-using UIContext = Android.Content.Context;
-#else
+//#elif PLATFORM_ANDROID
+//using AuthenticateUIType = Android.Content.Intent;
+//using UIContext = Android.Content.Context;
+//#else
 using AuthenticateUIType = System.Object;
+//#endif
+#if PLATFORM_ANDROID
+using UIContext = Android.Content.Context;
 #endif
 
 namespace Xamarin.Auth
@@ -188,7 +192,7 @@ namespace Xamarin.Auth
 #endif
 			});
 #elif PLATFORM_ANDROID
-			var a = context as Android.App.Activity;
+			var a = context as Activity;
 			if (a != null) {
 				a.RunOnUiThread (action);
 			}

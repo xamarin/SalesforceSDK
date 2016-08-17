@@ -61,7 +61,7 @@ namespace Salesforce
 		#region IVersionableRestResource implementation
 
 		public string Version {
-            get { return "v29.0"; }
+            get { return "v35.0"; }
 		}
 
 		#endregion
@@ -191,5 +191,26 @@ namespace Salesforce
 			return result;
 		}
 	}
+
+    public class SToolingObject : SObject, ISalesforceResource
+    {
+        string ISalesforceResource.ResourceType
+        {
+            get
+            {
+                return "tooling/sobjects";
+            }
+        }
+    }
+
+    public class ConfigurationObject : SObject, ISalesforceResource
+    {
+        string ISalesforceResource.ResourceType => this.ResourceType;
+
+        public string ResourceType
+        {
+            get; set;
+        }
+    }
 }
 
