@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
+//mc++using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 namespace Xamarin.Auth

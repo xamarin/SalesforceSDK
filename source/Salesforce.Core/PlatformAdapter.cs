@@ -9,36 +9,36 @@ using Android.Content;
 
 namespace Salesforce
 {
-	/// <summary>
-	/// Prevents platform abstractions from leaking.
-	/// </summary>
-	public interface IPlatformAdapter
-	{
-		Authenticator Authenticator { get; set;	}
-		object GetLoginUI();
-		void SaveAccount(ISalesforceUser account);
-		IEnumerable<ISalesforceUser> LoadAccounts();
-	}
+    /// <summary>
+    /// Prevents platform abstractions from leaking.
+    /// </summary>
+    public interface IPlatformAdapter
+    {
+        Authenticator Authenticator { get; set; }
+        object GetLoginUI();
+        void SaveAccount(ISalesforceUser account);
+        IEnumerable<ISalesforceUser> LoadAccounts();
+    }
 
-	public struct PlatformStrings
-	{
-		static String salesforce = "Salesforce";
+    public struct PlatformStrings
+    {
+        static String salesforce = "Salesforce";
 
-		/// <summary>
-		/// Identifies our credentials in the credential store.
-		/// </summary>
-		/// <value>The salesforce.</value>
-		/// <remarks>
-		/// If you are going to change this value,
-		/// be sure to do it before constructing
-		/// a new <see cref="SalesforceClient"/>.
-		/// </remarks>
-		public static String CredentialStoreServiceName
-		{
-			get { return salesforce; } 
-			set { salesforce = value; }
-		}
-	}
+        /// <summary>
+        /// Identifies our credentials in the credential store.
+        /// </summary>
+        /// <value>The salesforce.</value>
+        /// <remarks>
+        /// If you are going to change this value,
+        /// be sure to do it before constructing
+        /// a new <see cref="SalesforceClient"/>.
+        /// </remarks>
+        public static String CredentialStoreServiceName
+        {
+            get { return salesforce; }
+            set { salesforce = value; }
+        }
+    }
 
 #if PLATFORM_ANDROID
 	internal class AndroidPlatformAdapter : IPlatformAdapter
@@ -52,7 +52,7 @@ namespace Salesforce
 
 		public static Context CurrentPlatformContext { get; set; }
 
-		#region IPlatformAdapter implementation
+    #region IPlatformAdapter implementation
 
 		public object GetLoginUI()
 		{
@@ -66,7 +66,7 @@ namespace Salesforce
                 .Save ((Xamarin.Auth.Account) account, PlatformStrings.CredentialStoreServiceName);
 		}
 
-		#endregion
+    #endregion
 
 		public AndroidPlatformAdapter ()
 		{
@@ -94,7 +94,7 @@ namespace Salesforce
 	{
 		public  Authenticator Authenticator { get; set;	}
 
-		#region IPlatformAdapter implementation
+    #region IPlatformAdapter implementation
 
 		public UIKitPlatformAdapter() : this(null)
 		{ }
@@ -111,15 +111,19 @@ namespace Salesforce
 
 		public void SaveAccount (ISalesforceUser account)
 		{
-			AccountStore.Create ().Save (account, PlatformStrings.CredentialStoreServiceName);
+            AccountStore.Create ().Save ((Xamarin.Auth.Account)account, PlatformStrings.CredentialStoreServiceName);
 		}
 
 		public IEnumerable<ISalesforceUser> LoadAccounts()
 		{
-			return AccountStore.Create ().FindAccountsForService (PlatformStrings.CredentialStoreServiceName);
+            return AccountStore
+                    .Create ()
+                    .FindAccountsForService (PlatformStrings.CredentialStoreServiceName)
+                    .Cast<ISalesforceUser>()        // using System.Linq
+                    ;
 		}
 
-		#endregion
+    #endregion
 
 	}
 #endif

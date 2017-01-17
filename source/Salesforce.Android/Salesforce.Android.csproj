@@ -138,78 +138,31 @@
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
+      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
-      <Link>Auth\AccountStore.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
-      <Link>Auth\Authenticator.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
-      <Link>Auth\AuthException.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
-      <Link>Auth\ExceptionEx.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\FormAuthenticator.cs">
-      <Link>Auth\FormAuthenticator.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1.cs">
-      <Link>Auth\OAuth1.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Authenticator.cs">
-      <Link>Auth\OAuth1Authenticator.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Request.cs">
-      <Link>Auth\OAuth1Request.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Authenticator.cs">
-      <Link>Auth\OAuth2Authenticator.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Request.cs">
-      <Link>Auth\OAuth2Request.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Request.cs">
-      <Link>Auth\Request.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
-      <Link>Auth\Response.cs</Link>
-    </None>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
-      <Link>Auth\SalesforceUser.cs</Link>
-    </Compile>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
-      <Link>Auth\WebAuthenticator.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebEx.cs">
-      <Link>Auth\WebEx.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebRedirectAuthenticator.cs">
-      <Link>Auth\WebRedirectAuthenticator.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
-      <Link>Auth\WebUtilities.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth.Android\ActivityEx.cs">
-      <Link>Auth\ActivityEx.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth.Android\ActivityStateRepository.cs">
-      <Link>Auth\ActivityStateRepository.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth.Android\AndroidAccountStore.cs">
-      <Link>Auth\AndroidAccountStore.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth.Android\FormAuthenticatorActivity.cs">
-      <Link>Auth\FormAuthenticatorActivity.cs</Link>
-    </None>
-    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth.Android\WebAuthenticatorActivity.cs">
-      <Link>Auth\WebAuthenticatorActivity.cs</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Salesforce.Auth\" />
+    <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
+      <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
+      <Link>Salesforce.Auth\SalesforceUser.cs</Link>
+    </Compile>
+    <Folder Include="Xamarin.Utilities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.XamarinAndroid\Xamarin.Auth.XamarinAndroid.csproj">
+      <Project>{D46E20A0-DBA9-49A5-B45E-CE4664850445}</Project>
+      <Name>Xamarin.Auth.XamarinAndroid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
