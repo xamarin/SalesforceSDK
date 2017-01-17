@@ -592,7 +592,7 @@ namespace Salesforce
 		{
 			if (args.IsAuthenticated)
 			{
-				CurrentUser = args.Account;      // load newly-authenticated user as CurrentUser
+                CurrentUser = (ISalesforceUser) args.Account;      // load newly-authenticated user as CurrentUser
 				ForceUserReauthorization(false); // applies to new user, necessary because the default is 'true' in SaleforceUser
 			}
 			else

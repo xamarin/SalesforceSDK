@@ -35,70 +35,40 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
+    <Reference Include="PInvoke.Windows.Core">
+      <HintPath>..\packages\PInvoke.Windows.Core.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32">
+      <HintPath>..\packages\PInvoke.Kernel32.0.3.2\lib\net40\PInvoke.Kernel32.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt">
+      <HintPath>..\packages\PInvoke.BCrypt.0.3.2\lib\net40\PInvoke.BCrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt">
+      <HintPath>..\packages\PInvoke.NCrypt.0.3.2\lib\net40\PInvoke.NCrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLCrypto">
+      <HintPath>..\packages\PCLCrypto.2.0.147\lib\net45\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Auth">
+      <HintPath>..\packages\Xamarin.Auth.1.3.2-alpha-04\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10\Xamarin.Auth.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesforceClient.cs" />
     <Compile Include="PlatformAdapter.cs" />
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
-      <Link>Auth\AccountStore.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
-      <Link>Auth\AuthException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
-      <Link>Auth\Authenticator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
-      <Link>Auth\ExceptionEx.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\FormAuthenticator.cs">
-      <Link>Auth\FormAuthenticator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1.cs">
-      <Link>Auth\OAuth1.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Authenticator.cs">
-      <Link>Auth\OAuth1Authenticator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Request.cs">
-      <Link>Auth\OAuth1Request.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Authenticator.cs">
-      <Link>Auth\OAuth2Authenticator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Request.cs">
-      <Link>Auth\OAuth2Request.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Request.cs">
-      <Link>Auth\Request.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
-      <Link>Auth\Response.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
-      <Link>Auth\WebAuthenticator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebEx.cs">
-      <Link>Auth\WebEx.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebRedirectAuthenticator.cs">
-      <Link>Auth\WebRedirectAuthenticator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
-      <Link>Auth\WebUtilities.cs</Link>
-    </Compile>
-    <Compile Include="System.Json\JsonArray.cs" />
-    <Compile Include="System.Json\JsonObject.cs" />
-    <Compile Include="System.Json\JsonPrimitive.cs" />
-    <Compile Include="System.Json\JsonType.cs" />
-    <Compile Include="System.Json\JsonValue.cs" />
-    <Compile Include="System.Json\JavaScriptReader.cs" />
+    <None Include="System.Json\JsonArray.cs" />
+    <None Include="System.Json\JsonObject.cs" />
+    <None Include="System.Json\JsonPrimitive.cs" />
+    <None Include="System.Json\JsonType.cs" />
+    <None Include="System.Json\JsonValue.cs" />
+    <None Include="System.Json\JavaScriptReader.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="IRestRequest.cs" />
-    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
-      <Link>Auth\SalesforceUser.cs</Link>
-    </Compile>
     <Compile Include="IRestResource.cs" />
     <Compile Include="ISalesforceResource.cs" />
     <Compile Include="IVersionableRestResource.cs" />
@@ -124,9 +94,74 @@
     <Compile Include="Request\ChangesRequest.cs" />
     <Compile Include="Request\ChangeTypes.cs" />
     <Compile Include="Exceptions\ExceededChangesLimitException.cs" />
+    <Compile Include="Salesforce.Auth\SalesforceUser.cs" />
+    <Compile Include="Salesforce.Auth\ISalesforceUser.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Response\" />
+    <Folder Include="Salesforce.Auth\" />
   </ItemGroup>
+	<!--
+	Extraction of Xamarin.Auth code from the repo and replacing with the nuget
+  <ItemGroup>
+    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
+      <Link>Auth\AccountStore.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
+      <Link>Auth\AuthException.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
+      <Link>Auth\Authenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
+      <Link>Auth\ExceptionEx.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\FormAuthenticator.cs">
+      <Link>Auth\FormAuthenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1.cs">
+      <Link>Auth\OAuth1.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Authenticator.cs">
+      <Link>Auth\OAuth1Authenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Request.cs">
+      <Link>Auth\OAuth1Request.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Authenticator.cs">
+      <Link>Auth\OAuth2Authenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Request.cs">
+      <Link>Auth\OAuth2Request.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Request.cs">
+      <Link>Auth\Request.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
+      <Link>Auth\Response.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
+      <Link>Auth\WebAuthenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebEx.cs">
+      <Link>Auth\WebEx.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebRedirectAuthenticator.cs">
+      <Link>Auth\WebRedirectAuthenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
+      <Link>Auth\WebUtilities.cs</Link>
+    </None>
+    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
+  </ItemGroup>
+	-->
 </Project>

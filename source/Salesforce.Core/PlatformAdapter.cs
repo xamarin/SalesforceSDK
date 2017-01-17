@@ -1,6 +1,7 @@
 using System;
-using Xamarin.Auth;
 using System.Collections.Generic;
+using System.Linq;
+using Xamarin.Auth;
 
 #if PLATFORM_ANDROID
 using Android.Content;
@@ -60,7 +61,9 @@ namespace Salesforce
 
 		public void SaveAccount (ISalesforceUser account)
 		{
-			AccountStore.Create (CurrentPlatformContext as Context ?? global::Android.App.Application.Context).Save (account, PlatformStrings.CredentialStoreServiceName);
+			AccountStore
+				.Create (CurrentPlatformContext as Context ?? global::Android.App.Application.Context)
+                .Save ((Xamarin.Auth.Account) account, PlatformStrings.CredentialStoreServiceName);
 		}
 
 		#endregion
@@ -76,7 +79,11 @@ namespace Salesforce
 
 		public IEnumerable<ISalesforceUser> LoadAccounts()
 		{
-			return AccountStore.Create (CurrentPlatformContext as Context).FindAccountsForService (PlatformStrings.CredentialStoreServiceName);
+			return AccountStore
+                    .Create (CurrentPlatformContext as Context)
+                    .FindAccountsForService (PlatformStrings.CredentialStoreServiceName)
+                    .Cast<ISalesforceUser>()        // using System.Linq
+                    ;
 		}
 
 }

@@ -29,7 +29,7 @@ namespace Salesforce
 
             var r = (SObject)Resource;
 			var options = r.OnPreparingUpdateRequest ();
-			var oauthRequest = new OAuth2Request (Method, uri, options, user);
+            var oauthRequest = new OAuth2Request (Method, uri, options, (Xamarin.Auth.Account) user);
 
 			return oauthRequest;
 		}

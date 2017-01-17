@@ -21,7 +21,7 @@ namespace Salesforce
 			var baseUri = new Uri (path);
 			var uri = new Uri (baseUri, Resource.AbsoluteUri);
 
-			var oauthRequest = new OAuth2Request (Method, uri, null, user);
+            var oauthRequest = new OAuth2Request (Method, uri, null, (Xamarin.Auth.Account) user);
 			return oauthRequest;
 		}
 
