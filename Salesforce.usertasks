@@ -1,5 +1,5 @@
-<ListOfTask>
-  <Task file="" description="Fix Xam.Auth namespaces" />
-  <Task file="" description="Hide all Xam.Auth members and classes" />
-  <Task file="" description="Refactor Xam.Auth into a proper subclass" />
-</ListOfTask>
+<ListOfTaskListEntry>
+  <TaskListEntry file="" description="Fix Xam.Auth namespaces" />
+  <TaskListEntry file="" description="Hide all Xam.Auth members and classes" />
+  <TaskListEntry file="" description="Refactor Xam.Auth into a proper subclass" />
+</ListOfTaskListEntry>

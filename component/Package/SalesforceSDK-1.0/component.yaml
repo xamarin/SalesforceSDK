@@ -1,0 +1,30 @@
+%YAML 1.2
+---
+name: Salesforce SDK
+id: SalesforceSDK
+version: "1.4.4.0"
+publisher: Xamarin Inc.
+publisher-url: http://xamarin.com
+icons: 
+  - component/icons/SalesforceSDK_128x128.png
+  - component/icons/SalesforceSDK_512x512.png
+libraries: 
+  ios: ../../Salesforce.iOS/bin/classic/Release/Salesforce.dll
+  ios-unified: ../../Salesforce.iOS/bin/unified/Release/Salesforce.dll
+  android: ../../Salesforce.Android/bin/Release/Salesforce.dll
+summary: Integrate Salesforce into your mobile apps.
+details: component/Details.md
+getting-started: component/GettingStarted.md
+license: component/License.md
+screenshots:
+  - component/screenshots/b_Salesforce_Login.png
+  - component/screenshots/d_Salesforce_List.png
+  - component/screenshots/e_Salesforce_Account_Detail.png
+  - component/screenshots/h_Android_Login.png
+  - component/screenshots/i_Android_List.png
+  - component/screenshots/j_Android_Details.png
+samples: 
+  iOS Unified Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS.sln
+  iOS Classic Sample: ../../SalesforceSample.iOS/SalesforceSample.iOS-Classic.sln
+  Android Sample: ../../SalesforceSample.Android/SalesforceSample.Android.sln
+...
