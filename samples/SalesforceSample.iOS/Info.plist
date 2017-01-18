@@ -36,5 +36,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>CFBundleName</key>
+	<string>Accounts</string>
 </dict>
 </plist>

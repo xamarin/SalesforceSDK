@@ -60,7 +60,7 @@ namespace SalesforceSample.Droid
 
 			LoadAccounts ();
 
-			Account = e.Account;
+            Account = (ISalesforceUser)e.Account;
 			Client.Save (Account);
 		}
 
