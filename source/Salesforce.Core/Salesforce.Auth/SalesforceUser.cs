@@ -17,8 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
-//mc++using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Xamarin.Auth
 {
@@ -28,7 +28,7 @@ namespace Xamarin.Auth
 #if XAMARIN_AUTH_INTERNAL
 	internal class SalesforceUser
 #else
-		public class SalesforceUser : ISalesforceUser
+	public class SalesforceUser : ISalesforceUser
 #endif
 	{
 		/// <summary>
