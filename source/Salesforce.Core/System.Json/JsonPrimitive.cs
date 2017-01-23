@@ -110,24 +110,33 @@ namespace System.Json
 			get { return value; }
 		}
 
-		public override JsonType JsonType {
-			get {
-				// FIXME: what should we do for null? Handle it as null so far.
-				if (value == null)
-					return JsonType.String;
+		public override JsonType JsonType 
+        {
+			get
+            {
+                JsonType.String retval = null;
+                // FIXME: what should we do for null? Handle it as null so far.
+                if (value == null)
+                    retval = JsonType.String;
 
-				switch (Type.GetTypeCode (value.GetType ())) {
-				case TypeCode.Boolean:
-					return JsonType.Boolean;
-				case TypeCode.Char:
-				case TypeCode.String:
-				case TypeCode.DateTime:
-				case TypeCode.Object: // DateTimeOffset || Guid || TimeSpan || Uri
-					return JsonType.String;
-				default:
-					return JsonType.Number;
+                #if __ANDROID__ || __IOS__ || MOBILE
+				switch (Type.GetTypeCode (value.GetType ())) 
+                {
+    				case TypeCode.Boolean:
+    					retval =  JsonType.Boolean;
+    				case TypeCode.Char:
+    				case TypeCode.String:
+    				case TypeCode.DateTime:
+    				case TypeCode.Object: // DateTimeOffset || Guid || TimeSpan || Uri
+    					retval = JsonType.String;
+    				default:
+    					retval = JsonType.Number;
 				}
-			}
+
+                return retval;
+                #else
+                #endif
+            }
 		}
 
 		static readonly byte [] true_bytes = Encoding.UTF8.GetBytes ("true");

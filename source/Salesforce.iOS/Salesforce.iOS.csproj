@@ -38,26 +38,32 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Json" />
-    <Reference Include="PInvoke.Windows.Core">
-      <HintPath>..\..\samples\packages\PInvoke.Windows.Core.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="PInvoke.Kernel32">
-      <HintPath>..\..\samples\packages\PInvoke.Kernel32.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Kernel32.dll</HintPath>
-    </Reference>
-    <Reference Include="PInvoke.BCrypt">
-      <HintPath>..\..\samples\packages\PInvoke.BCrypt.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.BCrypt.dll</HintPath>
-    </Reference>
-    <Reference Include="PInvoke.NCrypt">
-      <HintPath>..\..\samples\packages\PInvoke.NCrypt.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.NCrypt.dll</HintPath>
-    </Reference>
-    <Reference Include="Validation">
-      <HintPath>..\..\samples\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
-    </Reference>
     <Reference Include="PCLCrypto">
       <HintPath>..\..\samples\packages\PCLCrypto.2.0.147\lib\xamarinios10\PCLCrypto.dll</HintPath>
     </Reference>
+    <Reference Include="PInvoke.Windows.Core">
+      <HintPath>..\packages\PInvoke.Windows.Core.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32">
+      <HintPath>..\packages\PInvoke.Kernel32.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Kernel32.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt">
+      <HintPath>..\packages\PInvoke.BCrypt.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.BCrypt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt">
+      <HintPath>..\packages\PInvoke.NCrypt.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.NCrypt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.3.7\lib\dotnet\Validation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Xamarin.Auth">
-      <HintPath>..\..\samples\packages\Xamarin.Auth.1.3.2-alpha-04\lib\Xamarin.iOS10\Xamarin.Auth.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Auth.1.3.2\lib\Xamarin.iOS10\Xamarin.Auth.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -79,8 +85,12 @@
     <Compile Include="..\Salesforce.Core\IRestResource.cs" />
     <Compile Include="..\Salesforce.Core\IVersionableRestResource.cs" />
     <Compile Include="..\Salesforce.Core\ISalesforceResource.cs" />
-    <Compile Include="..\Salesforce.Core\Models\SObject.cs">
-      <Link>Models\SObject.cs</Link>
+    <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
+      <Link>IAuthenticatedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs" />
+    <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
       <Link>System.Web\HttpEncoder.cs</Link>
@@ -88,17 +98,17 @@
     <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
       <Link>System.Web\HttpUtility.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Models\SObject.cs">
+      <Link>Models\SObject.cs</Link>
+    </Compile>
     <Compile Include="..\Salesforce.Core\Models\Search.cs">
       <Link>Models\Search.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
       <Link>Models\ObjectQuery.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
-      <Link>Request\ReadRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\IAuthenticatedRequest.cs">
-      <Link>IAuthenticatedRequest.cs</Link>
+    <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
+      <Link>Models\SearchResult.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
       <Link>Exceptions\DeleteFailedException.cs</Link>
@@ -109,6 +119,24 @@
     <Compile Include="..\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
       <Link>Exceptions\InsufficientRightsException.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
+      <Link>Exceptions\MissingResourceException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidFieldException.cs">
+      <Link>Exceptions\InvalidFieldException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
+      <Link>Exceptions\InvalidClientIdException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
+      <Link>Exceptions\JsonParseException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
+    </Compile>
     <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
       <Link>Request\CreateRequest.cs</Link>
     </Compile>
@@ -118,36 +146,14 @@
     <Compile Include="..\Salesforce.Core\Request\UpdateRequest.cs">
       <Link>Request\UpdateRequest.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
-      <Link>Exceptions\MissingResourceException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\InvalidFieldException.cs">
-      <Link>Exceptions\InvalidFieldException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs" />
-    <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
-      <Link>Exceptions\InvalidClientIdException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
-      <Link>Exceptions\JsonParseException.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
       <Link>Request\UpdateRequestEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
-      <Link>Models\SearchResult.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\ChangesRequest.cs">
       <Link>Request\ChangesRequest.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
-      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
       <Link>Salesforce.Auth\ISalesforceUser.cs</Link>

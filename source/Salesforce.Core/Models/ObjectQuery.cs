@@ -3,8 +3,8 @@ using System.IO;
 using System.Json;
 using System.Text;
 
-using System.Web;
-using System.Web.Util;
+//mc++ using System.Web;
+//mc++ using System.Web.Util;
 
 using Xamarin.Utilities;
 using System.Collections.Generic;
@@ -97,7 +97,17 @@ namespace Salesforce
 				str.Append ("?");
 				foreach (var option in Options)
 				{
-					str.AppendFormat("{0}={1}&", HttpUtility.UrlEncode(option.Key), HttpUtility.UrlEncode(option.Value));
+					str.AppendFormat
+                            (
+                                "{0}={1}&", 
+                               //------------------------------------------------------------
+                               // mc++ PCL version
+                               // HttpUtility.UrlEncode(option.Key), 
+                               Uri.EscapeUriString(option.Key),
+                               // HttpUtility.UrlEncode(option.Value)
+                               Uri.EscapeUriString(option.Value)
+                               //------------------------------------------------------------
+                            );
 				}
 				str.Remove (str.Length - 1, 1); // Remove the trailing ampersand.
 			}

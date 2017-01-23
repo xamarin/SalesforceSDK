@@ -205,9 +205,13 @@ namespace System.Runtime.Serialization.Json
 				if (fdigits == 0)
 					throw JsonError ("Invalid JSON numeric literal; extra dot");
 			}
-			frac = Decimal.Round (frac, fdigits);
 
-			c = PeekChar ();
+            #if __ANDROID__ || __IOS__ || MOBILE
+            frac = Decimal.Round(frac, fdigits);
+            #else
+            #endif
+
+            c = PeekChar ();
 			if (c != 'e' && c != 'E') {
 				if (!hasFrac) {
 					if (negative && int.MinValue <= -val ||

@@ -1,6 +1,4 @@
 using System;
-using Xamarin.Auth;
-using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Json;
@@ -8,251 +6,272 @@ using System.Linq;
 using System.Diagnostics;
 using System.IO;
 
+using Xamarin.Auth;
+
 namespace Salesforce
 {
-	public class SalesforceClient
-	{
+    public class SalesforceClient
+    {
 #if URI_FIX
 		internal const string RestApiPath = "services/data/";
 #else
-		internal const string RestApiPath = "/services/data/";
+        internal const string RestApiPath = "/services/data/";
 #endif
 
-		volatile static int defaultNetworkTimeout = 90;
-		/// <summary>
-		/// The default network timeout.
-		/// </summary>
-		/// <value>The default network timeout.</value>
-		public static int DefaultNetworkTimeout 
-		{
-			get 
-			{
-				return defaultNetworkTimeout;
-			}
-		}
+        volatile static int defaultNetworkTimeout = 90;
+        /// <summary>
+        /// The default network timeout.
+        /// </summary>
+        /// <value>The default network timeout.</value>
+        public static int DefaultNetworkTimeout
+        {
+            get
+            {
+                return defaultNetworkTimeout;
+            }
+        }
 
-		/// <summary>
-		/// The Salesforce OAuth authorization endpoint.
-		/// </summary>
-		//protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
-		//----------------------------------------------------------------------------------------
-		// moljac# 2015-09-15
-		// auth and token endpoint were hardcoded, to use it for development sandboxes
-		// hardcoded strings are changed to properties for testing sandboxes
-		public static string AuthPath
-		{
-			get
-			{
-				return auth_path;
-			} // AuthPath.get
-			set
-			{
-				if (auth_path != value)
-				{
-					{
-						// Set the property value
-						auth_path = value;
-						// raise/trigger Event if somebody has subscribed to the event
-						if (null != AuthPathChanged)
-						{
-							// raise/trigger Event
-							AuthPathChanged(null, new EventArgs());
-						}
-					}
-				}
+        /// <summary>
+        /// The Salesforce OAuth authorization endpoint.
+        /// </summary>
+        //protected static readonly string AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+        //----------------------------------------------------------------------------------------
+        // moljac# 2015-09-15
+        // auth and token endpoint were hardcoded, to use it for development sandboxes
+        // hardcoded strings are changed to properties for testing sandboxes
+        public static string AuthPath
+        {
+            get
+            {
+                return auth_path;
+            } // AuthPath.get
+            set
+            {
+                if (auth_path != value)
+                {
+                    {
+                        // Set the property value
+                        auth_path = value;
+                        // raise/trigger Event if somebody has subscribed to the event
+                        if (null != AuthPathChanged)
+                        {
+                            // raise/trigger Event
+                            AuthPathChanged(null, new EventArgs());
+                        }
+                    }
+                }
 
-				return;
-			} // AuthPath.set
-		} // AuthPath
+                return;
+            } // AuthPath.set
+        } // AuthPath
 
-		private static string auth_path;
-		public static event EventHandler AuthPathChanged;
-		//-------------------------------------------------------------------------	        
+        private static string auth_path;
+        public static event EventHandler AuthPathChanged;
+        //-------------------------------------------------------------------------	        
 
-		/// <summary>
-		/// The Salesforce OAuth token endpoint.
-		/// </summary>
-		//protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
-		//----------------------------------------------------------------------------------------
-		// moljac# 2015-09-15
-		// auth and token endpoint were hardcoded, to use it for development sandboxes
-		// hardcoded strings are changed to properties for testing sandboxes
-		public static string TokenPath
-		{
-			get
-			{
-				return token_path;
-			} // AuthPath.get
-			set
-			{
-				if (token_path != value)
-				{
-					{
-						// Set the property value
-						token_path = value;
-						// raise/trigger Event if somebody has subscribed to the event
-						if (null != TokenPathChanged)
-						{
-							// raise/trigger Event
-							TokenPathChanged(null, new EventArgs());
-						}
-					}
-				}
+        /// <summary>
+        /// The Salesforce OAuth token endpoint.
+        /// </summary>
+        //protected static readonly string TokenPath = "https://login.salesforce.com/services/oauth2/token";
+        //----------------------------------------------------------------------------------------
+        // moljac# 2015-09-15
+        // auth and token endpoint were hardcoded, to use it for development sandboxes
+        // hardcoded strings are changed to properties for testing sandboxes
+        public static string TokenPath
+        {
+            get
+            {
+                return token_path;
+            } // AuthPath.get
+            set
+            {
+                if (token_path != value)
+                {
+                    {
+                        // Set the property value
+                        token_path = value;
+                        // raise/trigger Event if somebody has subscribed to the event
+                        if (null != TokenPathChanged)
+                        {
+                            // raise/trigger Event
+                            TokenPathChanged(null, new EventArgs());
+                        }
+                    }
+                }
 
-				return;
-			} // AuthPath.set
-		} // AuthPath
+                return;
+            } // AuthPath.set
+        } // AuthPath
 
-		private static string token_path;
-		public static event EventHandler TokenPathChanged;
-		//----------------------------------------------------------------------------------------
+        private static string token_path;
+        public static event EventHandler TokenPathChanged;
+        //----------------------------------------------------------------------------------------
 
-		/// <summary>
-		/// Handles the actual OAuth handshake.
-		/// </summary>
-		/// <value>The authenticator.</value>
-		protected OAuth2Authenticator Authenticator { set; get; }
+        /// <summary>
+        /// Handles the actual OAuth handshake.
+        /// </summary>
+        /// <value>The authenticator.</value>
+        protected OAuth2Authenticator Authenticator { set; get; }
 
-		/// <summary>
-		/// Provides access to native services.
-		/// </summary>
-		/// <value>The adapter.</value>
-		/// <remarks>
-		/// This adapter is used to prevent platform abstractions
-		/// from leaking into the API. It enables platform
-		/// support to be solved via composition.
-		/// </remarks>
-		protected IPlatformAdapter Adapter { get; set; }
+        /// <summary>
+        /// Provides access to native services.
+        /// </summary>
+        /// <value>The adapter.</value>
+        /// <remarks>
+        /// This adapter is used to prevent platform abstractions
+        /// from leaking into the API. It enables platform
+        /// support to be solved via composition.
+        /// </remarks>
+        protected IPlatformAdapter Adapter { get; set; }
 
-		/// <summary>
-		/// Occurs when Salesforce OAuth authentication has completed.
-		/// </summary>
-		public event EventHandler<AuthenticatorCompletedEventArgs> AuthenticationComplete;
+        /// <summary>
+        /// Occurs when Salesforce OAuth authentication has completed.
+        /// </summary>
+        public event EventHandler<AuthenticatorCompletedEventArgs> AuthenticationComplete;
 
-		volatile ISalesforceUser currentUser;
+        volatile ISalesforceUser currentUser;
 
-		/// <summary>
-		/// The currently authenticated Salesforce user.
-		/// </summary>
-		/// <value>The current user.</value>
-		public ISalesforceUser CurrentUser {
-			get {
-				return currentUser;
-			}
-			set {
-				currentUser = value;
-			}
-		}
+        /// <summary>
+        /// The currently authenticated Salesforce user.
+        /// </summary>
+        /// <value>The current user.</value>
+        public ISalesforceUser CurrentUser
+        {
+            get
+            {
+                return currentUser;
+            }
+            set
+            {
+                currentUser = value;
+            }
+        }
 
-		/// <summary>
-		/// Gets or sets the scheduler.
-		/// </summary>
-		/// <remarks>
-		/// Constructor should be called from the UI thread
-		/// to ensure safe dispatch to UI elements.
-		/// </remarks>
-		/// <value>The scheduler.</value>
-		protected TaskScheduler Scheduler { get; set; }
-		
-		/// <summary>
-		/// Gets or sets the UI thread's scheduler.
-		/// </summary>
-		/// <remarks>
-		/// Constructor should be called from the UI thread
-		/// to ensure safe dispatch to UI elements.
-		/// </remarks>
-		/// <value>The scheduler.</value>
-		protected TaskScheduler MainThreadScheduler { get; set; }
+        /// <summary>
+        /// Gets or sets the scheduler.
+        /// </summary>
+        /// <remarks>
+        /// Constructor should be called from the UI thread
+        /// to ensure safe dispatch to UI elements.
+        /// </remarks>
+        /// <value>The scheduler.</value>
+        protected TaskScheduler Scheduler { get; set; }
 
-		/// <summary>
-		/// Your Salesforce application's Customer Id.
-		/// </summary>
-		/// <value>The app key.</value>
-		private readonly string ClientId;
+        /// <summary>
+        /// Gets or sets the UI thread's scheduler.
+        /// </summary>
+        /// <remarks>
+        /// Constructor should be called from the UI thread
+        /// to ensure safe dispatch to UI elements.
+        /// </remarks>
+        /// <value>The scheduler.</value>
+        protected TaskScheduler MainThreadScheduler { get; set; }
 
-		/// <summary>
-		/// Your Salesforce application's Customer Secret.
-		/// </summary>
-		private readonly string ClientSecret;
+        /// <summary>
+        /// Your Salesforce application's Customer Id.
+        /// </summary>
+        /// <value>The app key.</value>
+        private readonly string ClientId;
 
-		static  SalesforceClient()
-		{
-			//----------------------------------------------------------------------------------------
-			// moljac# 2015-09-15
-			// auth and token endpoint were hardcoded, to use it for development sandboxes
-			// hardcoded strings are changed to properties for testing sandboxes
-			SalesforceClient.AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
-			SalesforceClient.TokenPath = @"https://login.salesforce.com/services/oauth2/token";
-			//----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Your Salesforce application's Customer Secret.
+        /// </summary>
+        private readonly string ClientSecret;
 
-			return;
-		}
+        static SalesforceClient()
+        {
+            //----------------------------------------------------------------------------------------
+            // moljac# 2015-09-15
+            // auth and token endpoint were hardcoded, to use it for development sandboxes
+            // hardcoded strings are changed to properties for testing sandboxes
+            SalesforceClient.AuthPath = @"https://login.salesforce.com/services/oauth2/authorize";
+            SalesforceClient.TokenPath = @"https://login.salesforce.com/services/oauth2/token";
+            //----------------------------------------------------------------------------------------
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
-		/// </summary>
-		/// <param name="appKey">App key.</param>
-		/// <param name="callbackUri">Callback URI.</param>
-		public SalesforceClient (String clientId, String clientSecret, Uri redirectUrl)
-		{
-			ClientId = clientId;
-			ClientSecret = clientSecret;
-			MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
-			Scheduler = TaskScheduler.Default;
+            return;
+        }
 
-			#if PLATFORM_IOS
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Salesforce.SalesforceClient"/> class.
+        /// </summary>
+        /// <param name="appKey">App key.</param>
+        /// <param name="callbackUri">Callback URI.</param>
+        public SalesforceClient(String clientId, String clientSecret, Uri redirectUrl)
+        {
+            ClientId = clientId;
+            ClientSecret = clientSecret;
+            MainThreadScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            Scheduler = TaskScheduler.Default;
+
+#if PLATFORM_IOS
 			Adapter = new UIKitPlatformAdapter();
-			#elif __ANDROID__
+#elif __ANDROID__
 			Adapter = new AndroidPlatformAdapter();
-			#endif
+#endif
 
-			var users = LoadUsers ().Where(u => !u.RequiresReauthentication).ToArray();
+            var users = LoadUsers().Where(u => !u.RequiresReauthentication).ToArray();
 
-			if (users.Count () > 0) {
-				CurrentUser = users.First ();
+            if (users.Count() > 0)
+            {
+                CurrentUser = users.First();
 
-				Debug.WriteLine (CurrentUser);
+                Debug.WriteLine(CurrentUser);
 
-				foreach (var p in CurrentUser.Properties) {
-					Debug.WriteLine ("{0}\t{1}", p.Key, p.Value);
-				}
-			}
+                foreach (var p in CurrentUser.Properties)
+                {
+                    Debug.WriteLine("{0}\t{1}", p.Key, p.Value);
+                }
+            }
 
-			//
-			// mark.tap@xamarin.com 2015.01.08
-			//
-			// Note that here the original authors used the OAuth2Authenticator constructor intended for the Web-Server Flow;
-			// however, they then set AccessTokenUrl to null to force the authenticator to run the User-Agent Flow.
-			// I think they did this to load the ClientSecret into the authenticator for use with refresh (the ClientSecret
-			// isn't needed for the User-Agent Flow).
-			//
-			Authenticator = new OAuth2Authenticator (
-				clientId: clientId,
-				clientSecret: ClientSecret,
-				scope: "api refresh_token",
-				authorizeUrl: new Uri(AuthPath),
-				redirectUrl: redirectUrl,
-				accessTokenUrl: new Uri(TokenPath),
-				getUsernameAsync: new GetUsernameAsyncFunc((dict)=>{
-					var client = new WebClient();
-					client.Headers["Authorization"] = "Bearer " + dict["access_token"];
+            //
+            // mark.tap@xamarin.com 2015.01.08
+            //
+            // Note that here the original authors used the OAuth2Authenticator constructor intended for the Web-Server Flow;
+            // however, they then set AccessTokenUrl to null to force the authenticator to run the User-Agent Flow.
+            // I think they did this to load the ClientSecret into the authenticator for use with refresh (the ClientSecret
+            // isn't needed for the User-Agent Flow).
+            //
+            Authenticator = new OAuth2Authenticator
+                (
+                    clientId: clientId,
+                    clientSecret: ClientSecret,
+                    scope: "api refresh_token",
+                    authorizeUrl: new Uri(AuthPath),
+                    redirectUrl: redirectUrl,
+                    accessTokenUrl: new Uri(TokenPath),
+                    getUsernameAsync: new GetUsernameAsyncFunc(HandleGetUsernameAsyncFunc)
+                );
 
-					var results = client.DownloadString(dict["id"]);
-					var resultVals = JsonValue.Parse(results);
+            if (CurrentUser == null || CurrentUser.RequiresReauthentication)
+                Authenticator.AccessTokenUrl = null;
 
-					return Task.Factory.StartNew(()=> { 
-						return (String)resultVals["username"];
-					});
-				})
-			);
+            Adapter.Authenticator = Authenticator;
 
-			if (CurrentUser == null || CurrentUser.RequiresReauthentication)
-				Authenticator.AccessTokenUrl = null;
+            Authenticator.Completed += OnAuthenticationCompleted;
+        }
 
-			Adapter.Authenticator = Authenticator;
+        protected Task<string> HandleGetUsernameAsyncFunc(IDictionary<string, string> accountProperties)
+        {
+            string results = null;
+            #if __IOS__ || __ANDROID__ || MOBILE
+            System.Net.WebClient client = new System.Net.WebClient();
+            client.Headers["Authorization"] = "Bearer " + accountProperties["access_token"];
 
-			Authenticator.Completed += OnAuthenticationCompleted;
-		}
+            results = client.DownloadString(accountProperties["id"]);
+            #else
+
+            #endif
+            var resultVals = JsonValue.Parse(results);
+
+            return Task.Factory.StartNew
+                                    (
+                                        () =>
+                                        {
+                                            return (String)resultVals["username"];
+                                        }
+                                    );
+        }
+
 
 		/// <summary>
 		/// Sets the current UI context.
@@ -350,7 +369,7 @@ namespace Salesforce
 				if (!response.IsFaulted) return response.Result;
 
 				var innerEx = response.Exception.Flatten().InnerException;
-				if (!(innerEx is WebException))
+				if (!(innerEx is System.Net.WebException))
 					throw innerEx;
 
 				var responseBody = ProcessResponseBody (response);
@@ -475,7 +494,7 @@ namespace Salesforce
 
 		static string ProcessResponseBody (Task response)
 		{
-			var webEx = response.Exception.InnerException.InnerException as WebException;
+			var webEx = response.Exception.InnerException.InnerException as System.Net.WebException;
 			if (webEx == null) return string.Empty;
 			if (webEx.Response == null) return string.Empty;
 
@@ -495,17 +514,17 @@ namespace Salesforce
 		{
 			var ex = exception.Flatten()
 				.InnerExceptions
-					.FirstOrDefault (e => e.GetType () == typeof(WebException));
+					.FirstOrDefault (e => e.GetType () == typeof(System.Net.WebException));
 
 			if (ex == null) return false;
 
-			var webEx = ex as WebException;
+			var webEx = ex as System.Net.WebException;
 			if (webEx == null) return false;
 
-			var response = webEx.Response as HttpWebResponse;
+			var response = webEx.Response as System.Net.HttpWebResponse;
 			if (response == null) return false;
 
-			return response.StatusCode == HttpStatusCode.Unauthorized;
+			return response.StatusCode == System.Net.HttpStatusCode.Unauthorized;
 		}
 
 		void ForceUserReauthorization (bool required)
