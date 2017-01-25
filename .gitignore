@@ -117,3 +117,5 @@ UpgradeLog*.XML
 *.xam
 
 Package/SalesforceSDK-1.0/lib/ios/Salesforce.dll
+/output
+/tools
