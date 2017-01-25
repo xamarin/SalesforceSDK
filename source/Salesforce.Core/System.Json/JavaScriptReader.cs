@@ -209,6 +209,7 @@ namespace System.Runtime.Serialization.Json
             #if __ANDROID__ || __IOS__ || MOBILE
             frac = Decimal.Round(frac, fdigits);
             #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             c = PeekChar ();

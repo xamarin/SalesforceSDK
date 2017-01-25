@@ -132,10 +132,11 @@ namespace System.Json
     				default:
     					retval = JsonType.Number;
 				}
+                #else
+                throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+                #endif
 
                 return retval;
-                #else
-                #endif
             }
 		}
 

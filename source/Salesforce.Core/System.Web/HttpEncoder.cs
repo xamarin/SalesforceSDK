@@ -114,10 +114,10 @@ namespace System.Web.Util
 		}
 		#if NET_4_0	
 		protected internal virtual
-			#else
-			internal static
-				#endif
-				void HeaderNameValueEncode (string headerName, string headerValue, out string encodedHeaderName, out string encodedHeaderValue)
+		#else
+		internal static
+		#endif
+		void HeaderNameValueEncode (string headerName, string headerValue, out string encodedHeaderName, out string encodedHeaderValue)
 		{
 			if (String.IsNullOrEmpty (headerName))
 				encodedHeaderName = headerName;
@@ -215,10 +215,10 @@ namespace System.Web.Util
 		#endif
 		#if NET_4_0
 		protected internal virtual
-			#else
-			internal static
-				#endif
-				string UrlPathEncode (string value)
+		#else
+		internal static
+		#endif
+		string UrlPathEncode (string value)
 		{
 			if (String.IsNullOrEmpty (value))
 				return value;

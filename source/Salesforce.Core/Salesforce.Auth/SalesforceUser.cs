@@ -201,6 +201,7 @@ namespace Xamarin.Auth
 				return Convert.ToBase64String (s.GetBuffer (), 0, (int)s.Length);
 			}
             #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
             return cookies;
 		}
@@ -217,6 +218,7 @@ namespace Xamarin.Auth
 				cc = (CookieContainer)f.Deserialize (s);
 			}
             #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             return cc;

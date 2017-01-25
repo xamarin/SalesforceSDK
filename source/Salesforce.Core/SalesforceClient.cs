@@ -259,9 +259,9 @@ namespace Salesforce
 
             results = client.DownloadString(accountProperties["id"]);
             #else
-
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
-            var resultVals = JsonValue.Parse(results);
+            JsonValue resultVals = JsonValue.Parse(results);
 
             return Task.Factory.StartNew
                                     (
