@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{715DCA9F-B5DB-44BA-AA6D-5267CB7BC70A}</ProjectGuid>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Salesforce</RootNamespace>
+    <AssemblyName>Salesforce.Core.Portable</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;NET_4_5;NET_4_0;PORTABLE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>PORTABLE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\source\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
+      <Link>HttpMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IAuthenticatedRequest.cs">
+      <Link>IAuthenticatedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IRestRequest.cs">
+      <Link>IRestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IRestResource.cs">
+      <Link>IRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\ISalesforceResource.cs">
+      <Link>ISalesforceResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IVersionableRestResource.cs">
+      <Link>IVersionableRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\PlatformAdapter.cs">
+      <Link>PlatformAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\SalesforceClient.cs">
+      <Link>SalesforceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\SalesforceClientExtensions.cs">
+      <Link>SalesforceClientExtensions.cs</Link>
+    </Compile>
+
+
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\DeleteFailedException.cs">
+      <Link>Exceptions\DeleteFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
+      <Link>Exceptions\InsufficientRightsException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidFieldException.cs">
+      <Link>Exceptions\InvalidFieldException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidSessionException.cs">
+      <Link>Exceptions\InvalidSessionException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\MissingResourceException.cs">
+      <Link>Exceptions\MissingResourceException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
+      <Link>Exceptions\InvalidClientIdException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\JsonParseException.cs">
+      <Link>Exceptions\JsonParseException.cs</Link>
+    </Compile>
+    
+    
+    <Compile Include="..\..\source\Salesforce.Core\Models\ObjectQuery.cs">
+      <Link>Models\ObjectQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\SObject.cs">
+      <Link>Models\SObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\Search.cs">
+      <Link>Models\Search.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\SearchResult.cs">
+      <Link>Models\SearchResult.cs</Link>
+    </Compile>
+    
+    
+    <Compile Include="..\..\source\Salesforce.Core\Request\CreateRequest.cs">
+      <Link>Request\CreateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\DeleteRequest.cs">
+      <Link>Request\DeleteRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\UpdateRequest.cs">
+      <Link>Request\UpdateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
+      <Link>Request\UpdateRequestEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ChangesRequest.cs">
+      <Link>Request\ChangesRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ChangeTypes.cs">
+      <Link>Request\ChangeTypes.cs</Link>
+    </Compile>
+
+    
+    <Compile Include="..\..\source\Salesforce.Core\System.Web\HttpEncoder.cs">
+      <Link>System.Web\HttpEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\System.Web\HttpUtility.cs">
+      <Link>System.Web\HttpUtility.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
+      <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
+      <Link>Salesforce.Auth\SalesforceUser.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
+      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PCLCrypto">
+      <HintPath>..\packages\PCLCrypto.2.0.147\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Auth">
+      <HintPath>..\packages\Xamarin.Auth.1.3.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+XamarinIOS10\Xamarin.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.3.7\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+</Project>
