@@ -34,79 +34,105 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
-using System.Security.Permissions;
 using System.Text;
-using System.Web.Util;
 
-namespace System.Web {
+namespace System.Web
+{
 
-	#if !MOBILE
-	// CAS - no InheritanceDemand here as the class is sealed
-	[AspNetHostingPermission (SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-	#endif
-	public sealed class HttpUtility
-	{
-		sealed class HttpQSCollection : NameValueCollection
-		{
-			public override string ToString ()
-			{
-				int count = Count;
-				if (count == 0)
-					return "";
-				StringBuilder sb = new StringBuilder ();
-				string [] keys = AllKeys;
-				for (int i = 0; i < count; i++) {
-					sb.AppendFormat ("{0}={1}&", keys [i], this [keys [i]]);
-				}
-				if (sb.Length > 0)
-					sb.Length--;
-				return sb.ToString ();
-			}
-		}
+#if !MOBILE && ! PORTABLE
+    // CAS - no InheritanceDemand here as the class is sealed
+    [AspNetHostingPermission(System.Security.Permissions.SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
+#endif
+    public sealed class HttpUtility
+    {
+        sealed class HttpQSCollection
+            :
+#if !PORTABLE
+                NameValueCollection
+#else
+                Dictionary<string, string>
+        // Linq.Lookup<string, string>
+#endif
+        {
 
-		#region Constructors
+            public override string ToString()
+            {
+                int count = Count;
+                if (count == 0)
+                    return "";
+                StringBuilder sb = new StringBuilder();
 
-		public HttpUtility () 
-		{
-		}
+                #if !PORTABLE
+                string[] keys = this.AllKeys;
+                keys = this.AllKeys;
+                #else
+                string[] keys = new string[] { };
+                this.Keys.CopyTo(keys,0);
+                #endif
+                for (int i = 0; i < count; i++)
+                {
+                    sb.AppendFormat("{0}={1}&", keys[i], this[keys[i]]);
+                }
+                if (sb.Length > 0)
+                    sb.Length--;
+                return sb.ToString();
+            }
+        }
 
-		#endregion // Constructors
+        #region Constructors
 
-		#region Methods
+        public HttpUtility()
+        {
+        }
 
-		public static string UrlEncode(string str) 
-		{
-			return UrlEncode(str, Encoding.UTF8);
-		}
+        #endregion // Constructors
 
-		public static string UrlEncode (string s, Encoding Enc) 
-		{
-			if (s == null)
-				return null;
+        #region Methods
 
-			if (s == String.Empty)
-				return String.Empty;
+        public static string UrlEncode(string str)
+        {
+            return UrlEncode(str, Encoding.UTF8);
+        }
 
-			bool needEncode = false;
-			int len = s.Length;
-			for (int i = 0; i < len; i++) {
-				char c = s [i];
-				if ((c < '0') || (c < 'A' && c > '9') || (c > 'Z' && c < 'a') || (c > 'z')) {
-					if (HttpEncoder.NotEncoded (c))
-						continue;
+        public static string UrlEncode(string s, Encoding Enc)
+        {
+            if (s == null)
+                return null;
 
-					needEncode = true;
-					break;
-				}
-			}
+            if (s == String.Empty)
+                return String.Empty;
 
-			if (!needEncode)
-				return s;
+            bool needEncode = false;
+            int len = s.Length;
+            for (int i = 0; i < len; i++)
+            {
+                char c = s[i];
+                if ((c < '0') || (c < 'A' && c > '9') || (c > 'Z' && c < 'a') || (c > 'z'))
+                {
+                    if (Util.HttpEncoder.NotEncoded(c))
+                        continue;
 
-			// avoided GetByteCount call
-			byte [] bytes = new byte[Enc.GetMaxByteCount(s.Length)];
-			int realLen = Enc.GetBytes (s, 0, s.Length, bytes, 0);
-			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, 0, realLen));
+                    needEncode = true;
+                    break;
+                }
+            }
+
+            if (!needEncode)
+                return s;
+
+            // avoided GetByteCount call
+            byte[] bytes = new byte[Enc.GetMaxByteCount(s.Length)];
+            int realLen = Enc.GetBytes(s, 0, s.Length, bytes, 0);
+
+            string retval = null;
+
+            #if !PORTABLE
+            retval = Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, realLen));
+            #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            #endif
+
+            return retval;
 		}
 
 		public static string UrlEncode (byte [] bytes)
@@ -117,7 +143,15 @@ namespace System.Web {
 			if (bytes.Length == 0)
 				return String.Empty;
 
-			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, 0, bytes.Length));
+            string retval = null;
+
+            #if !PORTABLE
+            retval = Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, bytes.Length));
+            #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            #endif
+
+            return retval;
 		}
 
 		public static string UrlEncode (byte [] bytes, int offset, int count)
@@ -128,7 +162,15 @@ namespace System.Web {
 			if (bytes.Length == 0)
 				return String.Empty;
 
-			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, offset, count));
+            string retval = null;
+
+            #if !PORTABLE
+            retval = Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, offset, count));
+            #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            #endif
+
+            return retval;
 		}
 
 		public static byte [] UrlEncodeToBytes (string str)
@@ -164,9 +206,9 @@ namespace System.Web {
 			if (bytes == null)
 				return null;
 			#if NET_4_0
-			return HttpEncoder.Current.UrlEncode (bytes, offset, count);
+			return Util.HttpEncoder.Current.UrlEncode (bytes, offset, count);
 			#else
-			return HttpEncoder.UrlEncodeToBytes (bytes, offset, count);
+			return Util.HttpEncoder.UrlEncodeToBytes (bytes, offset, count);
 			#endif
 		}
 
@@ -175,7 +217,15 @@ namespace System.Web {
 			if (str == null)
 				return null;
 
-			return Encoding.ASCII.GetString (UrlEncodeUnicodeToBytes (str));
+            string retval = null;
+
+            #if !PORTABLE
+            retval = Encoding.ASCII.GetString(UrlEncodeUnicodeToBytes(str));
+            #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            #endif
+
+            return retval;
 		}
 
 		public static byte [] UrlEncodeUnicodeToBytes (string str)
@@ -188,7 +238,7 @@ namespace System.Web {
 
 			MemoryStream result = new MemoryStream (str.Length);
 			foreach (char c in str){
-				HttpEncoder.UrlEncodeChar (c, result, true);
+				Util.HttpEncoder.UrlEncodeChar (c, result, true);
 			}
 			return result.ToArray ();
 		}

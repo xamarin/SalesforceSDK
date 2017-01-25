@@ -8,12 +8,11 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Salesforce</RootNamespace>
     <AssemblyName>Salesforce.XamarinAndroid</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <AndroidTlsProvider></AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -67,23 +66,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Salesforce.Auth\" />
-    <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
-      <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
-      <Link>Salesforce.Auth\SalesforceUser.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Resources\Resource.designer.cs" />	
     <None Include="Resources\AboutResources.txt" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
+
+    <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+	
     <Compile Include="..\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -108,6 +99,14 @@
     <Compile Include="..\Salesforce.Core\SalesforceClient.cs">
       <Link>SalesforceClient.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
+      <Link>SalesforceClientExtensions.cs</Link>
+    </Compile>
+
+
+    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+    </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
       <Link>Exceptions\DeleteFailedException.cs</Link>
     </Compile>
@@ -123,6 +122,14 @@
     <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
       <Link>Exceptions\MissingResourceException.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
+      <Link>Exceptions\InvalidClientIdException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
+      <Link>Exceptions\JsonParseException.cs</Link>
+    </Compile>
+	
+	
     <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
       <Link>Models\ObjectQuery.cs</Link>
     </Compile>
@@ -132,6 +139,11 @@
     <Compile Include="..\Salesforce.Core\Models\Search.cs">
       <Link>Models\Search.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
+      <Link>Models\SearchResult.cs</Link>
+    </Compile>
+	
+	
     <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
       <Link>Request\CreateRequest.cs</Link>
     </Compile>
@@ -144,32 +156,8 @@
     <Compile Include="..\Salesforce.Core\Request\UpdateRequest.cs">
       <Link>Request\UpdateRequest.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
-      <Link>System.Web\HttpEncoder.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
-      <Link>System.Web\HttpUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
-      <Link>SalesforceClientExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
-      <Link>Exceptions\InvalidClientIdException.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
-      <Link>Exceptions\JsonParseException.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
       <Link>Request\UpdateRequestEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
-      <Link>Models\SearchResult.cs</Link>
-    </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
-      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\ChangesRequest.cs">
       <Link>Request\ChangesRequest.cs</Link>
@@ -177,6 +165,31 @@
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
+
+	
+    <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
+      <Link>System.Web\HttpEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
+      <Link>System.Web\HttpUtility.cs</Link>
+    </Compile>
+	
+    <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
+      <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
+      <Link>Salesforce.Auth\SalesforceUser.cs</Link>
+    </Compile>
+	
+    <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
+      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.XamarinAndroid\Xamarin.Auth.XamarinAndroid.csproj">
+      <Project>{D46E20A0-DBA9-49A5-B45E-CE4664850445}</Project>
+      <Name>Xamarin.Auth.XamarinAndroid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

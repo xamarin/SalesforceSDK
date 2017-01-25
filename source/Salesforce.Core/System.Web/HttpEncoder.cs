@@ -32,355 +32,381 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Globalization;
 
 
-#if NET_4_0 && !MOBILE
-using System.Web.Configuration;
-#endif
-
 namespace System.Web.Util
 {
-	#if NET_4_0
-	public
-		#endif
-		class HttpEncoder
-	{
-		static char [] hexChars = "0123456789abcdef".ToCharArray ();
-		static object entitiesLock = new object ();
-		volatile static SortedDictionary <string, char> entities;
-		#if NET_4_0
-		static Lazy <HttpEncoder> defaultEncoder;
-		static Lazy <HttpEncoder> currentEncoderLazy;
-		#else
+#if NET_4_0
+    public
+#endif
+        class HttpEncoder
+    {
+        static char[] hexChars = "0123456789abcdef".ToCharArray();
+        static object entitiesLock = new object();
+        volatile static SortedDictionary<string, char> entities;
+#if NET_4_0
+        static Lazy<HttpEncoder> defaultEncoder;
+        static Lazy<HttpEncoder> currentEncoderLazy;
+#else
 		volatile static HttpEncoder defaultEncoder;
-		#endif
-		volatile static HttpEncoder currentEncoder;
+#endif
+        volatile static HttpEncoder currentEncoder;
 
-		static IDictionary <string, char> Entities {
-			get {
-				lock (entitiesLock) {
-					if (entities == null)
-						InitEntities ();
+        static IDictionary<string, char> Entities
+        {
+            get
+            {
+                lock (entitiesLock)
+                {
+                    if (entities == null)
+                        InitEntities();
 
-					return entities;
-				}
-			}
-		}
+                    return entities;
+                }
+            }
+        }
 
-		public static HttpEncoder Current {
-			get {
-				#if NET_4_0
-				if (currentEncoder == null)
-					currentEncoder = currentEncoderLazy.Value;
-				#endif
-				return currentEncoder;
-			}
-			#if NET_4_0
-			set {
-				if (value == null)
-					throw new ArgumentNullException ("value");
-				currentEncoder = value;
-			}
-			#endif
-		}
+        public static HttpEncoder Current
+        {
+            get
+            {
+#if NET_4_0
+                if (currentEncoder == null)
+                    currentEncoder = currentEncoderLazy.Value;
+#endif
+                return currentEncoder;
+            }
+#if NET_4_0
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                currentEncoder = value;
+            }
+#endif
+        }
 
-		public static HttpEncoder Default {
-			get {
-				#if NET_4_0
-				return defaultEncoder.Value;
-				#else
+        public static HttpEncoder Default
+        {
+            get
+            {
+#if NET_4_0
+                return defaultEncoder.Value;
+#else
 				return defaultEncoder;
-				#endif
-			}
-		}
+#endif
+            }
+        }
 
-		static HttpEncoder ()
-		{
-			#if NET_4_0
-			defaultEncoder = new Lazy <HttpEncoder> (() => new HttpEncoder ());
-			currentEncoderLazy = new Lazy <HttpEncoder> (new Func <HttpEncoder> (GetCustomEncoderFromConfig));
-			#else
+        static HttpEncoder()
+        {
+#if NET_4_0
+            defaultEncoder = new Lazy<HttpEncoder>(() => new HttpEncoder());
+            currentEncoderLazy = new Lazy<HttpEncoder>(new Func<HttpEncoder>(GetCustomEncoderFromConfig));
+#else
 			defaultEncoder = new HttpEncoder ();
 			currentEncoder = defaultEncoder;
-			#endif
-		}
+#endif
+        }
 
-		public HttpEncoder ()
-		{
-		}
-		#if NET_4_0	
-		protected internal virtual
-		#else
+        public HttpEncoder()
+        {
+        }
+#if NET_4_0
+        protected internal virtual
+#else
 		internal static
-		#endif
-		void HeaderNameValueEncode (string headerName, string headerValue, out string encodedHeaderName, out string encodedHeaderValue)
-		{
-			if (String.IsNullOrEmpty (headerName))
-				encodedHeaderName = headerName;
-			else
-				encodedHeaderName = EncodeHeaderString (headerName);
+#endif
+        void HeaderNameValueEncode(string headerName, string headerValue, out string encodedHeaderName, out string encodedHeaderValue)
+        {
+            if (String.IsNullOrEmpty(headerName))
+                encodedHeaderName = headerName;
+            else
+                encodedHeaderName = EncodeHeaderString(headerName);
 
-			if (String.IsNullOrEmpty (headerValue))
-				encodedHeaderValue = headerValue;
-			else
-				encodedHeaderValue = EncodeHeaderString (headerValue);
-		}
+            if (String.IsNullOrEmpty(headerValue))
+                encodedHeaderValue = headerValue;
+            else
+                encodedHeaderValue = EncodeHeaderString(headerValue);
+        }
 
-		static void StringBuilderAppend (string s, ref StringBuilder sb)
-		{
-			if (sb == null)
-				sb = new StringBuilder (s);
-			else
-				sb.Append (s);
-		}
+        static void StringBuilderAppend(string s, ref StringBuilder sb)
+        {
+            if (sb == null)
+                sb = new StringBuilder(s);
+            else
+                sb.Append(s);
+        }
 
-		static string EncodeHeaderString (string input)
-		{
-			StringBuilder sb = null;
-			char ch;
+        static string EncodeHeaderString(string input)
+        {
+            StringBuilder sb = null;
+            char ch;
 
-			for (int i = 0; i < input.Length; i++) {
-				ch = input [i];
+            for (int i = 0; i < input.Length; i++)
+            {
+                ch = input[i];
 
-				if ((ch < 32 && ch != 9) || ch == 127)
-					StringBuilderAppend (String.Format ("%{0:x2}", (int)ch), ref sb);
-			}
+                if ((ch < 32 && ch != 9) || ch == 127)
+                    StringBuilderAppend(String.Format("%{0:x2}", (int)ch), ref sb);
+            }
 
-			if (sb != null)
-				return sb.ToString ();
+            if (sb != null)
+                return sb.ToString();
 
-			return input;
-		}
-		#if NET_4_0		
-		protected internal virtual void HtmlAttributeEncode (string value, TextWriter output)
-		{
+            return input;
+        }
+#if NET_4_0
+        protected internal virtual void HtmlAttributeEncode(string value, TextWriter output)
+        {
 
-			if (output == null)
-				throw new ArgumentNullException ("output");
+            if (output == null)
+                throw new ArgumentNullException("output");
 
-			if (String.IsNullOrEmpty (value))
-				return;
+            if (String.IsNullOrEmpty(value))
+                return;
 
-			output.Write (HtmlAttributeEncode (value));
-		}
+            output.Write(HtmlAttributeEncode(value));
+        }
 
-		protected internal virtual void HtmlDecode (string value, TextWriter output)
-		{
-			if (output == null)
-				throw new ArgumentNullException ("output");
+        protected internal virtual void HtmlDecode(string value, TextWriter output)
+        {
+            if (output == null)
+                throw new ArgumentNullException("output");
 
-			output.Write (HtmlDecode (value));
-		}
+            output.Write(HtmlDecode(value));
+        }
 
-		protected internal virtual void HtmlEncode (string value, TextWriter output)
-		{
-			if (output == null)
-				throw new ArgumentNullException ("output");
+        protected internal virtual void HtmlEncode(string value, TextWriter output)
+        {
+            if (output == null)
+                throw new ArgumentNullException("output");
 
-			output.Write (HtmlEncode (value));
-		}
+            output.Write(HtmlEncode(value));
+        }
 
-		protected internal virtual byte[] UrlEncode (byte[] bytes, int offset, int count)
-		{
-			return UrlEncodeToBytes (bytes, offset, count);
-		}
+        protected internal virtual byte[] UrlEncode(byte[] bytes, int offset, int count)
+        {
+            return UrlEncodeToBytes(bytes, offset, count);
+        }
 
-		static HttpEncoder GetCustomEncoderFromConfig ()
-		{
-			#if MOBILE
+        static HttpEncoder GetCustomEncoderFromConfig()
+        {
+            #if MOBILE || __ANDROID__ || __IOS__ || PORTABLE
 			return defaultEncoder.Value;
-			#else
-			var cfg = HttpRuntime.Section;
-			string typeName = cfg.EncoderType;
+            #else
+            var cfg = HttpRuntime.Section;
+            string typeName = cfg.EncoderType;
 
-			if (String.Compare (typeName, "System.Web.Util.HttpEncoder", StringComparison.OrdinalIgnoreCase) == 0)
-				return Default;
+            if (String.Compare(typeName, "System.Web.Util.HttpEncoder", StringComparison.OrdinalIgnoreCase) == 0)
+                return Default;
 
-			Type t = Type.GetType (typeName, false);
-			if (t == null)
-				throw new ConfigurationErrorsException (String.Format ("Could not load type '{0}'.", typeName));
+            Type t = Type.GetType(typeName, false);
+            if (t == null)
+                throw new System.Configuration.ConfigurationErrorsException(String.Format("Could not load type '{0}'.", typeName));
 
-			if (!typeof (HttpEncoder).IsAssignableFrom (t))
-				throw new ConfigurationErrorsException (
-					String.Format ("'{0}' is not allowed here because it does not extend class 'System.Web.Util.HttpEncoder'.", typeName)
-					);
+            if (!typeof(HttpEncoder).IsAssignableFrom(t))
+                throw new System.Configuration.ConfigurationErrorsException
+                                (
+                                    String.Format("'{0}' is not allowed here because it does not extend class 'System.Web.Util.HttpEncoder'.",typeName)
+                                );
 
-			return Activator.CreateInstance (t, false) as HttpEncoder;
-			#endif
-		}
-		#endif
-		#if NET_4_0
-		protected internal virtual
-		#else
+            return Activator.CreateInstance(t, false) as HttpEncoder;
+            #endif
+        }
+#endif
+#if NET_4_0
+        protected internal virtual
+#else
 		internal static
-		#endif
-		string UrlPathEncode (string value)
-		{
-			if (String.IsNullOrEmpty (value))
-				return value;
+#endif
+        string UrlPathEncode(string value)
+        {
+            if (String.IsNullOrEmpty(value))
+                return value;
 
-			MemoryStream result = new MemoryStream ();
-			int length = value.Length;
-			for (int i = 0; i < length; i++)
-				UrlPathEncodeChar (value [i], result);
+            MemoryStream result = new MemoryStream();
+            int length = value.Length;
+            for (int i = 0; i < length; i++)
+                UrlPathEncodeChar(value[i], result);
 
-			return Encoding.ASCII.GetString (result.ToArray ());
-		}
+            string retval = null;
 
-		internal static byte[] UrlEncodeToBytes (byte[] bytes, int offset, int count)
-		{
-			if (bytes == null)
-				throw new ArgumentNullException ("bytes");
+            #if !PORTABLE
+            retval = Encoding.ASCII.GetString(result.ToArray());
+            #else
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            #endif
 
-			int blen = bytes.Length;
-			if (blen == 0)
-				return new byte [0];
+            return retval;
+        }
 
-			if (offset < 0 || offset >= blen)
-				throw new ArgumentOutOfRangeException("offset");
+        internal static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count)
+        {
+            if (bytes == null)
+                throw new ArgumentNullException("bytes");
 
-			if (count < 0 || count > blen - offset)
-				throw new ArgumentOutOfRangeException("count");
+            int blen = bytes.Length;
+            if (blen == 0)
+                return new byte[0];
 
-			MemoryStream result = new MemoryStream (count);
-			int end = offset + count;
-			for (int i = offset; i < end; i++)
-				UrlEncodeChar ((char)bytes [i], result, false);
+            if (offset < 0 || offset >= blen)
+                throw new ArgumentOutOfRangeException("offset");
 
-			return result.ToArray();
-		}
+            if (count < 0 || count > blen - offset)
+                throw new ArgumentOutOfRangeException("count");
 
-		internal static string HtmlEncode (string s) 
-		{
-			if (s == null)
-				return null;
+            MemoryStream result = new MemoryStream(count);
+            int end = offset + count;
+            for (int i = offset; i < end; i++)
+                UrlEncodeChar((char)bytes[i], result, false);
 
-			if (s.Length == 0)
-				return String.Empty;
+            return result.ToArray();
+        }
 
-			bool needEncode = false;
-			for (int i = 0; i < s.Length; i++) {
-				char c = s [i];
-				if (c == '&' || c == '"' || c == '<' || c == '>' || c > 159
-				    #if NET_4_0
-				    || c == '\''
-				    #endif
-				    ) {
-					needEncode = true;
-					break;
-				}
-			}
+        internal static string HtmlEncode(string s)
+        {
+            if (s == null)
+                return null;
 
-			if (!needEncode)
-				return s;
+            if (s.Length == 0)
+                return String.Empty;
 
-			StringBuilder output = new StringBuilder ();
-			char ch;
-			int len = s.Length;
+            bool needEncode = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c == '&' || c == '"' || c == '<' || c == '>' || c > 159
+#if NET_4_0
+                    || c == '\''
+#endif
+                    )
+                {
+                    needEncode = true;
+                    break;
+                }
+            }
 
-			for (int i = 0; i < len; i++) {
-				switch (s [i]) {
-					case '&' :
-					output.Append ("&amp;");
-					break;
-					case '>' : 
-					output.Append ("&gt;");
-					break;
-					case '<' :
-					output.Append ("&lt;");
-					break;
-					case '"' :
-					output.Append ("&quot;");
-					break;
-					#if NET_4_0
-					case '\'':
-					output.Append ("&#39;");
-					break;
-					#endif
-					case '\uff1c':
-					output.Append ("&#65308;");
-					break;
+            if (!needEncode)
+                return s;
 
-					case '\uff1e':
-					output.Append ("&#65310;");
-					break;
+            StringBuilder output = new StringBuilder();
+            char ch;
+            int len = s.Length;
 
-					default:
-					ch = s [i];
-					if (ch > 159 && ch < 256) {
-						output.Append ("&#");
-						output.Append (((int) ch).ToString (CultureInfo.InvariantCulture));
-						output.Append (";");
-					} else
-						output.Append (ch);
-					break;
-				}	
-			}
+            for (int i = 0; i < len; i++)
+            {
+                switch (s[i])
+                {
+                    case '&':
+                        output.Append("&amp;");
+                        break;
+                    case '>':
+                        output.Append("&gt;");
+                        break;
+                    case '<':
+                        output.Append("&lt;");
+                        break;
+                    case '"':
+                        output.Append("&quot;");
+                        break;
+#if NET_4_0
+                    case '\'':
+                        output.Append("&#39;");
+                        break;
+#endif
+                    case '\uff1c':
+                        output.Append("&#65308;");
+                        break;
 
-			return output.ToString ();			
-		}
+                    case '\uff1e':
+                        output.Append("&#65310;");
+                        break;
 
-		internal static string HtmlAttributeEncode (string s) 
-		{
-			#if NET_4_0
-			if (String.IsNullOrEmpty (s))
-				return String.Empty;
-			#else
+                    default:
+                        ch = s[i];
+                        if (ch > 159 && ch < 256)
+                        {
+                            output.Append("&#");
+                            output.Append(((int)ch).ToString(CultureInfo.InvariantCulture));
+                            output.Append(";");
+                        }
+                        else
+                            output.Append(ch);
+                        break;
+                }
+            }
+
+            return output.ToString();
+        }
+
+        internal static string HtmlAttributeEncode(string s)
+        {
+#if NET_4_0
+            if (String.IsNullOrEmpty(s))
+                return String.Empty;
+#else
 			if (s == null) 
 				return null;
 
 			if (s.Length == 0)
 				return String.Empty;
-			#endif			
-			bool needEncode = false;
-			for (int i = 0; i < s.Length; i++) {
-				char c = s [i];
-				if (c == '&' || c == '"' || c == '<'
-				    #if NET_4_0
-				    || c == '\''
-				    #endif
-				    ) {
-					needEncode = true;
-					break;
-				}
-			}
+#endif
+            bool needEncode = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c == '&' || c == '"' || c == '<'
+#if NET_4_0
+                    || c == '\''
+#endif
+                    )
+                {
+                    needEncode = true;
+                    break;
+                }
+            }
 
-			if (!needEncode)
-				return s;
+            if (!needEncode)
+                return s;
 
-			StringBuilder output = new StringBuilder ();
-			int len = s.Length;
-			for (int i = 0; i < len; i++)
-				switch (s [i]) {
-				case '&' : 
-				output.Append ("&amp;");
-				break;
-				case '"' :
-				output.Append ("&quot;");
-				break;
-				case '<':
-				output.Append ("&lt;");
-				break;
-				#if NET_4_0
-				case '\'':
-				output.Append ("&#39;");
-				break;
-				#endif
-				default:
-				output.Append (s [i]);
-				break;
-			}
+            StringBuilder output = new StringBuilder();
+            int len = s.Length;
+            for (int i = 0; i < len; i++)
+                switch (s[i])
+                {
+                    case '&':
+                        output.Append("&amp;");
+                        break;
+                    case '"':
+                        output.Append("&quot;");
+                        break;
+                    case '<':
+                        output.Append("&lt;");
+                        break;
+#if NET_4_0
+                    case '\'':
+                        output.Append("&#39;");
+                        break;
+#endif
+                    default:
+                        output.Append(s[i]);
+                        break;
+                }
 
-			return output.ToString();
-		}
+            return output.ToString();
+        }
 
-		internal static string HtmlDecode (string s)
-		{
-			if (s == null)
+        internal static string HtmlDecode(string s)
+        {
+            StringBuilder output = new StringBuilder();
+            #if PORTABLE
+            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            #else
+            if (s == null)
 				return null;
 
 			if (s.Length == 0)
@@ -392,7 +418,6 @@ namespace System.Web.Util
 			StringBuilder rawEntity = new StringBuilder ();
 			#endif
 			StringBuilder entity = new StringBuilder ();
-			StringBuilder output = new StringBuilder ();
 			int len = s.Length;
 			// 0 -> nothing,
 			// 1 -> right after '&'
@@ -517,7 +542,9 @@ namespace System.Web.Util
 			} else if (have_trailing_digits) {
 				output.Append (number.ToString (CultureInfo.InvariantCulture));
 			}
-			return output.ToString ();
+            #endif
+
+            return output.ToString ();
 		}
 
 		internal static bool NotEncoded (char c)

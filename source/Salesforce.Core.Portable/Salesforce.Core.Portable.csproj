@@ -16,18 +16,22 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;NET_4_5;NET_4_0;</DefineConstants>
+    <DefineConstants>DEBUG;NET_4_5;NET_4_0;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+	
     <Compile Include="..\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -55,23 +59,25 @@
     <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
       <Link>SalesforceClientExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
-      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+
+
+    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\DeleteFailedException.cs">
       <Link>Exceptions\DeleteFailedException.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\InvalidSessionException.cs">
-      <Link>Exceptions\InvalidSessionException.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
       <Link>Exceptions\InsufficientRightsException.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
-      <Link>Exceptions\MissingResourceException.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\InvalidFieldException.cs">
       <Link>Exceptions\InvalidFieldException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\InvalidSessionException.cs">
+      <Link>Exceptions\InvalidSessionException.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Exceptions\MissingResourceException.cs">
+      <Link>Exceptions\MissingResourceException.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
       <Link>Exceptions\InvalidClientIdException.cs</Link>
@@ -79,8 +85,10 @@
     <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
       <Link>Exceptions\JsonParseException.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
-      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+	
+	
+    <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
+      <Link>Models\ObjectQuery.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Models\SObject.cs">
       <Link>Models\SObject.cs</Link>
@@ -88,20 +96,19 @@
     <Compile Include="..\Salesforce.Core\Models\Search.cs">
       <Link>Models\Search.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
-      <Link>Models\ObjectQuery.cs</Link>
-    </Compile>
     <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
       <Link>Models\SearchResult.cs</Link>
     </Compile>
-    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
-      <Link>Request\ReadRequest.cs</Link>
-    </Compile>
+	
+	
     <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
       <Link>Request\CreateRequest.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\DeleteRequest.cs">
       <Link>Request\DeleteRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Request\UpdateRequest.cs">
       <Link>Request\UpdateRequest.cs</Link>
@@ -115,43 +122,32 @@
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
+
+	
+    <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
+      <Link>System.Web\HttpEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
+      <Link>System.Web\HttpUtility.cs</Link>
+    </Compile>
+	
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
       <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
       <Link>Salesforce.Auth\SalesforceUser.cs</Link>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Xamarin.Utilities\" />
-    <Folder Include="Salesforce.Auth\" />
-    <Folder Include="System.Json\" />
+	
+    <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
+      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+    </Compile>
+	
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.Portable\Xamarin.Auth.Portable.csproj">
       <Project>{87580927-9F8E-42AE-BDFE-35F95ABF17D8}</Project>
       <Name>Xamarin.Auth.Portable</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Salesforce.Core\System.Json\JavaScriptReader.cs">
-      <Link>System.Json\JavaScriptReader.cs</Link>
-    </None>
-    <None Include="..\Salesforce.Core\System.Json\JsonArray.cs">
-      <Link>System.Json\JsonArray.cs</Link>
-    </None>
-    <None Include="..\Salesforce.Core\System.Json\JsonObject.cs">
-      <Link>System.Json\JsonObject.cs</Link>
-    </None>
-    <None Include="..\Salesforce.Core\System.Json\JsonPrimitive.cs">
-      <Link>System.Json\JsonPrimitive.cs</Link>
-    </None>
-    <None Include="..\Salesforce.Core\System.Json\JsonType.cs">
-      <Link>System.Json\JsonType.cs</Link>
-    </None>
-    <None Include="..\Salesforce.Core\System.Json\JsonValue.cs">
-      <Link>System.Json\JsonValue.cs</Link>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
