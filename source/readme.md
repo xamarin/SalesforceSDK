@@ -2,30 +2,30 @@
 
 ## Supported Platforms Supported
 
-*	Salesforce.Core
-	older project template
-	link source project	
-	Preprocessor Defines: NET_4_5 && NET_4_0	
-	ProjectGUID: 
-	2012-2013
-*	Salesforce.Android
-	older project template
-	Preprocessor Defines: PLATFORM_ANDROID && NET_4_5 && MOBILE (moljac && __ANDROID__)	
-	ProjectGUID: EFBA0AD7-5A72-4C68-AF49-83D382785DCF
-	2012-2013
-*	Salesforce.iOS
-	older project template
-	Xamarin.iOS/MonoTouch Classic
-	Preprocessor Defines: PLATFORM_ANDROID && NET_4_5 && MOBILE (moljac && __IOS__)	
-	ProjectGUID: FEACFBD2-3405-455C-9665-78FE426C6842
-	2012-2013
-*	Salesforce.Core.Portable		
-	newer project template
-	bite-n-switch PCL
-	Preprocessor Defines: NET_4_5 && NET_4_0 && PORTABLE	
-	ProjectGUID: 786C830F-07A1-408B-BD7F-6EE04809D6DB	
-	2017-
-*	Salesforce.XamarinAndroid		
+*	Salesforce.Core			
+	older project template		
+	link source project			
+	Preprocessor Defines: NET_4_5 && NET_4_0		
+	ProjectGUID: 		
+	2012-2013		
+*	Salesforce.Android			
+	older project template			
+	Preprocessor Defines: PLATFORM_ANDROID && NET_4_5 && MOBILE (moljac && __ANDROID__)		
+	ProjectGUID: EFBA0AD7-5A72-4C68-AF49-83D382785DCF		
+	2012-2013		
+*	Salesforce.iOS			
+	older project template			
+	Xamarin.iOS/MonoTouch Classic			
+	Preprocessor Defines: PLATFORM_ANDROID && NET_4_5 && MOBILE (moljac && __IOS__)			
+	ProjectGUID: FEACFBD2-3405-455C-9665-78FE426C6842		
+	2012-2013		
+*	Salesforce.Core.Portable			
+	newer project template		
+	bite-n-switch PCL		
+	Preprocessor Defines: NET_4_5 && NET_4_0 && PORTABLE		
+	ProjectGUID: 786C830F-07A1-408B-BD7F-6EE04809D6DB		
+	2017-		
+*	Salesforce.XamarinAndroid			
 	newer project template
 	2017-
 *	Salesforce.XamarinIOS
