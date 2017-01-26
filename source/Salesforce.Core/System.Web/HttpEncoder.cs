@@ -235,10 +235,12 @@ namespace System.Web.Util
 
             string retval = null;
 
-            #if !PORTABLE
+            #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
             retval = Encoding.ASCII.GetString(result.ToArray());
             #else
-            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            byte[] bytes = result.ToArray();
+            retval = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            //mc++ throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             return retval;
@@ -403,7 +405,7 @@ namespace System.Web.Util
         internal static string HtmlDecode(string s)
         {
             StringBuilder output = new StringBuilder();
-            #if PORTABLE
+            #if PORTABLE 
             throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #else
             if (s == null)
@@ -509,23 +511,37 @@ namespace System.Web.Util
 						rawEntity.Length = 0;
 						#endif
 						have_trailing_digits = false;
-					} else if (is_hex_value &&  Uri.IsHexDigit(c)) {
-						number = number * 16 + Uri.FromHex(c);
-						have_trailing_digits = true;
-						#if NET_4_0
+					}
+                    else if
+                        #if !(NETFX_CORE && (WINDOWS_UWP || WINDOWS_APP || WINDOWS_PHONE_APP))
+                        (is_hex_value && Uri.IsHexDigit(c))
+                        #else
+                        //TODO: extension method for Uri in UWP
+                        (is_hex_value /*&& Uri.IsHexDigit(c)*/)
+                        #endif
+                    {
+                        #if !(NETFX_CORE && (WINDOWS_UWP || WINDOWS_APP || WINDOWS_PHONE_APP))
+                        number = number * 16 + Uri.FromHex(c);
+                        #else
+                        //TODO: extension method for Uri in UWP
+                        throw new NotImplementedException("UWP Extension method needed");
+                        number = number * 16 /*+ Uri.FromHex(c)*/;
+                        #endif
+                        have_trailing_digits = true;
+#if NET_4_0
 						rawEntity.Append (c);
-						#endif
+#endif
 					} else if (Char.IsDigit (c)) {
 						number = number * 10 + ((int) c - '0');
 						have_trailing_digits = true;
-						#if NET_4_0
+#if NET_4_0
 						rawEntity.Append (c);
-						#endif
+#endif
 					} else if (number == 0 && (c == 'x' || c == 'X')) {
 						is_hex_value = true;
-						#if NET_4_0
+#if NET_4_0
 						rawEntity.Append (c);
-						#endif
+#endif
 					} else {
 						state = 2;
 						if (have_trailing_digits) {
@@ -542,9 +558,9 @@ namespace System.Web.Util
 			} else if (have_trailing_digits) {
 				output.Append (number.ToString (CultureInfo.InvariantCulture));
 			}
-            #endif
+#endif
 
-            return output.ToString ();
+                        return output.ToString ();
 		}
 
 		internal static bool NotEncoded (char c)

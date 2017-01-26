@@ -39,7 +39,7 @@ using System.Text;
 namespace System.Web
 {
 
-#if !MOBILE && ! PORTABLE
+#if !MOBILE && !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
     // CAS - no InheritanceDemand here as the class is sealed
     [AspNetHostingPermission(System.Security.Permissions.SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 #endif
@@ -47,12 +47,11 @@ namespace System.Web
     {
         sealed class HttpQSCollection
             :
-#if !PORTABLE
+                #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
                 NameValueCollection
-#else
-                Dictionary<string, string>
-        // Linq.Lookup<string, string>
-#endif
+                #else
+                Dictionary<string, string> // Linq.Lookup<string, string>
+                #endif
         {
 
             public override string ToString()
@@ -62,7 +61,7 @@ namespace System.Web
                     return "";
                 StringBuilder sb = new StringBuilder();
 
-                #if !PORTABLE
+                #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
                 string[] keys = this.AllKeys;
                 keys = this.AllKeys;
                 #else
@@ -126,10 +125,11 @@ namespace System.Web
 
             string retval = null;
 
-            #if !PORTABLE
+            #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
             retval = Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, realLen));
             #else
-            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            retval = Encoding.UTF8.GetString(bytes, 0, realLen);
+            //mc++ throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             return retval;
@@ -145,10 +145,11 @@ namespace System.Web
 
             string retval = null;
 
-            #if !PORTABLE
+            #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
             retval = Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, bytes.Length));
             #else
-            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            retval = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            //mc++ throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             return retval;
@@ -164,10 +165,11 @@ namespace System.Web
 
             string retval = null;
 
-            #if !PORTABLE
+            #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
             retval = Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, offset, count));
             #else
-            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            retval = Encoding.UTF8.GetString(bytes, offset, count);
+            //mc++ throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             return retval;
@@ -219,10 +221,12 @@ namespace System.Web
 
             string retval = null;
 
-            #if !PORTABLE
+            #if !PORTABLE && !(SILVERLIGHT && WINDOWS_PHONE) && !(NETFX_CORE && (WINDOWS_PHONE_APP || WINDOWS_APP || WINDOWS_UWP))
             retval = Encoding.ASCII.GetString(UrlEncodeUnicodeToBytes(str));
             #else
-            throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
+            byte[] bytes = UrlEncodeUnicodeToBytes(str);
+            retval = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            //mc++ throw new NotImplementedException("Salesforce PCL Bite-n-Switch Not ImplementedException");
             #endif
 
             return retval;
