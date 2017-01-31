@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6A89176B-BC80-4FFF-A5A9-7F474676F5AD}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Salesforce</RootNamespace>
+    <AssemblyName>Salesforce</AssemblyName>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\source\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
+      <Link>HttpMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IAuthenticatedRequest.cs">
+      <Link>IAuthenticatedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IRestRequest.cs">
+      <Link>IRestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IRestResource.cs">
+      <Link>IRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\ISalesforceResource.cs">
+      <Link>ISalesforceResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IVersionableRestResource.cs">
+      <Link>IVersionableRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\PlatformAdapter.cs">
+      <Link>PlatformAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\SalesforceClient.cs">
+      <Link>SalesforceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\SalesforceClientExtensions.cs">
+      <Link>SalesforceClientExtensions.cs</Link>
+    </Compile>
+
+
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\DeleteFailedException.cs">
+      <Link>Exceptions\DeleteFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
+      <Link>Exceptions\InsufficientRightsException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidFieldException.cs">
+      <Link>Exceptions\InvalidFieldException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidSessionException.cs">
+      <Link>Exceptions\InvalidSessionException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\MissingResourceException.cs">
+      <Link>Exceptions\MissingResourceException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
+      <Link>Exceptions\InvalidClientIdException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\JsonParseException.cs">
+      <Link>Exceptions\JsonParseException.cs</Link>
+    </Compile>
+    
+    
+    <Compile Include="..\..\source\Salesforce.Core\Models\ObjectQuery.cs">
+      <Link>Models\ObjectQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\SObject.cs">
+      <Link>Models\SObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\Search.cs">
+      <Link>Models\Search.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\SearchResult.cs">
+      <Link>Models\SearchResult.cs</Link>
+    </Compile>
+    
+    
+    <Compile Include="..\..\source\Salesforce.Core\Request\CreateRequest.cs">
+      <Link>Request\CreateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\DeleteRequest.cs">
+      <Link>Request\DeleteRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\UpdateRequest.cs">
+      <Link>Request\UpdateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
+      <Link>Request\UpdateRequestEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ChangesRequest.cs">
+      <Link>Request\ChangesRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ChangeTypes.cs">
+      <Link>Request\ChangeTypes.cs</Link>
+    </Compile>
+
+    
+    <Compile Include="..\..\source\Salesforce.Core\System.Web\HttpEncoder.cs">
+      <Link>System.Web\HttpEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\System.Web\HttpUtility.cs">
+      <Link>System.Web\HttpUtility.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
+      <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
+      <Link>Salesforce.Auth\SalesforceUser.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
+      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.WindowsPhone8\Xamarin.Auth.WindowsPhone8.csproj">
+      <Project>{08470e0d-eb43-4e07-92f4-020df019f628}</Project>
+      <Name>Xamarin.Auth.WindowsPhone8</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <ProjectExtensions />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
