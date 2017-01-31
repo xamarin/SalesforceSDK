@@ -9,8 +9,8 @@
     <ProjectGuid>{0544DCD1-DABE-45CA-9463-40ECA6D718B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Salesforce.WinRTWindows81</RootNamespace>
-    <AssemblyName>Salesforce.WinRTWindows81</AssemblyName>
+    <RootNamespace>Salesforce</RootNamespace>
+    <AssemblyName>Salesforce</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,7 +7,7 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Salesforce</RootNamespace>
-    <AssemblyName>Salesforce.XamarinIOS</AssemblyName>
+    <AssemblyName>Salesforce</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -25,12 +25,16 @@
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <IOSDebuggerPort>10263</IOSDebuggerPort>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
-    <MtouchLink></MtouchLink>
-    <MtouchHttpClientHandler></MtouchHttpClientHandler>
-    <MtouchTlsProvider></MtouchTlsProvider>
+    <MtouchLink>
+    </MtouchLink>
+    <MtouchHttpClientHandler>
+    </MtouchHttpClientHandler>
+    <MtouchTlsProvider>
+    </MtouchTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
@@ -40,8 +44,10 @@
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchHttpClientHandler></MtouchHttpClientHandler>
-    <MtouchTlsProvider></MtouchTlsProvider>
+    <MtouchHttpClientHandler>
+    </MtouchHttpClientHandler>
+    <MtouchTlsProvider>
+    </MtouchTlsProvider>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -73,11 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-
     <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-	
     <Compile Include="..\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -105,8 +109,6 @@
     <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
       <Link>SalesforceClientExtensions.cs</Link>
     </Compile>
-
-
     <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
       <Link>Exceptions\ExceededChangesLimitException.cs</Link>
     </Compile>
@@ -131,8 +133,6 @@
     <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
       <Link>Exceptions\JsonParseException.cs</Link>
     </Compile>
-	
-	
     <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
       <Link>Models\ObjectQuery.cs</Link>
     </Compile>
@@ -145,8 +145,6 @@
     <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
       <Link>Models\SearchResult.cs</Link>
     </Compile>
-	
-	
     <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
       <Link>Request\CreateRequest.cs</Link>
     </Compile>
@@ -168,22 +166,18 @@
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
-
-	
     <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
       <Link>System.Web\HttpEncoder.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
       <Link>System.Web\HttpUtility.cs</Link>
     </Compile>
-	
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
       <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
       <Link>Salesforce.Auth\SalesforceUser.cs</Link>
     </Compile>
-	
     <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
       <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
     </Compile>

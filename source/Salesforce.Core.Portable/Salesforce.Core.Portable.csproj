@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,7 +7,7 @@
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Salesforce</RootNamespace>
-    <AssemblyName>Salesforce.Core.Portable</AssemblyName>
+    <AssemblyName>Salesforce</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
   </PropertyGroup>
@@ -31,7 +31,6 @@
     <Compile Include="..\Salesforce.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-	
     <Compile Include="..\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -59,8 +58,6 @@
     <Compile Include="..\Salesforce.Core\SalesforceClientExtensions.cs">
       <Link>SalesforceClientExtensions.cs</Link>
     </Compile>
-
-
     <Compile Include="..\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
       <Link>Exceptions\ExceededChangesLimitException.cs</Link>
     </Compile>
@@ -85,8 +82,6 @@
     <Compile Include="..\Salesforce.Core\Exceptions\JsonParseException.cs">
       <Link>Exceptions\JsonParseException.cs</Link>
     </Compile>
-	
-	
     <Compile Include="..\Salesforce.Core\Models\ObjectQuery.cs">
       <Link>Models\ObjectQuery.cs</Link>
     </Compile>
@@ -99,8 +94,6 @@
     <Compile Include="..\Salesforce.Core\Models\SearchResult.cs">
       <Link>Models\SearchResult.cs</Link>
     </Compile>
-	
-	
     <Compile Include="..\Salesforce.Core\Request\CreateRequest.cs">
       <Link>Request\CreateRequest.cs</Link>
     </Compile>
@@ -122,26 +115,21 @@
     <Compile Include="..\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
-
-	
     <Compile Include="..\Salesforce.Core\System.Web\HttpEncoder.cs">
       <Link>System.Web\HttpEncoder.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\System.Web\HttpUtility.cs">
       <Link>System.Web\HttpUtility.cs</Link>
     </Compile>
-	
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
       <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
     </Compile>
     <Compile Include="..\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
       <Link>Salesforce.Auth\SalesforceUser.cs</Link>
     </Compile>
-	
     <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
       <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
     </Compile>
-	
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.Portable\Xamarin.Auth.Portable.csproj">
