@@ -29,6 +29,12 @@
 */	
 #addin "Cake.Xamarin"
 
+//---------------------------------------------------------------------------------------
+//mc++ 2017-01-26
+// c# 6 string interpolation turned on
+// Argument<bool>("experimental", true);
+//---------------------------------------------------------------------------------------
+
 var TARGET = Argument ("t", Argument ("target", Argument ("Target", "Default")));
 
 FilePath nuget_tool_path = null;
@@ -120,6 +126,42 @@ Task ("nuget-fixes")
 
 RunTarget("nuget-fixes");	// fix nuget problems on MacOSX
 
+
+string[] source_folders = new string[]
+		{
+			"source", 
+			"source.nuget-references"
+		};
+
+string[] nuget_restore_solutions = new string[]
+		{
+			"./external/Xamarin.Auth[]portable-bait-n-switch/source/Xamarin.Auth-Library.sln",
+			"./source/Salesforce.Library.sln",
+			"./source/Salesforce.Library-MacOSX.sln",
+			"./source.nuget-references/Salesforce.Library.sln",
+			"./source.nuget-references/Salesforce.Library-MacOSX.sln",
+			"./samples/Samples.Salesforce.sln",
+		};
+string[] source_solutions_macosx = new string[]
+		{
+			"Salesforce.Library-MacOSX", 	// MacOSX Xamarin.Studio supported projects
+		};
+string[] source_solutions_windows = new string[]
+		{
+			"Salesforce.Library-MacOSX", 	// MacOSX Xamarin.Studio supported projects
+			"Salesforce.Library",			// Windows Visual Studio supported projects
+		};
+string[] sample_solutions = new []
+		{
+			"./samples/Samples.Salesforce.sln",
+		};
+
+string[] build_configurations =  new []
+		{
+			"Debug",
+			"Release",
+		};
+
 NuGetRestoreSettings nuget_restore_settings = new NuGetRestoreSettings 
 		{ 
 			ToolPath = nuget_tool_path,
@@ -172,12 +214,24 @@ Task ("package")
 
 Task ("libs")
 	.IsDependentOn ("nuget-fixes")
-	.IsDependentOn ("libs-macosx")	
-	//.IsDependentOn ("libs-windows")	
+	.IsDependentOn ("nuget-restore")	
 	.Does 
 	(
 		() => 
 		{	
+			if ( ! IsRunningOnWindows() )
+			{				
+				RunTarget ("libs-macosx");
+			}
+			if ( IsRunningOnWindows() )
+			{				
+				// Mac OSX (Xamarin.Studio and Visual Studio for mac) 
+				//		projects can be compiled on Windows
+				//		but (always but)
+				//		XBuild is used on MacOSX/Linux while on Windows MSBuild is used
+				// RunTarget("libs-macosx");	
+				RunTarget("libs-windows");
+			}
 		}
 	);
 
@@ -189,26 +243,16 @@ Task ("nuget-restore")
 		{	
 			Information("libs nuget_restore_settings.ToolPath = {0}", nuget_restore_settings.ToolPath);
 
-			NuGetRestore 
-				(
-					"./external/Xamarin.Auth[]portable-bait-n-switch/source/Xamarin.Auth-Library.sln",
-					nuget_restore_settings
-				);
-			NuGetRestore 
-				(
-					"./source/Salesforce.Library.sln",
-					nuget_restore_settings
-				);
-			NuGetRestore 
-				(
-					"./samples/Samples.Salesforce.sln",
-					nuget_restore_settings
-				);
+			foreach(string nrslns in nuget_restore_solutions)
+			{
+				NuGetRestore(nrslns, nuget_restore_settings);
+			} 
 		}
 	);
 
 Task ("libs-macosx")
 	.IsDependentOn ("nuget-fixes")
+	.IsDependentOn ("nuget-restore")
 	.Does 
 	(
 		() => 
@@ -218,278 +262,185 @@ Task ("libs-macosx")
 			CreateDirectory ("./output/android/");
 			CreateDirectory ("./output/ios/");
 
-			if ( ! IsRunningOnWindows() )
+			string project = null;
+
+			//-------------------------------------------------------------------------------------
+			foreach(string sf in source_folders)
 			{
-				//-------------------------------------------------------------------------------------
-				XBuild 
-					(
-						"./source/Salesforce.Library-MacOSX.sln",
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild 
-					(
-						"./source/Salesforce.Library-MacOSX.sln",
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				XBuild 
-					(
-						"./source.nuget-references/Salesforce.Library-MacOSX.sln",
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild 
-					(
-						"./source.nuget-references/Salesforce.Library-MacOSX.sln",
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				//-------------------------------------------------------------------------------------
-					
-				//-------------------------------------------------------------------------------------
-				XBuild
-					(
-						"./source/Salesforce.Core/Salesforce.Core.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source/Salesforce.Core/Salesforce.Core.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.Core/Salesforce.Core.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.Core/Salesforce.Core.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				// not copying because this is link source assembly
-				//-------------------------------------------------------------------------------------
-				XBuild
-					(
-						"./source/Salesforce.Core.Portable/Salesforce.Core.Portable.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source/Salesforce.Core.Portable/Salesforce.Core.Portable.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.Core.Portable/Salesforce.Core.Portable.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.Core.Portable/Salesforce.Core.Portable.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				CopyFiles
-					(
-						"./source/Salesforce.Core.Portable/Salesforce.Core.Portable.csproj", 
-						"./output/pcl/"
-					);
-				//-------------------------------------------------------------------------------------
-				XBuild
-					(
-						"./source/Salesforce.Android/Salesforce.Android.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source/Salesforce.Android/Salesforce.Android.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.Android/Salesforce.Android.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.Android/Salesforce.Android.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				CopyFiles
-					(
-						"./source/Salesforce.Android/**/Release/Salesforce.dll", 
-						"./output/android/"
-					);
-				//-------------------------------------------------------------------------------------
-				XBuild
-					(
-						"./source/Salesforce.XamarinAndroid/Salesforce.XamarinAndroid.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source/Salesforce.XamarinAndroid/Salesforce.XamarinAndroid.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.XamarinAndroid/Salesforce.XamarinAndroid.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.XamarinAndroid/Salesforce.XamarinAndroid.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				CopyFiles
-					(
-						"./source/Salesforce.XamarinAndroid/**/Release/Salesforce.dll", 
-						"./output/android/"
-					);
-				//-------------------------------------------------------------------------------------
-				XBuild
-					(
-						"./source/Salesforce.iOS/Salesforce.iOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source/Salesforce.iOS/Salesforce.iOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.iOS/Salesforce.iOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.iOS/Salesforce.iOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				CopyFiles
-					(
-						"./source/Salesforce.iOS/**/Release/Salesforce.dll", 
-						"./output/ios/"
-					);
-				//-------------------------------------------------------------------------------------
-				XBuild
-					(
-						"./source/Salesforce.XamarinIOS/Salesforce.XamarinIOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source/Salesforce.XamarinIOS/Salesforce.XamarinIOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.XamarinIOS/Salesforce.XamarinIOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				XBuild
-					(
-						"./source.nuget-references/Salesforce.XamarinIOS/Salesforce.XamarinIOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-
-				CopyFiles
-					(
-						"./source/Salesforce.XamarinIOS/**/Release/Salesforce.dll", 
-						"./output/ios/"
-					);
-				//-------------------------------------------------------------------------------------
-
-
+				foreach(string cfg in build_configurations)
+				{
+					foreach(string sln in source_solutions_macosx)
+					{
+						string sf_sln = 
+								//$"./{sf}/Salesforce.Library.sln",  // C# 6 support missing
+								String.Format(@"./{0}/{1}.sln", sf, sln)
+								;
+						XBuild 
+							(
+								sf_sln, // project or solution
+								c => 
+								{ 
+									c.SetConfiguration(cfg); // Debug or Release
+								} 
+							);
+					}
+				}					
+			}	
+			//-------------------------------------------------------------------------------------
+				
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.Core";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					XBuild
+						(
+							prj, // project or solution
+							c => 
+							{
+								c.SetConfiguration(cfg); // Debug or Release
+							}
+						);		
+				}
 			}
+
+			// not copying because this is link source assembly
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.Core.Portable";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					XBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/pcl/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.Android";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					XBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/android/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.XamarinAndroid";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					XBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/android/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.iOS";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					XBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/ios/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.XamarinIOS";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					XBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/ios/"
+				);
+			//-------------------------------------------------------------------------------------
 
 			return;
 		}
@@ -498,6 +449,7 @@ Task ("libs-macosx")
 
 Task ("libs-windows")
 	.IsDependentOn ("nuget-fixes")
+	.IsDependentOn ("nuget-restore")
 	.Does 
 	(
 		() => 
@@ -512,204 +464,339 @@ Task ("libs-windows")
 			CreateDirectory ("./output/wpa81/");
 			CreateDirectory ("./output/win81/");
 			CreateDirectory ("./output/winrt/");
-			CreateDirectory ("./output/uwp/");
+			CreateDirectory ("./output/uap10.0/");
 			
-			if (IsRunningOnWindows ()) 
-			{	
-				MSBuild 
-					(
-						"./source/Salesforce.sln",
-						c => 
-						{
-							c.SetConfiguration("Release")
-							.SetPlatformTarget(PlatformTarget.x86);
-						}
-					);
-				MSBuild 
-					(
-						"./source/Salesforce.sln",
-						c => 
-						{
-							c.SetConfiguration("Debug")
-							.SetPlatformTarget(PlatformTarget.x86);
-						}
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.LinkSource/Salesforce.LinkSource.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Debug");
-						}
-					);
-				MSBuild
-					(
-						"./source/Salesforce.LinkSource/Salesforce.LinkSource.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.Portable/Salesforce.Portable.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.Portable/**/Release/Salesforce.dll", 
-						"./output/pcl/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.XamarinAndroid/Salesforce.XamarinAndroid.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.XamarinAndroid/**/Release/Salesforce.dll", 
-						"./output/android/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.XamarinIOS/Salesforce.XamarinIOS.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.XamarinIOS/**/Release/Salesforce.dll", 
-						"./output/ios-unified/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.WindowsPhone8/Salesforce.WindowsPhone8.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release")
-							.SetPlatformTarget(PlatformTarget.x86);
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.WindowsPhone8/**/Release/Salesforce.dll", 
-						"./output/wp80/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.WindowsPhone81/Salesforce.WindowsPhone81.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release")
-							.SetPlatformTarget(PlatformTarget.x86);
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.WindowsPhone81/**/Release/Salesforce.dll", 
-						"./output/wp81/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.WinRTWindows81/Salesforce.WinRTWindows81.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.WinRTWindows81/**/Release/Salesforce.dll", 
-						"./output/win81/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.WinRTWindowsPhone81/Salesforce.WinRTWindowsPhone81.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.WinRTWindowsPhone81/**/Release/Salesforce.dll", 
-						"./output/wpa81/"
-					);
-				//-------------------------------------------------------------------------------------
-				MSBuild
-					(
-						"./source/Salesforce.UniversalWindowsPlatform/Salesforce.UniversalWindowsPlatform.csproj", 
-						c => 
-						{
-							c.SetConfiguration("Release");
-						}
-					);
-				CopyFiles
-					(
-						"./source/Salesforce.UniversalWindowsPlatform/**/Release/Salesforce.dll", 
-						"./output/uwp/"
-					);
-				//-------------------------------------------------------------------------------------
+			string project = null;
 
-				} 
+			//-------------------------------------------------------------------------------------
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					foreach(string sln in source_solutions_windows)
+					{
+						string sf_sln = 
+								//$"./{sf}/Salesforce.Library.sln",  // C# 6 support missing
+								String.Format(@"./{0}/{1}.sln", sf, sln)
+								;
+						MSBuild 
+							(
+								sf_sln, // project or solution
+								c => 
+								{ 
+									c.SetConfiguration(cfg) // Debug or Release
+									// Building Windows Phone application using MSBuild 64 bit 
+									// is not supported. If you are using TFS build definitions, 
+									// change the MSBuild platform to x86.
+									.SetPlatformTarget(PlatformTarget.x86);
+									 
+								} 
+							);
+					}
+				}					
+			}	
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.Core";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.Core.Portable";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/pcl/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.Android";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/android/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.XamarinAndroid";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/android/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.iOS";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/ios/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.XamarinIOS";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/ios/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.WindowsPhone8";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg)
+								.SetPlatformTarget(PlatformTarget.x86);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/wp80/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.WindowsPhone81";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg)
+								.SetPlatformTarget(PlatformTarget.x86);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/wp81/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.WinRTWindows81";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/win81/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.WinRTWindowsPhone81";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/wpa81/"
+				);
+			//-------------------------------------------------------------------------------------
+			project = "Salesforce.UniversalWindowsPlatform";
+			foreach(string sf in source_folders)
+			{
+				foreach(string cfg in build_configurations)
+				{
+					string prj = 
+							//$"./{sf}}/{p}/{p}}.csproj"
+							String.Format(@"./{0}/{1}/{1}.csproj", sf, project)
+							;
+					MSBuild
+						(
+							prj, 
+							c => 
+							{
+								c.SetConfiguration(cfg);
+							}
+						);		
+				}
+			}
+
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/Salesforce.dll", 
+					"./output/uap10.0/"
+				);
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/*.pri", 
+					"./output/uap10.0/"
+				);
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/*.xr.xml", 
+					"./output/uap10.0/"
+				);
+			CopyFiles
+				(
+					"./source/" + project + "/**/Release/*.xbf", 
+					"./output/uap10.0/"
+				);
+			//-------------------------------------------------------------------------------------
 
 			return;
 		}
 	);
-
-string[] sample_solutions = new []
-{
-	"samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Samples.TraditionalStandard.sln",
-	"samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Samples.TraditionalStandard-MacOSX-Xamarin.Studio.sln",
-	// "samples/bugs-triaging/component-2-nuget-package-migration-ArgumentNullException/Xamarin.Auth.ANE/Xamarin.Auth.ANE.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/old-for-backward-compatiblity/Xamarin.Auth.Sample.Android/Xamarin.Auth.Sample.Android.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/old-for-backward-compatiblity/Xamarin.Auth.Sample.iOS/Xamarin.Auth.Sample.iOS.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Sample.WindowsPhone8/Component.Sample.WinPhone8.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Sample.WindowsPhone81/Component.Sample.WinPhone81.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Sample.XamarinAndroid/Component.Sample.Android.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Sample.XamarinIOS/Component.Sample.IOS.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Sample.XamarinIOS-Classic/Component.Sample.IOS-Classic.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Samples.TraditionalStandard-MacOSX-Xamarin.Studio.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Samples.TraditionalStandard-MacOSX-Xamarin.Studio.xxx.sln",
-	// "samples/Traditional.Standard/references01projects/Providers/Xamarin.Auth.Samples.TraditionalStandard.sln",
-	// "samples/Traditional.Standard/references02nuget/old-for-backward-compatiblity/Xamarin.Auth.Sample.Android/Xamarin.Auth.Sample.Android.sln",
-	// "samples/Traditional.Standard/references02nuget/old-for-backward-compatiblity/Xamarin.Auth.Sample.iOS/Xamarin.Auth.Sample.iOS.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Sample.WindowsPhone8/Component.Sample.WinPhone8.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Sample.WindowsPhone81/Component.Sample.WinPhone81.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Sample.XamarinAndroid/Component.Sample.Android.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Sample.XamarinIOS/Component.Sample.IOS.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Sample.XamarinIOS-Classic/Component.Sample.IOS-Classic.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Samples.TraditionalStandard-MacOSX-Xamarin.Studio.sln",
-	// "samples/Traditional.Standard/references02nuget/Xamarin.Auth.Samples.TraditionalStandard.sln",
-	// "samples/Traditional.Standard/WindowsPhoneCrashMissingMethod-GetUI/WP8/Demo.sln",
-	// "samples/Traditional.Standard/WindowsPhoneCrashMissingMethod-GetUI/WP8-XA/Demo.sln",
-	// "samples/Xamarin.Forms/references01project/Evolve16Labs/04-Securing Local Data/Diary.sln",
-	// "samples/Xamarin.Forms/references01project/Evolve16Labs/05-OAuth/ComicBook.sln",
-	// "samples/Xamarin.Forms/references01project/Providers/XamarinAuth.XamarinForms.sln",
-	// "samples/Xamarin.Forms/references02nuget/04-Securing Local Data/Diary.sln",
-};
-
-string[] build_configurations =  new []
-{
-	"Debug",
-	"Release",
-};
 
 Task ("samples-nuget-restore")
 	.Does 
@@ -805,5 +892,27 @@ FilePath GetToolPath (FilePath toolPath)
 	 }
     throw new FileNotFoundException ("Unable to find tool: " + appRootExe); 
 }
+
+
+//=================================================================================================
+// Put those 2 CI targets at the end of the file after all targets
+// If those targets are before 1st RunTarget() call following error occusrs on 
+//		*	MacOSX under Mono
+//		*	Windows
+// 
+//	Task 'ci-osx' is dependent on task 'libs' which do not exist.
+//
+// Xamarin CI - Jenkins job targets
+Task ("ci-osx")
+    .IsDependentOn ("libs")
+    .IsDependentOn ("nuget")
+    //.IsDependentOn ("samples")
+	;
+Task ("ci-windows")
+    .IsDependentOn ("libs")
+    .IsDependentOn ("nuget")
+    //.IsDependentOn ("samples")
+	;	
+//=================================================================================================
 
 RunTarget (TARGET);
