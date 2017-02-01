@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{0FC90089-3230-45DB-8DF5-3BC206F2C955}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Salesforce</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>Salesforce</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\unified\Debug</OutputPath>
+    <IntermediateOutputPath>obj\unified\Debug</IntermediateOutputPath>
+    <DefineConstants>DEBUG;PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\unified\Release</OutputPath>
+    <IntermediateOutputPath>obj\unified\Release</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <DefineConstants>PLATFORM_IOS;NET_4_5;MOBILE;</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.Json" />
+    <Reference Include="PInvoke.Windows.Core">
+      <HintPath>..\packages\PInvoke.Windows.Core.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32">
+      <HintPath>..\packages\PInvoke.Kernel32.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Kernel32.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt">
+      <HintPath>..\packages\PInvoke.BCrypt.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.BCrypt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt">
+      <HintPath>..\packages\PInvoke.NCrypt.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.NCrypt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.3.7\lib\dotnet\Validation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Xamarin.Auth">
+      <HintPath>..\packages\Xamarin.Auth.1.3.2\lib\Xamarin.iOS10\Xamarin.Auth.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\source\Salesforce.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
+      <Link>HttpMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IAuthenticatedRequest.cs">
+      <Link>IAuthenticatedRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IRestRequest.cs">
+      <Link>IRestRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IRestResource.cs">
+      <Link>IRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\ISalesforceResource.cs">
+      <Link>ISalesforceResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\IVersionableRestResource.cs">
+      <Link>IVersionableRestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\PlatformAdapter.cs">
+      <Link>PlatformAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\SalesforceClient.cs">
+      <Link>SalesforceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\SalesforceClientExtensions.cs">
+      <Link>SalesforceClientExtensions.cs</Link>
+    </Compile>
+
+
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
+      <Link>Exceptions\ExceededChangesLimitException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\DeleteFailedException.cs">
+      <Link>Exceptions\DeleteFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InsufficientRightsException.cs">
+      <Link>Exceptions\InsufficientRightsException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidFieldException.cs">
+      <Link>Exceptions\InvalidFieldException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidSessionException.cs">
+      <Link>Exceptions\InvalidSessionException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\MissingResourceException.cs">
+      <Link>Exceptions\MissingResourceException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\InvalidClientIdException.cs">
+      <Link>Exceptions\InvalidClientIdException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Exceptions\JsonParseException.cs">
+      <Link>Exceptions\JsonParseException.cs</Link>
+    </Compile>
+    
+    
+    <Compile Include="..\..\source\Salesforce.Core\Models\ObjectQuery.cs">
+      <Link>Models\ObjectQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\SObject.cs">
+      <Link>Models\SObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\Search.cs">
+      <Link>Models\Search.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Models\SearchResult.cs">
+      <Link>Models\SearchResult.cs</Link>
+    </Compile>
+    
+    
+    <Compile Include="..\..\source\Salesforce.Core\Request\CreateRequest.cs">
+      <Link>Request\CreateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\DeleteRequest.cs">
+      <Link>Request\DeleteRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ReadRequest.cs">
+      <Link>Request\ReadRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\UpdateRequest.cs">
+      <Link>Request\UpdateRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\UpdateRequestEventArgs.cs">
+      <Link>Request\UpdateRequestEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ChangesRequest.cs">
+      <Link>Request\ChangesRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Request\ChangeTypes.cs">
+      <Link>Request\ChangeTypes.cs</Link>
+    </Compile>
+
+    
+    <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
+      <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
+      <Link>Salesforce.Auth\SalesforceUser.cs</Link>
+    </Compile>
+    
+    <Compile Include="..\..\source\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
+      <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
+    </Compile>
+    
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE81BAE8-5A4F-4D7F-AB03-C9AF5D1710FF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Salesforce</RootNamespace>
+    <AssemblyName>Salesforce</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;NET_4_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="PInvoke.Windows.Core">
+      <HintPath>..\packages\PInvoke.Windows.Core.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32">
+      <HintPath>..\packages\PInvoke.Kernel32.0.3.152\lib\net40\PInvoke.Kernel32.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt">
+      <HintPath>..\packages\PInvoke.BCrypt.0.3.152\lib\net40\PInvoke.BCrypt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt">
+      <HintPath>..\packages\PInvoke.NCrypt.0.3.152\lib\net40\PInvoke.NCrypt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config" />
+	
+    <Compile Include="SalesforceClient.cs" />
+    <Compile Include="PlatformAdapter.cs" />
+    <Compile Include="HttpMethod.cs" />
+    <Compile Include="IRestRequest.cs" />
+    <Compile Include="IRestResource.cs" />
+    <Compile Include="ISalesforceResource.cs" />
+    <Compile Include="IVersionableRestResource.cs" />
+    <Compile Include="IAuthenticatedRequest.cs" />
+    <Compile Include="SalesforceClientExtensions.cs" />
+    <Compile Include="Models\SObject.cs" />
+    <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\ObjectQuery.cs" />
+    <Compile Include="Models\SearchResult.cs" />
+    <Compile Include="Request\ReadRequest.cs" />
+    <Compile Include="Request\CreateRequest.cs" />
+    <Compile Include="Request\UpdateRequest.cs" />
+    <Compile Include="Request\DeleteRequest.cs" />
+    <Compile Include="Request\UpdateRequestEventArgs.cs" />
+    <Compile Include="Request\DescribeRequest.cs" />
+    <Compile Include="Request\ChangesRequest.cs" />
+    <Compile Include="Request\ChangeTypes.cs" />
+    <Compile Include="Exceptions\DeleteFailedException.cs" />
+    <Compile Include="Exceptions\InvalidSessionException.cs" />
+    <Compile Include="Exceptions\InsufficientRightsException.cs" />
+    <Compile Include="Exceptions\MissingResourceException.cs" />
+    <Compile Include="Exceptions\InvalidFieldException.cs" />
+    <Compile Include="Exceptions\InvalidClientIdException.cs" />
+    <Compile Include="Exceptions\JsonParseException.cs" />
+    <Compile Include="Exceptions\ExceededChangesLimitException.cs" />
+    <Compile Include="Salesforce.Auth\SalesforceUser.cs" />
+    <Compile Include="Salesforce.Auth\ISalesforceUser.cs" />
+    <Compile Include="Xamarin.Utilities\ExceptionEx.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+	<!--
+	Extraction of Xamarin.Auth code from the repo and replacing with the nuget
+  <ItemGroup>
+    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AccountStore.cs">
+      <Link>Auth\AccountStore.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\AuthException.cs">
+      <Link>Auth\AuthException.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Authenticator.cs">
+      <Link>Auth\Authenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\ExceptionEx.cs">
+      <Link>Auth\ExceptionEx.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\FormAuthenticator.cs">
+      <Link>Auth\FormAuthenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1.cs">
+      <Link>Auth\OAuth1.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Authenticator.cs">
+      <Link>Auth\OAuth1Authenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth1Request.cs">
+      <Link>Auth\OAuth1Request.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Authenticator.cs">
+      <Link>Auth\OAuth2Authenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\OAuth2Request.cs">
+      <Link>Auth\OAuth2Request.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Request.cs">
+      <Link>Auth\Request.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\Response.cs">
+      <Link>Auth\Response.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebAuthenticator.cs">
+      <Link>Auth\WebAuthenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebEx.cs">
+      <Link>Auth\WebEx.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebRedirectAuthenticator.cs">
+      <Link>Auth\WebRedirectAuthenticator.cs</Link>
+    </None>
+    <None Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\WebUtilities.cs">
+      <Link>Auth\WebUtilities.cs</Link>
+    </None>
+    <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
+      <Link>Auth\SalesforceUser.cs</Link>
+    </Compile>
+  </ItemGroup>
+	-->
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.LinkSource\Xamarin.Auth.LinkSource.csproj">
+      <Project>{EDE30D4F-FC0D-458A-A358-A745FC138DF3}</Project>
+      <Name>Xamarin.Auth.LinkSource</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

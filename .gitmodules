@@ -1,0 +1,3 @@
+[submodule "external/Xamarin.Auth[]portable-bait-n-switch"]
+	path = external/Xamarin.Auth[]portable-bait-n-switch
+	url = https://github.com/xamarin/Xamarin.Auth.git
