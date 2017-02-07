@@ -30,6 +30,12 @@
 //mc++ 2017-01-26
 // c# 6 string interpolation turned on
 // Argument<bool>("experimental", true);
+
+string hostname_ci_windows_bot = "";
+string hostname = System.Environment.MachineName;
+
+Information("Hostname = " + hostname);
+
 //---------------------------------------------------------------------------------------
 
 var TARGET = Argument ("t", Argument ("target", Argument ("Target", "Default")));
@@ -133,17 +139,8 @@ string[] source_folders = new string[]
 string[] nuget_restore_solutions = new string[]
         {
             "./external/Xamarin.Auth/source/Xamarin.Auth-Library.sln",
-			//----------------------------------------------------------
-			// following solutions use Xamarin.Auth as projects references
-			// might experience following error:
-			// error MSB4018: System.IO.PathTooLongException: 
-			// The specified path, file name, or both are too long. The fully 
-			// qualified file name must be less than 260 characters, and the 
-			// directory name must be less than 248 characters. 
-
-            //"./source/Salesforce.Library.sln",
-            //"./source/Salesforce.Library-MacOSX.sln",
-			//----------------------------------------------------------
+            "./source/Salesforce.Library.sln",
+            "./source/Salesforce.Library-MacOSX.sln",
             "./source.nuget-references/Salesforce.Library.sln",
             "./source.nuget-references/Salesforce.Library-MacOSX.sln",
             "./samples/Samples.Salesforce.sln",
@@ -477,6 +474,25 @@ Task ("libs-windows")
             //-------------------------------------------------------------------------------------
             foreach(string sf in source_folders)
             {
+				if 
+					(
+						hostname == hostname_ci_windows_bot
+						&&
+						source_folders.Contains("source")
+					)
+				{
+					//-----------------------------------------------------------------------------
+					// solutions in ./source/ use Xamarin.Auth as projects references
+					// might experience following error:
+					// error MSB4018: System.IO.PathTooLongException: 
+					// The specified path, file name, or both are too long. The fully 
+					// qualified file name must be less than 260 characters, and the 
+					// directory name must be less than 248 characters. 
+					//-----------------------------------------------------------------------------
+					
+					continue;
+				}
+				
                 foreach(string cfg in build_configurations)
                 {
                     foreach(string sln in source_solutions_windows)
