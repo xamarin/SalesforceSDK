@@ -133,8 +133,17 @@ string[] source_folders = new string[]
 string[] nuget_restore_solutions = new string[]
         {
             "./external/Xamarin.Auth/source/Xamarin.Auth-Library.sln",
-            "./source/Salesforce.Library.sln",
-            "./source/Salesforce.Library-MacOSX.sln",
+			//----------------------------------------------------------
+			// following solutions use Xamarin.Auth as projects references
+			// might experience following error:
+			// error MSB4018: System.IO.PathTooLongException: 
+			// The specified path, file name, or both are too long. The fully 
+			// qualified file name must be less than 260 characters, and the 
+			// directory name must be less than 248 characters. 
+
+            //"./source/Salesforce.Library.sln",
+            //"./source/Salesforce.Library-MacOSX.sln",
+			//----------------------------------------------------------
             "./source.nuget-references/Salesforce.Library.sln",
             "./source.nuget-references/Salesforce.Library-MacOSX.sln",
             "./samples/Samples.Salesforce.sln",
