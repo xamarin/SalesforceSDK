@@ -1,4 +1,5 @@
 {
+  "locked": false,
   "version": 1,
   "targets": {
     "UAP,Version=v10.0": {
@@ -15423,8 +15424,5 @@
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0"
     ],
     "UAP,Version=v10.0": []
-  },
-  "packageFolders": {
-    "C:\\Users\\moljac\\.nuget\\packages\\": {}
   }
 }

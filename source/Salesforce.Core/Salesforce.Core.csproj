@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="packages.config" />
-	
     <Compile Include="SalesforceClient.cs" />
     <Compile Include="PlatformAdapter.cs" />
     <Compile Include="HttpMethod.cs" />
@@ -87,10 +86,11 @@
     <Compile Include="Exceptions\ExceededChangesLimitException.cs" />
     <Compile Include="Salesforce.Auth\SalesforceUser.cs" />
     <Compile Include="Salesforce.Auth\ISalesforceUser.cs" />
+    <Compile Include="CoreSystem\Uri.cs" />
     <Compile Include="Xamarin.Utilities\ExceptionEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<!--
+  <!--
 	Extraction of Xamarin.Auth code from the repo and replacing with the nuget
   <ItemGroup>
     <Compile Include="..\..\external\Xamarin.Auth\src\Xamarin.Auth\SalesforceUser.cs">
@@ -152,7 +152,7 @@
   </ItemGroup>
 	-->
   <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.LinkSource\Xamarin.Auth.LinkSource.csproj">
+    <ProjectReference Include="..\..\external\Xamarin.Auth\source\Xamarin.Auth.LinkSource\Xamarin.Auth.LinkSource.csproj">
       <Project>{EDE30D4F-FC0D-458A-A358-A745FC138DF3}</Project>
       <Name>Xamarin.Auth.LinkSource</Name>
     </ProjectReference>

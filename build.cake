@@ -135,7 +135,7 @@ string[] source_folders = new string[]
 
 string[] nuget_restore_solutions = new string[]
 		{
-			"./external/Xamarin.Auth[]portable-bait-n-switch/source/Xamarin.Auth-Library.sln",
+			"./external/Xamarin.Auth/source/Xamarin.Auth-Library.sln",
 			"./source/Salesforce.Library.sln",
 			"./source/Salesforce.Library-MacOSX.sln",
 			"./source.nuget-references/Salesforce.Library.sln",

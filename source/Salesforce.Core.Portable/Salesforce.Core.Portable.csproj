@@ -130,12 +130,18 @@
     <Compile Include="..\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
       <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
     </Compile>
+    <Compile Include="..\Salesforce.Core\CoreSystem\Uri.cs">
+      <Link>CoreSystem\Uri.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.Portable\Xamarin.Auth.Portable.csproj">
+    <ProjectReference Include="..\..\external\Xamarin.Auth\source\Xamarin.Auth.Portable\Xamarin.Auth.Portable.csproj">
       <Project>{87580927-9F8E-42AE-BDFE-35F95ABF17D8}</Project>
       <Name>Xamarin.Auth.Portable</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CoreSystem\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

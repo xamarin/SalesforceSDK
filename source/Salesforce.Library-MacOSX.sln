@@ -9,51 +9,51 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.Android", "Sales
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.iOS", "Salesforce.iOS\Salesforce.iOS.csproj", "{0FC90089-3230-45DB-8DF5-3BC206F2C955}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{87FE7800-EC80-494C-AC2F-3CF66FB84903}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.XamarinAndroid", "Salesforce.XamarinAndroid\Salesforce.XamarinAndroid.csproj", "{60A13CA1-2F48-4577-B375-6A4D8C434862}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.XamarinIOS", "Salesforce.XamarinIOS\Salesforce.XamarinIOS.csproj", "{0B68648C-59FA-453B-B751-E2987BC0DE1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.LinkSource", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.LinkSource\Xamarin.Auth.LinkSource.csproj", "{EDE30D4F-FC0D-458A-A358-A745FC138DF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.Core.Portable", "Salesforce.Core.Portable\Salesforce.Core.Portable.csproj", "{715DCA9F-B5DB-44BA-AA6D-5267CB7BC70A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Portable", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.Portable\Xamarin.Auth.Portable.csproj", "{87580927-9F8E-42AE-BDFE-35F95ABF17D8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{87FE7800-EC80-494C-AC2F-3CF66FB84903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinAndroid", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.XamarinAndroid\Xamarin.Auth.XamarinAndroid.csproj", "{D46E20A0-DBA9-49A5-B45E-CE4664850445}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.LinkSource", "..\external\Xamarin.Auth\source\Xamarin.Auth.LinkSource\Xamarin.Auth.LinkSource.csproj", "{EDE30D4F-FC0D-458A-A358-A745FC138DF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinIOS", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.XamarinIOS\Xamarin.Auth.XamarinIOS.csproj", "{15BE2387-8E72-4C0B-8A6A-460EF5FA4539}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Portable", "..\external\Xamarin.Auth\source\Xamarin.Auth.Portable\Xamarin.Auth.Portable.csproj", "{87580927-9F8E-42AE-BDFE-35F95ABF17D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinAndroid", "..\external\Xamarin.Auth\source\Xamarin.Auth.XamarinAndroid\Xamarin.Auth.XamarinAndroid.csproj", "{D46E20A0-DBA9-49A5-B45E-CE4664850445}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinIOS", "..\external\Xamarin.Auth\source\Xamarin.Auth.XamarinIOS\Xamarin.Auth.XamarinIOS.csproj", "{15BE2387-8E72-4C0B-8A6A-460EF5FA4539}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{73798C80-EB18-442B-9ACD-56A863B942E4}"
 	ProjectSection(SolutionItems) = preProject
-		..\external\Xamarin.Auth[]portable-bait-n-switch\source\.nuget\NuGet.Config = ..\external\Xamarin.Auth[]portable-bait-n-switch\source\.nuget\NuGet.Config
-		..\external\Xamarin.Auth[]portable-bait-n-switch\source\.nuget\NuGet.exe = ..\external\Xamarin.Auth[]portable-bait-n-switch\source\.nuget\NuGet.exe
-		..\external\Xamarin.Auth[]portable-bait-n-switch\source\.nuget\NuGet.targets = ..\external\Xamarin.Auth[]portable-bait-n-switch\source\.nuget\NuGet.targets
+		..\external\Xamarin.Auth\source\.nuget\NuGet.Config = ..\external\Xamarin.Auth\source\.nuget\NuGet.Config
+		..\external\Xamarin.Auth\source\.nuget\NuGet.exe = ..\external\Xamarin.Auth\source\.nuget\NuGet.exe
+		..\external\Xamarin.Auth\source\.nuget\NuGet.targets = ..\external\Xamarin.Auth\source\.nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xamarin.Forms", "Xamarin.Forms", "{77759364-0202-40B6-A285-6FD5490858D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinForms", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\XamarinForms\Xamarin.Auth.XamarinForms\Xamarin.Auth.XamarinForms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinForms", "..\external\Xamarin.Auth\source\XamarinForms\Xamarin.Auth.XamarinForms\Xamarin.Auth.XamarinForms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinForms.Droid", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\XamarinForms\Xamarin.Auth.XamarinForms.Droid\Xamarin.Auth.XamarinForms.Droid.csproj", "{1B702A60-3D89-4183-B251-4A07388DCCB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinForms.Droid", "..\external\Xamarin.Auth\source\XamarinForms\Xamarin.Auth.XamarinForms.Droid\Xamarin.Auth.XamarinForms.Droid.csproj", "{1B702A60-3D89-4183-B251-4A07388DCCB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinForms.iOS", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\XamarinForms\Xamarin.Auth.XamarinForms.iOS\Xamarin.Auth.XamarinForms.iOS.csproj", "{7666F0AB-7493-49F2-82B0-7D51A0250FC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.XamarinForms.iOS", "..\external\Xamarin.Auth\source\XamarinForms\Xamarin.Auth.XamarinForms.iOS\Xamarin.Auth.XamarinForms.iOS.csproj", "{7666F0AB-7493-49F2-82B0-7D51A0250FC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D90AB228-24A0-4F93-8F1B-389931D88183}"
 	ProjectSection(SolutionItems) = preProject
-		..\external\Xamarin.Auth[]portable-bait-n-switch\source\readme.md = ..\external\Xamarin.Auth[]portable-bait-n-switch\source\readme.md
+		..\external\Xamarin.Auth\source\readme.md = ..\external\Xamarin.Auth\source\readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{C1AFC24F-8A5D-4AAF-938E-C61212111835}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.LinkSource", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Extensions\Xamarin.Auth.Extensions.LinkSource\Xamarin.Auth.Extensions.LinkSource.csproj", "{3EBB5946-5B7E-4EB3-8E3A-4FEE91D69ED6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.LinkSource", "..\external\Xamarin.Auth\source\Extensions\Xamarin.Auth.Extensions.LinkSource\Xamarin.Auth.Extensions.LinkSource.csproj", "{3EBB5946-5B7E-4EB3-8E3A-4FEE91D69ED6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.Portable", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Extensions\Xamarin.Auth.Extensions.Portable\Xamarin.Auth.Extensions.Portable.csproj", "{6397C9BB-4FCF-4484-923B-A36093A4253D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.Portable", "..\external\Xamarin.Auth\source\Extensions\Xamarin.Auth.Extensions.Portable\Xamarin.Auth.Extensions.Portable.csproj", "{6397C9BB-4FCF-4484-923B-A36093A4253D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.XamarinAndroid", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Extensions\Xamarin.Auth.Extensions.XamarinAndroid\Xamarin.Auth.Extensions.XamarinAndroid.csproj", "{FA8B2786-B839-4271-9303-43EE483BCC1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.XamarinAndroid", "..\external\Xamarin.Auth\source\Extensions\Xamarin.Auth.Extensions.XamarinAndroid\Xamarin.Auth.Extensions.XamarinAndroid.csproj", "{FA8B2786-B839-4271-9303-43EE483BCC1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.XamarinIOS", "..\external\Xamarin.Auth[]portable-bait-n-switch\source\Extensions\Xamarin.Auth.Extensions.XamarinIOS\Xamarin.Auth.Extensions.XamarinIOS.csproj", "{ED88D56E-0677-4735-B083-60A46FA8CB94}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salesforce.Core.Portable", "Salesforce.Core.Portable\Salesforce.Core.Portable.csproj", "{715DCA9F-B5DB-44BA-AA6D-5267CB7BC70A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Auth.Extensions.XamarinIOS", "..\external\Xamarin.Auth\source\Extensions\Xamarin.Auth.Extensions.XamarinIOS\Xamarin.Auth.Extensions.XamarinIOS.csproj", "{ED88D56E-0677-4735-B083-60A46FA8CB94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -165,7 +165,7 @@
 	
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.XamarinAndroid\Xamarin.Auth.XamarinAndroid.csproj">
+    <ProjectReference Include="..\..\external\Xamarin.Auth\source\Xamarin.Auth.XamarinAndroid\Xamarin.Auth.XamarinAndroid.csproj">
       <Project>{D46E20A0-DBA9-49A5-B45E-CE4664850445}</Project>
       <Name>Xamarin.Auth.XamarinAndroid</Name>
     </ProjectReference>
