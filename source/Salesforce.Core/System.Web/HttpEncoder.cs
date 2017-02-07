@@ -524,8 +524,7 @@ namespace System.Web.Util
                         number = number * 16 + Uri.FromHex(c);
                         #else
                         //TODO: extension method for Uri in UWP
-                        throw new NotImplementedException("UWP Extension method needed");
-                        number = number * 16 + SalesforceSystem.Uri.FromHex(c);
+                        number = number * 16 + CoreSystem.Uri.FromHex(c);
                         #endif
                         have_trailing_digits = true;
 #if NET_4_0

@@ -88,6 +88,10 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     
+    <Compile Include="..\..\source\Salesforce.Core\CoreSystem\Uri.cs">
+      <Link>CoreSystem\Uri.cs</Link>
+    </Compile>
+        
     <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -202,7 +206,7 @@
   
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.WindowsPhone81\Xamarin.Auth.WindowsPhone81.csproj">
+    <ProjectReference Include="..\..\external\Xamarin.Auth\source\Xamarin.Auth.WindowsPhone81\Xamarin.Auth.WindowsPhone81.csproj">
       <Project>{18b5054d-6035-40db-b1ae-3e4fde8db6e9}</Project>
       <Name>Xamarin.Auth.WindowsPhone81</Name>
     </ProjectReference>

@@ -32,6 +32,10 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     
+    <Compile Include="..\..\source\Salesforce.Core\CoreSystem\Uri.cs">
+      <Link>CoreSystem\Uri.cs</Link>
+    </Compile>
+		
     <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>

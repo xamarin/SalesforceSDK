@@ -102,7 +102,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.WinRTWindows81\Xamarin.Auth.WinRTWindows81.csproj">
+    <ProjectReference Include="..\..\external\Xamarin.Auth\source\Xamarin.Auth.WinRTWindows81\Xamarin.Auth.WinRTWindows81.csproj">
       <Project>{c4202ac1-1027-4737-8215-16182421e342}</Project>
       <Name>Xamarin.Auth.WinRTWindows81</Name>
     </ProjectReference>
@@ -112,7 +112,12 @@
     <Compile Include="..\..\source\Salesforce.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    
+
+    <Compile Include="..\..\source\Salesforce.Core\CoreSystem\Uri.cs">
+      <Link>CoreSystem\Uri.cs</Link>
+    </Compile>
+        
+		
     <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>

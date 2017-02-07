@@ -59,11 +59,15 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
+  <ItemGroup>		
     <Compile Include="..\..\source\Salesforce.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-	
+		
+    <Compile Include="..\..\source\Salesforce.Core\CoreSystem\Uri.cs">
+      <Link>CoreSystem\Uri.cs</Link>
+    </Compile>
+		
     <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -91,8 +95,6 @@
     <Compile Include="..\..\source\Salesforce.Core\SalesforceClientExtensions.cs">
       <Link>SalesforceClientExtensions.cs</Link>
     </Compile>
-
-
     <Compile Include="..\..\source\Salesforce.Core\Exceptions\ExceededChangesLimitException.cs">
       <Link>Exceptions\ExceededChangesLimitException.cs</Link>
     </Compile>
@@ -117,8 +119,6 @@
     <Compile Include="..\..\source\Salesforce.Core\Exceptions\JsonParseException.cs">
       <Link>Exceptions\JsonParseException.cs</Link>
     </Compile>
-	
-	
     <Compile Include="..\..\source\Salesforce.Core\Models\ObjectQuery.cs">
       <Link>Models\ObjectQuery.cs</Link>
     </Compile>
@@ -131,8 +131,6 @@
     <Compile Include="..\..\source\Salesforce.Core\Models\SearchResult.cs">
       <Link>Models\SearchResult.cs</Link>
     </Compile>
-	
-	
     <Compile Include="..\..\source\Salesforce.Core\Request\CreateRequest.cs">
       <Link>Request\CreateRequest.cs</Link>
     </Compile>
@@ -154,21 +152,16 @@
     <Compile Include="..\..\source\Salesforce.Core\Request\ChangeTypes.cs">
       <Link>Request\ChangeTypes.cs</Link>
     </Compile>
-
-	
     <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\ISalesforceUser.cs">
       <Link>Salesforce.Auth\ISalesforceUser.cs</Link>
     </Compile>
     <Compile Include="..\..\source\Salesforce.Core\Salesforce.Auth\SalesforceUser.cs">
       <Link>Salesforce.Auth\SalesforceUser.cs</Link>
     </Compile>
-	
     <Compile Include="..\..\source\Salesforce.Core\Xamarin.Utilities\ExceptionEx.cs">
       <Link>Xamarin.Utilities\ExceptionEx.cs</Link>
     </Compile>
-	
   </ItemGroup>
-
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

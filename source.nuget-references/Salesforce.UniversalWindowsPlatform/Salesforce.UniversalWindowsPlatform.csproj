@@ -113,6 +113,10 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     
+    <Compile Include="..\..\source\Salesforce.Core\CoreSystem\Uri.cs">
+      <Link>CoreSystem\Uri.cs</Link>
+    </Compile>
+        
     <Compile Include="..\..\source\Salesforce.Core\HttpMethod.cs">
       <Link>HttpMethod.cs</Link>
     </Compile>
@@ -226,7 +230,7 @@
 	
 	</ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.Auth[]portable-bait-n-switch\source\Xamarin.Auth.UniversalWindowsPlatform\Xamarin.Auth.UniversalWindowsPlatform.csproj">
+    <ProjectReference Include="..\..\external\Xamarin.Auth\source\Xamarin.Auth.UniversalWindowsPlatform\Xamarin.Auth.UniversalWindowsPlatform.csproj">
       <Project>{2d712aa6-7697-4f4d-b5f1-aa03476f59a7}</Project>
       <Name>Xamarin.Auth.UniversalWindowsPlatform</Name>
     </ProjectReference>
