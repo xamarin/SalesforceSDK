@@ -31,7 +31,7 @@
 // c# 6 string interpolation turned on
 // Argument<bool>("experimental", true);
 
-string hostname_ci_windows_bot = "";
+string hostname_ci_windows_bot = "WIN-COMPONENTS";
 string hostname = System.Environment.MachineName;
 
 Information("Hostname = " + hostname);
@@ -130,11 +130,20 @@ Task ("nuget-fixes")
 RunTarget("nuget-fixes");   // fix nuget problems on MacOSX
 
 
+//-----------------------------------------------------------------------------
+// solutions in ./source/ use Xamarin.Auth as projects references
+// might experience following error:
+// error MSB4018: System.IO.PathTooLongException: 
+// The specified path, file name, or both are too long. The fully 
+// qualified file name must be less than 260 characters, and the 
+// directory name must be less than 248 characters. 
+
 string[] source_folders = new string[]
         {
             "source", 
             "source.nuget-references"
         };
+//-----------------------------------------------------------------------------
 
 string[] nuget_restore_solutions = new string[]
         {
@@ -478,7 +487,7 @@ Task ("libs-windows")
 					(
 						hostname == hostname_ci_windows_bot
 						&&
-						source_folders.Contains("source")
+						source_folders.
 					)
 				{
 					//-----------------------------------------------------------------------------
