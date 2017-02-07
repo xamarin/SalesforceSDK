@@ -122,6 +122,7 @@ Package/SalesforceSDK-1.0/lib/ios/Salesforce.dll
 
 
 # ignore Xamarin.Android Resource.Designer.cs files
+**/[Rr]esource.[Dd]esigner.cs
 **/*.Droid/**/[Rr]esource.[Dd]esigner.cs
 **/*.Android/**/[Rr]esource.[Dd]esigner.cs
 **/Android/**/[Rr]esource.[Dd]esigner.cs
