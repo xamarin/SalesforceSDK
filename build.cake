@@ -487,7 +487,7 @@ Task ("libs-windows")
 					(
 						hostname == hostname_ci_windows_bot
 						&&
-						source_folders.
+						source_folders.Contains("source")
 					)
 				{
 					//-----------------------------------------------------------------------------
