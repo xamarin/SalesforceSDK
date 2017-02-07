@@ -517,7 +517,7 @@ namespace System.Web.Util
                         (is_hex_value && Uri.IsHexDigit(c))
                         #else
                         //TODO: extension method for Uri in UWP
-                        (is_hex_value /*&& Uri.IsHexDigit(c)*/)
+                        (is_hex_value && CoreSystem.Uri.IsHexDigit(c))
                         #endif
                     {
                         #if !(NETFX_CORE && (WINDOWS_UWP || WINDOWS_APP || WINDOWS_PHONE_APP))
@@ -525,7 +525,7 @@ namespace System.Web.Util
                         #else
                         //TODO: extension method for Uri in UWP
                         throw new NotImplementedException("UWP Extension method needed");
-                        number = number * 16 /*+ Uri.FromHex(c)*/;
+                        number = number * 16 + SalesforceSystem.Uri.FromHex(c);
                         #endif
                         have_trailing_digits = true;
 #if NET_4_0
