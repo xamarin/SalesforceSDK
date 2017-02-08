@@ -12,10 +12,10 @@
 		http://semver.org/
 		-->
 		<version>
-			1.5.0-alpha01
+			1.5.0-alpha02
 		</version>
 		<title>
-			Salesforce SDK
+			Salesforce for Xamarin SDK
 		</title>
 		<authors>
 			Xamarin
@@ -39,7 +39,9 @@
 			false
 		</requireLicenseAcceptance>
 		<description>
-			A cross-platform API for Salesforce
+			Salesforce for Xamarin SDK is a cross-platform API for Salesforce supporting
+			Xamarin.Android, Xamarin.iOS, Windows Phone Silverlight 8 and 8.1, 
+			Windows Phone 8.1 (WinRT), Windows 8.1 (WinRT) and Universal Windows Platform.
 		</description>
 		<summary>
 			Build native apps around your Salesforce data.
