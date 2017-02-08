@@ -30,14 +30,30 @@
 //mc++ 2017-01-26
 // c# 6 string interpolation turned on
 // Argument<bool>("experimental", true);
+//---------------------------------------------------------------------------------------
 
+
+//---------------------------------------------------------------------------------------
+// some solutions with projects that use project references might experience on some
+// systems (CI servers/ bots) following error:
+//
+// error MSB4018: System.IO.PathTooLongException: 
+// The specified path, file name, or both are too long. The fully 
+// qualified file name must be less than 260 characters, and the 
+// directory name must be less than 248 characters. 
+//
+// Solution is to based on hostname to skip projects that reference projects in deeper
+// external subfolders.
+//
+// solutions in ./source/ use Xamarin.Auth as projects references
 string hostname_ci_windows_bot = "WIN-COMPONENTS";
 string hostname = System.Environment.MachineName;
 
 Information("Hostname = " + hostname);
-
 //---------------------------------------------------------------------------------------
 
+
+//---------------------------------------------------------------------------------------
 var TARGET = Argument ("t", Argument ("target", Argument ("Target", "Default")));
 
 FilePath nuget_tool_path = null;
@@ -489,7 +505,7 @@ Task ("libs-windows")
 						&&
 						source_folders.Contains("source")
 					)
-				{
+				{	
 					//-----------------------------------------------------------------------------
 					// solutions in ./source/ use Xamarin.Auth as projects references
 					// might experience following error:
@@ -498,7 +514,7 @@ Task ("libs-windows")
 					// qualified file name must be less than 260 characters, and the 
 					// directory name must be less than 248 characters. 
 					//-----------------------------------------------------------------------------
-					
+                    				
 					continue;
 				}
 				
