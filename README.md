@@ -24,6 +24,10 @@ Do it all using C#.
 // Creates our connection to salesforce.
 var client = new SalesforceClient (clientId, clientSecret, redirectUrl);
 
+// You can change the token and auth paths for sandbox testing
+// SalesforceClient.AuthPath = <your sandbox auth path>
+// SalesforceClient.TokenPath = <your sandbox token path>
+
 // Get authenticated users from the local keystore
 var users = client.LoadUsers ();
 
